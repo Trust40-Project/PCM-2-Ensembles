@@ -66,6 +66,7 @@ public class MainClass {
 		
 		rootData.getRelatedCharacteristics().parallelStream().forEach(e ->{
 			t.append("class ");
+			
 		});
 		
 		
