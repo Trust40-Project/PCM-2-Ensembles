@@ -1,4 +1,4 @@
-package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygenerationMainLoader;
+package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.MainLoader;
 
 import java.util.List;
 import java.util.Map;
