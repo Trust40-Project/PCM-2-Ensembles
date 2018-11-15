@@ -15,5 +15,7 @@ public class ScalaHelper {
 	public final static String KEYWORD_ALLOW = "allow";
 	public final static String KEYWORD_ENSEMBLE_ROOT = "RootEnsemble";
 	public final static String KEYWORD_DEF = "def";
+	public final static String SCENARIO_NAME = "scenario";
+	public final static String NEW_VARIABLE = " = new " + SCENARIO_NAME + ".";
 
 }
