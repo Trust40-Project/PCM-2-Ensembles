@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class MainClass {
 			writer.println(generatePerson(rootDynamic));
 			List<String> listEnsembleNames = generateRelatedContexts(rootData, writer);
 			writer.println("  class System extends RootEnsemble {");
-			
+			writer.println(createRootEnsemble(listEnsembleNames));
 			writer.println("  }");
 			writer.println("  val rootEnsemble = root(new System)");
 			writer.println("}");
@@ -76,7 +77,18 @@ public class MainClass {
 	}
 	private String createRootEnsemble(List<String> listEnsembleNames) {
 		var builder = new StringBuilder();
-		
+		for(String ensembleName: listEnsembleNames) {
+			builder.append(ScalaHelper.KEYWORD_VAL);
+			builder.append(" ");
+			builder.append(ensembleName.toLowerCase());
+			builder.append(" = ");
+			builder.append("ensembles");
+			builder.append("(\n");
+			builder.append("new ");
+			builder.append(ensembleName);
+			builder.append("\n)\n");
+			
+		}
 		return builder.toString();
 	}
 	private void writeScenario(PrintWriter writer, List<Organisation> organisations) {
@@ -119,13 +131,19 @@ public class MainClass {
 			writer.append(" ");
 			writer.append(ScalaHelper.KEYWORD_ENSEMBLE);
 			writer.append("{\n");
+			var listRoles = new ArrayList<String>();
+			
 			List<OrganisationContext> listOrganisation = e.getCharacteristics().getOwnedCharacteristics().stream()
 					.filter(ContextCharacteristic.class::isInstance).map(ContextCharacteristic.class::cast)
 					.flatMap(i -> i.getContext().stream()).filter(OrganisationContext.class::isInstance)
 					.map(OrganisationContext.class::cast).collect(Collectors.toList());
 			if(!listOrganisation.isEmpty()) {
 				writeOrganisationContext(writer,listOrganisation);
-			}	
+				listRoles.add("companies");
+			}
+			if(listRoles.size()==1) {
+				writer.println(writeAllow(tmp, listRoles.get(0), listRoles.get(0)));
+			}
 			writer.append("\n}\n");
 			
 		});
@@ -147,7 +165,15 @@ public class MainClass {
 		}
 		return t.toString();
 	}
-
+	private String writeAllow(String nameAction, String... variableNames) {
+		var t = new StringBuilder(variableNames.length * 20);
+		t.append("allow(");
+		t.append(Arrays.stream(variableNames).collect(Collectors.joining(",")));
+		t.append(",\"");
+		t.append(nameAction);
+		t.append("\")");
+		return t.toString();
+	}
 	private String generatePerson(DynamicSpecification rootDynamic) {
 		var t = new StringBuilder(200);
 		if (rootDynamic.getSubjectContainer().getSubject().parallelStream().anyMatch(User.class::isInstance)) {
@@ -178,7 +204,7 @@ public class MainClass {
 		}
 		writer.delete(writer.length() - 4, writer.length());
 		writer.append(")))");
-		printer.append(writer.toString());
+		printer.println(writer.toString());
 
 	}
 
