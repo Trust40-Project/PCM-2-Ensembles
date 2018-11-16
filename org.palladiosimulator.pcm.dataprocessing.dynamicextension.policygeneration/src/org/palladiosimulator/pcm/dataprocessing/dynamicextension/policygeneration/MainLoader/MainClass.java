@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataprocessingPackage;
+import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.Enumeration;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicextensionPackage;
@@ -30,11 +31,13 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Locatio
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ShiftContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristicType;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.contexts.ContextHandler;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.util.ScalaHelper;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Location;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Role;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.subject.Organisation;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.subject.User;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.RoleContainer;
 
 public class MainClass {
 	private static final String PATH_DYNAMIC = "/home/majuwa/git/Trust4.0/UC-Combined/uc-combined.dynamicextension";
@@ -53,16 +56,21 @@ public class MainClass {
 		resourceSet.setResourceFactoryRegistry(resourceRegistry);
 		var rootDynamic = loadDynmicModel(resourceSet);
 		var rootData = loadDataSpecification(resourceSet);
+		/*
+		 * 
+		 */
 //		rootDynamic.getSubjectContainer().getSubject().stream().forEach(e -> System.out.println(e.getEntityName()));
 //		rootData.getDataProcessingContainers().stream().forEach(e-> System.out.println(e.getEntityName()));
-		var generation = new ContextHandler(rootData, rootDynamic);
-		generation.createContext();
+//		var generation = new ContextHandler(rootData, rootDynamic);
+//		generation.createContext();
 
 		try (var writer = new PrintWriter(new File("/home/majuwa/RunningExample.scala"), Charset.forName("UTF-8"))) {
 			writer.println("package scenarios");
 			writer.println("import tcof.{Component, _}");
 			writer.println("class RunningExample extends Model {");
 			writer.println(generateRoles(rootDynamic));
+			writer.println(generateStatus(rootData));
+			writer.println(generateCompany(rootDynamic));
 			writer.println(generatePerson(rootDynamic));
 			List<String> listEnsembleNames = generateRelatedContexts(rootData, writer);
 			writer.println("  class System extends RootEnsemble {");
@@ -128,7 +136,8 @@ public class MainClass {
 		var list = new ArrayList<String>(rootData.getRelatedCharacteristics().size());
 		rootData.getRelatedCharacteristics().stream().forEach(e -> {
 			writer.append("class ");
-			String tmp = ScalaHelper.createIdentifier(e.getRelatedEntity().getEntityName() + e.getRelatedEntity().getId());
+			String tmp = ScalaHelper
+					.createIdentifier(e.getRelatedEntity().getEntityName() + e.getRelatedEntity().getId());
 			writer.append(tmp);
 			list.add(tmp);
 			writer.append("() ");
@@ -138,8 +147,9 @@ public class MainClass {
 			writer.append("{\n");
 			var listRoles = new ArrayList<String>();
 
-			List<OrganisationContext> listOrganisationContext = getContexts(e).filter(OrganisationContext.class::isInstance)
-					.map(OrganisationContext.class::cast).collect(Collectors.toList());
+			List<OrganisationContext> listOrganisationContext = getContexts(e)
+					.filter(OrganisationContext.class::isInstance).map(OrganisationContext.class::cast)
+					.collect(Collectors.toList());
 			if (!listOrganisationContext.isEmpty()) {
 				writeOrganisationContext(writer, listOrganisationContext);
 				listRoles.add("companies");
@@ -148,7 +158,8 @@ public class MainClass {
 					.map(LocationContext.class::cast).collect(Collectors.toList());
 			List<RoleContext> listRolesContext = getContexts(e).filter(RoleContext.class::isInstance)
 					.map(RoleContext.class::cast).collect(Collectors.toList());
-			writePersonalContext(writer, listLocationContext, listRolesContext);
+			if (!listLocationContext.isEmpty() || !listRolesContext.isEmpty())
+				writePersonalContext(writer, listLocationContext, listRolesContext);
 			if (listRoles.size() == 1) {
 				writer.println(writeAllow(tmp, listRoles.get(0), listRoles.get(0)));
 			}
@@ -159,25 +170,34 @@ public class MainClass {
 	}
 
 	private Stream<Context> getContexts(RelatedCharacteristics e) {
-		return e.getCharacteristics().getOwnedCharacteristics().stream()
-				.filter(ContextCharacteristic.class::isInstance).map(ContextCharacteristic.class::cast)
-				.flatMap(i -> i.getContext().stream());
+		return e.getCharacteristics().getOwnedCharacteristics().stream().filter(ContextCharacteristic.class::isInstance)
+				.map(ContextCharacteristic.class::cast).flatMap(i -> i.getContext().stream());
 	}
 
 	private String generateRoles(DynamicSpecification rootDynamic) {
 		var t = new StringBuilder(200);
 		t.append(rootDynamic.getHelperContainer().getRolecontainer().parallelStream()
 				.flatMap(e -> e.getRole().parallelStream())
-				.map(e -> String.format("\t case class %s(company: %s) extends Role", ScalaHelper.createIdentifier(e.getEntityName()), NAME_COMPANY))
+				.map(e -> String.format("\t case class %s(company: %s) extends Role",
+						ScalaHelper.createIdentifier(e.getEntityName()), NAME_COMPANY))
 				.collect(Collectors.joining("\n", "\t abstract class Role \n", "\n")));
-		if (rootDynamic.getSubjectContainer().getSubject().parallelStream().anyMatch(Organisation.class::isInstance)) {
-			t.append("\n");
-			t.append(String.format("%s %s(val id: String, val parentCompany: Company = null) extends %s {",
-					ScalaHelper.KEYWORD_CLASS, NAME_COMPANY, ScalaHelper.KEYWORD_COMPONENT));
-			t.append("\n name(s\"Company $id\")");
-			t.append("\n}");
-		}
 		return t.toString();
+	}
+
+	private String generateStatus(DataSpecification rootData) {
+		// first filter the relevant enumerations
+		// (the ones which have a InternalStateContext)
+		// then remove the duplicate -> distinct
+		// then format String to correct Enumerations format
+		// afterwards collect the String
+		return rootData.getCharacteristicTypeContainers().stream().flatMap(e -> e.getCharacteristicTypes().stream())
+				.filter(ContextCharacteristicType.class::isInstance).map(ContextCharacteristicType.class::cast)
+				.flatMap(e -> e.getContext().stream()).filter(InternalStateContext.class::isInstance)
+				.map(InternalStateContext.class::cast).map(e -> (Enumeration) e.getState().eContainer()).distinct()
+				.flatMap(e -> e.getLiterals().parallelStream())
+				.map(e -> String.format("\t case class %s() extends Status",
+						ScalaHelper.createIdentifier(e.getEntityName() + e.getId())))
+				.collect(Collectors.joining("\n", "abstract class Status\n", "\n"));
 	}
 
 	private String writeAllow(String nameAction, String... variableNames) {
@@ -190,19 +210,28 @@ public class MainClass {
 		return t.toString();
 	}
 
+	private String generateCompany(DynamicSpecification rootDynamic) {
+		var t = new StringBuilder(500);
+		t.append("\n");
+		t.append(String.format(
+				"%s %s(val id: String, val parentCompany: Company = null, val status: Status = null) extends %s {",
+				ScalaHelper.KEYWORD_CLASS, NAME_COMPANY, ScalaHelper.KEYWORD_COMPONENT));
+		t.append("\n name(s\"Company $id\")");
+		t.append("\n}");
+		return t.toString();
+	}
+
 	private String generatePerson(DynamicSpecification rootDynamic) {
 		var t = new StringBuilder(200);
-		if (rootDynamic.getSubjectContainer().getSubject().parallelStream().anyMatch(User.class::isInstance)) {
-			t.append("\n");
-			t.append(String.format(
-					"%s %s(val id: String, val company: Company, val location:String, val roles:Role*) extends %s {",
-					ScalaHelper.KEYWORD_CLASS, "Person", ScalaHelper.KEYWORD_COMPONENT));
-			t.append("\n name(s\"Person $id\")\n");
-			t.append(" def hasRole(check: PartialFunction[Role, Boolean]): Boolean = {\n");
-			t.append("  roles.exists(role => check.applyOrElse(role, (role: Role) => false))");
-			t.append("\n}\n");
-			t.append("}\n");
-		}
+		t.append("\n");
+		t.append(String.format(
+				"%s %s(val id: String, val company: Company, val location:String, val roles:Role*) extends %s {",
+				ScalaHelper.KEYWORD_CLASS, "Person", ScalaHelper.KEYWORD_COMPONENT));
+		t.append("\n name(s\"Person $id\")\n");
+		t.append(" def hasRole(check: PartialFunction[Role, Boolean]): Boolean = {\n");
+		t.append("  roles.exists(role => check.applyOrElse(role, (role: Role) => false))");
+		t.append("\n}\n");
+		t.append("}\n");
 		return t.toString();
 	}
 
@@ -224,36 +253,54 @@ public class MainClass {
 
 	}
 
-	private void writePersonalContext(PrintWriter printer, List<LocationContext> locationContexts, List<RoleContext> roleContexts) {
+	private void writePersonalContext(PrintWriter printer, List<LocationContext> locationContexts,
+			List<RoleContext> roleContexts) {
 		var s = new StringBuilder();
 		s.append("\n");
-		s.append("val person = role(\"person\",components.select[Person].filter( x => (");
-		for (LocationContext context : locationContexts) {
-			for (Location location : context.getCurrentLocation().getIncludes()) {
-				s.append("x.location == ");
-				s.append("\"");
-				s.append(location.getEntityName());
-				s.append("\"");
-				s.append(" || ");
+		s.append("val persons = role(\"persons\",components.select[Person].filter( x => ((");
+		if (!locationContexts.isEmpty()) {
+			for (LocationContext context : locationContexts) {
+				generateLocation(s, context.getCurrentLocation());
+				List<Location> list = context.getCurrentLocation().getIncludes().stream()
+						.flatMap(e -> e.getIncludes().stream()).collect(Collectors.toList());
+				for (Location location : list) {
+					generateLocation(s, location);
+				}
 			}
+			s.delete(s.length() - 4, s.length());
+			if (!roleContexts.isEmpty())
+				s.append(") && (");
 		}
-		s.delete(s.length() - 4, s.length());
-		s.append(")))");
+		if (!roleContexts.isEmpty()) {
+
+			for (RoleContext context : roleContexts) {
+				generateRoleCheck(s, context.getRole());
+				List<Role> list = context.getRole().getSubordinateroles().stream()
+						.flatMap(e -> e.getSubordinateroles().stream()).collect(Collectors.toList());
+				for (Role role : list) {
+					generateRoleCheck(s, role);
+				}
+			}
+			s.delete(s.length() - 4, s.length());
+		}
+		s.append("))))");
 		printer.println(s.toString());
 	}
 
-	private void writeRoleContex(StringBuilder writer, List<RoleContext> contexts) {
-		writer.append("\n");
-		writer.append("val location = role(\"companies\",components.select[Person].filter( x => (");
-		for (RoleContext context : contexts) {
-			writer.append("x.name == ");
-			writer.append("\"");
-			writer.append(context.getEntityName());
-			writer.append("\"");
-			writer.append(" || ");
-		}
-		writer.delete(writer.length() - 4, writer.length());
-		writer.append(")))");
+	private void generateRoleCheck(StringBuilder s, Role role) {
+		s.append("x.hasRole{\n\t case ");
+		s.append(ScalaHelper.createIdentifier(role.getEntityName()));
+		s.append("(organisation) => organisation.name == \"Company ");
+		s.append(((RoleContainer) role.eContainer()).getOrganisation().getEntityName());
+		s.append("\"} || ");
+	}
+
+	private void generateLocation(StringBuilder s, Location location) {
+		s.append("x.location == ");
+		s.append("\"");
+		s.append(location.getEntityName());
+		s.append("\"");
+		s.append(" || ");
 	}
 
 	private void writeInternalStateContext(StringBuilder writer, List<InternalStateContext> contexts) {
