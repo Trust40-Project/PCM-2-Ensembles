@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -146,12 +147,13 @@ public class MainClass {
 			writer.append(ScalaHelper.KEYWORD_ENSEMBLE);
 			writer.append("{\n");
 			var listRoles = new ArrayList<String>();
-
+			List<InternalStateContext> listStates = getContexts(e).filter(InternalStateContext.class::isInstance)
+					.map(InternalStateContext.class::cast).collect(Collectors.toList());
 			List<OrganisationContext> listOrganisationContext = getContexts(e)
 					.filter(OrganisationContext.class::isInstance).map(OrganisationContext.class::cast)
 					.collect(Collectors.toList());
 			if (!listOrganisationContext.isEmpty()) {
-				writeOrganisationContext(writer, listOrganisationContext);
+				writeOrganisationContext(writer, listOrganisationContext, listStates);
 				listRoles.add("companies");
 			}
 			List<LocationContext> listLocationContext = getContexts(e).filter(LocationContext.class::isInstance)
@@ -235,19 +237,26 @@ public class MainClass {
 		return t.toString();
 	}
 
-	private void writeOrganisationContext(PrintWriter printer, List<OrganisationContext> contexts) {
+	private void writeOrganisationContext(PrintWriter printer, List<OrganisationContext> contexts,
+			List<InternalStateContext> listStates) {
 		var writer = new StringBuilder();
 		writer.append("\n");
 		writer.append("val companies = role(\"companies\",components.select[Company].filter( x => (");
 		for (OrganisationContext context : contexts) {
-			writer.append("x.name == ");
+			writer.append("(x.name == ");
 			writer.append("\"");
 			writer.append("Company ");
 			writer.append(context.getOrganisation().getEntityName());
 			writer.append("\"");
-			writer.append(" || ");
+			if (!listStates.isEmpty()) {
+				writer.append(listStates.stream().filter(e -> e.getSubject().equals(context.getOrganisation()))
+						.map(e -> String.format("x.status.isInstanceOf[%s]",
+								ScalaHelper.createIdentifier(e.getState().getEntityName() + e.getState().getId())))
+						.collect(Collectors.joining(" && ", " && ", "")));
+			}
+			writer.append(" )|| ");
 		}
-		writer.delete(writer.length() - 4, writer.length());
+		writer.delete(writer.length() - 3, writer.length());
 		writer.append(")))");
 		printer.println(writer.toString());
 
