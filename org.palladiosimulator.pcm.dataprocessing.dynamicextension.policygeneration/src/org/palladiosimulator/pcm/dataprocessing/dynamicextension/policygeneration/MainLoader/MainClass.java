@@ -28,6 +28,7 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.IntegerThresholdContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
@@ -73,6 +74,7 @@ public class MainClass {
 			writer.println(generateStatus(rootData));
 			writer.println(generateCompany(rootDynamic));
 			writer.println(generatePerson(rootDynamic));
+			writer.println(generateFile(rootData));
 			List<String> listEnsembleNames = generateRelatedContexts(rootData, writer);
 			writer.println("  class System extends RootEnsemble {");
 			writer.println(createRootEnsemble(listEnsembleNames));
@@ -82,10 +84,14 @@ public class MainClass {
 
 			writeScenario(writer, rootDynamic.getSubjectContainer().getSubject().parallelStream()
 					.filter(Organisation.class::isInstance).map(Organisation.class::cast).collect(Collectors.toList()));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private String generateFile(DataSpecification rootData) {
+		return "class File(val level: PrivacyLevel) extends  Component";
 	}
 
 	private String createRootEnsemble(List<String> listEnsembleNames) {
@@ -162,6 +168,10 @@ public class MainClass {
 					.map(RoleContext.class::cast).collect(Collectors.toList());
 			if (!listLocationContext.isEmpty() || !listRolesContext.isEmpty())
 				writePersonalContext(writer, listLocationContext, listRolesContext);
+			List<PrivacyLevelContext> listPrivacyContext = getContexts(e).filter(PrivacyLevelContext.class::isInstance)
+					.map(PrivacyLevelContext.class::cast).collect(Collectors.toList());
+			if (!listPrivacyContext.isEmpty())
+				writePrivacyContext(writer, listPrivacyContext);
 			if (listRoles.size() == 1) {
 				writer.println(writeAllow(tmp, listRoles.get(0), listRoles.get(0)));
 			}
@@ -169,6 +179,14 @@ public class MainClass {
 
 		});
 		return list;
+	}
+
+	private void writePrivacyContext(PrintWriter writer, List<PrivacyLevelContext> listPrivacyContext) {
+		writer.println(listPrivacyContext.stream()
+				.map(e -> String.format("x.level == PrivacyLevel.%s", e.getLevel().getEntityName()))
+				.collect(Collectors.joining(" || ",
+						"val levels = role(\"levels\", components.select[File].filter ( x => (", ")))")));
+
 	}
 
 	private Stream<Context> getContexts(RelatedCharacteristics e) {
