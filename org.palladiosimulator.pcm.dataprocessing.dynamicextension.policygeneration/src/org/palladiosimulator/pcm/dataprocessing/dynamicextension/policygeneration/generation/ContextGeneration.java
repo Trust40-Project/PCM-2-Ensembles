@@ -3,7 +3,6 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygenerati
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +22,8 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ShiftCo
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.util.ScalaHelper;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Location;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Role;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.RoleContainer;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.subject.Organisation;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.subject.Resource;
 
 public class ContextGeneration {
 	private DataSpecification dataContainer;
@@ -54,7 +54,8 @@ public class ContextGeneration {
 			List<OrganisationContext> listOrganisationContext = getContexts(e)
 					.filter(OrganisationContext.class::isInstance).map(OrganisationContext.class::cast)
 					.collect(Collectors.toList());
-			if (!listOrganisationContext.isEmpty()) {
+//			List<ShiftContext> listShiftsContext = getContexts(e).filter(ShiftContext.class::isInstance).map(ShiftContext.class::cast).collect(Collectors.toList());
+			if (!listStates.isEmpty()) {
 				writeOrganisationContext(writer, listOrganisationContext, listStates);
 				listRoles.add("companies");
 			}
@@ -63,13 +64,21 @@ public class ContextGeneration {
 			List<RoleContext> listRolesContext = getContexts(e).filter(RoleContext.class::isInstance)
 					.map(RoleContext.class::cast).collect(Collectors.toList());
 			if (!listLocationContext.isEmpty() || !listRolesContext.isEmpty())
-				writePersonalContext(writer, listLocationContext, listRolesContext);
+				writePersonalContext(writer, listLocationContext, listRolesContext, listOrganisationContext);
+			if (!listRolesContext.isEmpty())
+				listRoles.add("persons");
+			writeCPSContext(writer, listStates);
 			List<PrivacyLevelContext> listPrivacyContext = getContexts(e).filter(PrivacyLevelContext.class::isInstance)
 					.map(PrivacyLevelContext.class::cast).collect(Collectors.toList());
-			if (!listPrivacyContext.isEmpty())
+			if (!listPrivacyContext.isEmpty()) {
 				writePrivacyContext(writer, listPrivacyContext);
-			if (listRoles.size() == 1) {
-				writer.println(writeAllow(tmp, listRoles.get(0), listRoles.get(0)));
+			}
+			if (listRoles.size() >= 1) {
+				if (listPrivacyContext.isEmpty())
+					writer.println(writeAllow(tmp, listRoles.get(0), listRoles.get(0)));
+				else
+					writer.println(writeAllow(tmp, listRoles.get(0), listRoles.get(0),
+							listPrivacyContext.get(0).getLevel().getEntityName()));
 			}
 			writer.append("\n}\n");
 
@@ -90,43 +99,50 @@ public class ContextGeneration {
 				.map(ContextCharacteristic.class::cast).flatMap(i -> i.getContext().stream());
 	}
 
-	private String writeAllow(String nameAction, String... variableNames) {
-		var t = new StringBuilder(variableNames.length * 20);
+	private String writeAllow(String nameAction, String variableName, String varbiableName2) {
+		return writeAllow(nameAction, variableName, varbiableName2, null);
+	}
+
+	private String writeAllow(String nameAction, String variableName, String variableName2, String privacyLevel) {
+		var t = new StringBuilder();
 		t.append("allow(");
-		t.append(Arrays.stream(variableNames).collect(Collectors.joining(",")));
+		t.append(String.format("%s,%s", variableName, variableName));
 		t.append(",\"");
 		t.append(nameAction);
-		t.append("\")");
+		t.append("\"");
+		t.append(privacyLevel == null ? "" : String.format(", PrivacyLevel.%s", privacyLevel));
+		t.append(")");
 		return t.toString();
+	}
+
+	private void writeCPSContext(PrintWriter writer, List<InternalStateContext> listStates) {
+		List<InternalStateContext> relevant = listStates.stream().filter(e -> Resource.class.isInstance(e.getSubject()))
+				.collect(Collectors.toList());
+		if (relevant.isEmpty())
+			return;
+		writer.println(String.format(
+				"val machines = role (\"machines\", components.select[Machine].filter( x => (x.name == \"%s\" &&  x.status.isInstanceOf[%s])))",
+				ScalaHelper.createIdentifier(relevant.get(0).getSubject().getEntityName()),
+				ScalaHelper.createIdentifier(
+						relevant.get(0).getState().getEntityName() + relevant.get(0).getState().getId())));
+
 	}
 
 	private void writeOrganisationContext(PrintWriter printer, List<OrganisationContext> contexts,
 			List<InternalStateContext> listStates) {
-		var writer = new StringBuilder();
-		writer.append("\n");
-		writer.append("val companies = role(\"companies\",components.select[Company].filter( x => (");
-		for (OrganisationContext context : contexts) {
-			writer.append("(x.name == ");
-			writer.append("\"");
-			writer.append("Company ");
-			writer.append(context.getOrganisation().getEntityName());
-			writer.append("\"");
-			if (!listStates.isEmpty()) {
-				writer.append(listStates.stream().filter(e -> e.getSubject().equals(context.getOrganisation()))
-						.map(e -> String.format("x.status.isInstanceOf[%s]",
-								ScalaHelper.createIdentifier(e.getState().getEntityName() + e.getState().getId())))
-						.collect(Collectors.joining(" && ", " && ", "")));
-			}
-			writer.append(" )|| ");
-		}
-		writer.delete(writer.length() - 3, writer.length());
-		writer.append(")))");
-		printer.println(writer.toString());
+		printer.println(listStates.stream().filter(e -> Organisation.class.isInstance(e.getSubject()))
+				.map(e -> String.format("(x.name == \"Company %s\" && x.status.isInstanceOf[%s])",
+						e.getSubject().getEntityName(),
+						ScalaHelper.createIdentifier(e.getState().getEntityName() + e.getState().getId())))
+				.collect(Collectors.joining(" || ",
+						"val companies = role(\"companies\",components.select[Company].filter( x => (", ")))")));
+
+		
 
 	}
 
 	private void writePersonalContext(PrintWriter printer, List<LocationContext> locationContexts,
-			List<RoleContext> roleContexts) {
+			List<RoleContext> roleContexts, List<OrganisationContext> listOrganisationContexts) {
 		var s = new StringBuilder();
 		s.append("\n");
 		s.append("val persons = role(\"persons\",components.select[Person].filter( x => ((");
@@ -147,24 +163,31 @@ public class ContextGeneration {
 
 			for (RoleContext context : roleContexts) {
 				generateRoleCheck(s, context.getRole());
-				List<Role> list = context.getRole().getSubordinateroles().stream()
-						.flatMap(e -> e.getSubordinateroles().stream()).collect(Collectors.toList());
-				for (Role role : list) {
-					generateRoleCheck(s, role);
-				}
+				context.getRole().getSubordinateroles().stream().flatMap(e -> e.getSubordinateroles().stream())
+						.forEach(role -> generateRoleCheck(s, role));
 			}
 			s.delete(s.length() - 4, s.length());
+			if (!listOrganisationContexts.isEmpty())
+				s.append(") && (");
 		}
-		s.append("))))");
+		if (!listOrganisationContexts.isEmpty()) {
+			s.append(listOrganisationContexts.stream()
+					.map(e -> String.format("x.company.name == \"Company %s\"", e.getOrganisation().getEntityName()))
+					.collect(Collectors.joining(" || ", "", ") || ")));
+			s.delete(s.length() - 4, s.length());
+		}
+		s.append(")))");
 		printer.println(s.toString());
 	}
 
 	private void generateRoleCheck(StringBuilder s, Role role) {
-		s.append("x.hasRole{\n\t case ");
-		s.append(ScalaHelper.createIdentifier(role.getEntityName()));
-		s.append("(organisation) => organisation.name == \"Company ");
-		s.append(((RoleContainer) role.eContainer()).getOrganisation().getEntityName());
-		s.append("\"} || ");
+		s.append(String.format("(x.roles.exists( k => k.isInstanceOf[%s])) || ",
+				ScalaHelper.createIdentifier(role.getEntityName())));
+//		s.append("x.hasRole{\n\t case ");
+//		s.append(ScalaHelper.createIdentifier(role.getEntityName()));
+//		s.append("(organisation) => organisation.name == \"Company ");
+//		s.append(((RoleContainer) role.eContainer()).getOrganisation().getEntityName());
+//		s.append("\"} || ");
 	}
 
 	private void generateLocation(StringBuilder s, Location location) {
@@ -175,8 +198,20 @@ public class ContextGeneration {
 		s.append(" || ");
 	}
 
-	private void writeShiftContext(StringBuilder writer, List<ShiftContext> contexts) {
-
+	private void writeShiftContext(PrintWriter printer, List<ShiftContext> contexts) {
+		var writer = new StringBuilder();
+		writer.append("\n");
+		writer.append("val shifts = role(\"companies\",components.select[Shift].filter( x => (");
+		for (ShiftContext context : contexts) {
+			writer.append("(x.name == ");
+			writer.append("\"");
+			writer.append(context.getEntityName());
+			writer.append("\"");
+			writer.append(" )|| ");
+		}
+		writer.delete(writer.length() - 3, writer.length());
+		writer.append(")))");
+		printer.println(writer.toString());
 	}
 
 	private void writeThresholdContext(StringBuilder writer, List<IntegerThresholdContext> contexts) {

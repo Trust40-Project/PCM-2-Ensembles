@@ -3,7 +3,11 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygenerati
 import org.eclipse.emf.codegen.util.CodeGenUtil;
 
 
-
+/**
+ * Helper Class for creating Scala 
+ * @author majuwa
+ *
+ */
 public class ScalaHelper {
 	public final static String KEYWORD_CLASS = "class";
 	public final static String KEYWORD_VAL = "val";
@@ -25,6 +29,11 @@ public class ScalaHelper {
 	private ScalaHelper() {
 		
 	}
+	/**
+	 * Creates an correct Java Identifier
+	 * @param s
+	 * @return {@link String} with Java Identifier
+	 */
 	public static String createIdentifier(String s) {
 		if(s== null)
 			throw new NullPointerException("Tried to create identifier from null");
