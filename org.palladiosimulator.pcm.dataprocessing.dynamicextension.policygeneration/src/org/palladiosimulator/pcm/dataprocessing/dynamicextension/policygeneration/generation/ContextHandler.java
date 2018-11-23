@@ -19,13 +19,14 @@ public class ContextHandler {
 		var modelloader = new ModelLoader(pathDynamic, pathData);
 		this.dataContainer = modelloader.loadDataSpecification();
 		this.dynamicContainer = modelloader.loadDynamicModel();
+
 	}
 
 	public void createContext() {
 		var typeDefinition =  new TypeDefinition();
 		var contextGeneration = new ContextGeneration(dataContainer,dynamicContainer);
 		var scenarioDefinition = new ScenarioDefinition();
-		try (var writer = new PrintWriter(new File("/home/majuwa/kit/Trust4.0/Software/source/icsa2019-ensembles/src/main/scala/scenarios/RunningExample.scala"), Charset.forName("UTF-8"))) {
+		try (var writer = new PrintWriter(new File("/home/majuwa/out.scala"), Charset.forName("UTF-8"))) {
 			typeDefinition.createTypes(dynamicContainer, dataContainer, writer);
 			List<String> listEnsembleNames = contextGeneration.generateRelatedContexts(dataContainer, writer);
 			typeDefinition.createRootEnsemble(writer, listEnsembleNames);

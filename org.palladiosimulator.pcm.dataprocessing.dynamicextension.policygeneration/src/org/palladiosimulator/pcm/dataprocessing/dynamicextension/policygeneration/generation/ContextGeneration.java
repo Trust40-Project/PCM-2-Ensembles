@@ -40,7 +40,7 @@ public class ContextGeneration {
 		rootData.getRelatedCharacteristics().stream().forEach(e -> {
 			writer.append("class ");
 			String tmp = ScalaHelper
-					.createIdentifier(e.getRelatedEntity().getEntityName() + e.getRelatedEntity().getId());
+					.createIdentifier(e.getRelatedEntity().getEntityName() + e.getId());
 			writer.append(tmp);
 			list.add(tmp);
 			writer.append("() ");
@@ -212,10 +212,6 @@ public class ContextGeneration {
 		writer.delete(writer.length() - 3, writer.length());
 		writer.append(")))");
 		printer.println(writer.toString());
-	}
-
-	private void writeThresholdContext(StringBuilder writer, List<IntegerThresholdContext> contexts) {
-
 	}
 
 	/**
