@@ -14,6 +14,7 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneratio
 
 /**
  * Generation of the type defintion of the ensembles
+ * 
  * @author majuwa
  *
  */
@@ -48,8 +49,7 @@ public class TypeDefinition {
 		writer.println(generateCompany(rootDynamic));
 		writer.println(generatePerson(rootDynamic));
 		writer.println(generateFile());
-		if (!rootDynamic.getHelperContainer().getShiftcontainer().isEmpty())
-			writer.println(generateShift());
+		writer.println(generateShift());
 	}
 
 	private String generateRootEnsemble(List<String> listEnsembleNames) {
@@ -57,13 +57,23 @@ public class TypeDefinition {
 		for (String ensembleName : listEnsembleNames) {
 			builder.append(ScalaHelper.KEYWORD_VAL);
 			builder.append(" ");
-			builder.append(ensembleName.toLowerCase());
+			if (ensembleName.endsWith("-S"))
+				builder.append(ensembleName.toLowerCase().substring(0, ensembleName.length() - 2));
+			else
+				builder.append(ensembleName.toLowerCase());
 			builder.append(" = ");
 			builder.append("ensembles");
 			builder.append("(\n");
-			builder.append("new ");
-			builder.append(ensembleName);
-			builder.append("\n)\n");
+			if (ensembleName.endsWith("-S")) {
+				builder.append("components.collect{case shift: Shift => shift}.map(");
+				builder.append("new ");
+				builder.append(ensembleName.substring(0, ensembleName.length() - 2));
+				builder.append("(_))\n)\n");
+			} else {
+				builder.append("new ");
+				builder.append(ensembleName);
+				builder.append("\n)\n");
+			}
 
 		}
 		return builder.toString();
@@ -88,10 +98,10 @@ public class TypeDefinition {
 		var t = new StringBuilder(200);
 		t.append("\n");
 		t.append(String.format(
-				"%s %s(val id: String, val company: Company, val location:String, val roles:Role*) extends %s {",
+				"%s %s(val id: String, val company: Company, val location:String, val shift: Shift, val roles:Role*) extends %s {",
 				ScalaHelper.KEYWORD_CLASS, "Person", ScalaHelper.KEYWORD_COMPONENT));
 		t.append("\n name(s\"Person $id\")\n");
-		//not necessary for the current stand of the implementation of contexts
+		// not necessary for the current stand of the implementation of contexts
 //		t.append(" def hasRole(check: PartialFunction[Role, Boolean]): Boolean = {\n");
 //		t.append("  roles.exists(role => check.applyOrElse(role, (role: Role) => false))");
 //		t.append("\n}\n");
@@ -110,7 +120,7 @@ public class TypeDefinition {
 	}
 
 	private String generateShift() {
-		return "class Shift(val name: String) extends Component";
+		return "class Shift(val nameNew: String) extends Component{name(s\"$nameNew\")}";
 	}
 
 	private String generateStatus(DataSpecification rootData) {
