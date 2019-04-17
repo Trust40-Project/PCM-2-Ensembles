@@ -3,11 +3,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygenerati
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.generation.ContextHandler;
-import org.eclipse.jface.dialogs.MessageDialog;
 
 public class SampleHandler extends AbstractHandler {
 	private static final String PATH_DYNAMIC = "/home/majuwa/git/Trust4.0/UC-Combined/uc-combined.dynamicextension";

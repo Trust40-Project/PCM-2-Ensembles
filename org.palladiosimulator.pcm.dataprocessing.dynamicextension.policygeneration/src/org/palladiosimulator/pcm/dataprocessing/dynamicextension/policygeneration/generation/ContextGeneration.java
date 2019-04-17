@@ -12,7 +12,6 @@ import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.R
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.IntegerThresholdContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
