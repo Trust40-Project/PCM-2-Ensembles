@@ -1,4 +1,4 @@
-package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.util;
+package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.util;
 
 import java.io.File;
 import java.io.IOException;

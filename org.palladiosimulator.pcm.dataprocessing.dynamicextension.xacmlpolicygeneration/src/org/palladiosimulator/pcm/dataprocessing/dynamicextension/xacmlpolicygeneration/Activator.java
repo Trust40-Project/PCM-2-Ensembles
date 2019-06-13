@@ -1,4 +1,4 @@
-package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration;
+package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

@@ -1,4 +1,4 @@
-package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.util;
+package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.util;
 
 import org.eclipse.emf.codegen.util.CodeGenUtil;
 

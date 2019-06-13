@@ -1,4 +1,4 @@
-package org.palladiosimulator.pcm.dataprocessing.dynamicextension.policygeneration.MainLoader;
+package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader;
 
 import java.util.Map;
 
@@ -19,8 +19,8 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.Dynamicextensio
  *
  */
 public class ModelLoader {
-	private String pathDynamic = "/home/majuwa/git/Trust4.0/UC-Combined/uc-combined.dynamicextension";
-	private String pathDataprocessing = "/home/majuwa/git/Trust4.0/UC-Combined/uc-combined.dataprocessing";
+	private String pathDynamic;
+	private String pathDataprocessing;
 	private ResourceSet resourceSet;
 	private Registry resourceRegistry;
 
