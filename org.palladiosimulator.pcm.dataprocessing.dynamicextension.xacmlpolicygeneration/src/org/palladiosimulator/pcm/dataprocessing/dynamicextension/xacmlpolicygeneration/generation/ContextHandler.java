@@ -43,10 +43,11 @@ public class ContextHandler {
 		ContextHandler ch = new ContextHandler(PATH_DYNAMIC, PATH_DATA);
 		var contextGeneration = new ContextGeneration(ch.dataContainer, ch.dynamicContainer);
 		var characteristicToAttributeMap = getAttributeMap(contextGeneration.getRelatedRoleContexts(ch.dataContainer));
-		
+		StringEqualityWriter sew = new StringEqualityWriter(characteristicToAttributeMap);
+		sew.write();
 	}
 	
-	private static HashMap<RelatedCharacteristics, Attribute> getAttributeMap(Map<RelatedCharacteristics, Role> characteristicToRoleMap) {
+	private static Map<RelatedCharacteristics, Attribute> getAttributeMap(Map<RelatedCharacteristics, Role> characteristicToRoleMap) {
 		var characteristicToAttributeMap = new HashMap<RelatedCharacteristics, Attribute>();
 		for (var entry : characteristicToRoleMap.entrySet()) {
 			final Identifier categoryId = XACML3.ID_ATTRIBUTE_CATEGORY_RESOURCE; //TODO noch schauen ob das so passt
@@ -56,24 +57,6 @@ public class ContextHandler {
 			characteristicToAttributeMap.put(entry.getKey(), attribute);
 		}
 		return characteristicToAttributeMap;
-	}
-
-	public void createContext() {
-		//var typeDefinition =  new TypeDefinition();
-		//var contextGeneration = new ContextGeneration(dataContainer,dynamicContainer);
-		//var scenarioDefinition = new ScenarioDefinition();
-		try (var writer = new PrintWriter(new File("/home/majuwa/out.scala"), Charset.forName("UTF-8"))) {
-			//typeDefinition.createTypes(dynamicContainer, dataContainer, writer);
-			//List<String> listEnsembleNames = contextGeneration.generateRelatedContexts(dataContainer, writer);
-			//typeDefinition.createRootEnsemble(writer, listEnsembleNames);
-
-			/*scenarioDefinition.writeScenario(writer, dynamicContainer.getSubjectContainer().getSubject().parallelStream()
-					.filter(Organisation.class::isInstance).map(Organisation.class::cast).collect(Collectors.toList()));*/
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
 	}
 
 }

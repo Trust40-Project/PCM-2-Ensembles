@@ -15,7 +15,7 @@ public class SampleHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		var x = new ContextHandler(PATH_DYNAMIC, PATH_DATA);
-		x.createContext();
+		//x.createContext();
 		return null;
 	}
 }
