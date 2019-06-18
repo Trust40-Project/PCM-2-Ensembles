@@ -1,12 +1,15 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 
-import com.att.research.xacml.api.Attribute;
-import com.att.research.xacml.api.AttributeValue;
 import com.att.research.xacml.api.XACML3;
 import com.att.research.xacml.util.XACMLPolicyWriter;
 
@@ -16,43 +19,41 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeDesignatorType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeValueType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.EffectType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
+import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.RuleType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
 
 public class StringEqualityWriter {
-	private Map<RelatedCharacteristics, Attribute> attributeMap;
+	public static final String ID_ENTITY = "entity:id";
+	public static final String ID_CATEGORY_ACTION = XACML3.ID_ATTRIBUTE_CATEGORY_ACTION.stringValue();
+	public static final String ID_CATEGORY_SUBJECT = XACML3.ID_SUBJECT_CATEGORY_ACCESS_SUBJECT.stringValue(); 
+	//TODO frage wie werden ressourcen behandelt?
 	
-	public StringEqualityWriter(Map<RelatedCharacteristics, Attribute> attributeMap) {
+	private Map<RelatedCharacteristics, String> attributeMap;
+	private String attributeId;
+	
+	public StringEqualityWriter(final Map<RelatedCharacteristics, String> attributeMap, final String attributeId) {
 		this.attributeMap = attributeMap;
+		this.attributeId = attributeId;
 	}
 	
-	public void write() { //TODO rueckgabe bzw. write to file
+	public void write() {
+		final List<PolicyType> policies = new ArrayList<>();
 		int index = 0;
 		for (var entry : attributeMap.entrySet()) {
-			// Attribute value
-			final AttributeValueType attributeValue = new AttributeValueType();
-			final AttributeValue<?> attrValue = entry.getValue().getValues().iterator().next();
-			final Object value = attrValue.getValue();
-			attributeValue.getContent().add(value);
-			attributeValue.setDataType(attrValue.getDataTypeId().stringValue());
+			// Match entity ID (rel. char. ID)
+			final String entityId = entry.getKey().getId();
+			final MatchType matchId = createMatchType(ID_CATEGORY_ACTION, ID_ENTITY, entityId);
 			
-			// Attribute designator
-			final AttributeDesignatorType attributeDesignator = new AttributeDesignatorType();
-			attributeDesignator.setAttributeId(entry.getValue().getAttributeId().stringValue());
-			attributeDesignator.setCategory(entry.getValue().getCategory().stringValue());
-			attributeDesignator.setDataType(attrValue.getDataTypeId().stringValue());
-			attributeDesignator.setMustBePresent(true);
-			
-			// Match
-			final MatchType match = new MatchType();
-			match.setAttributeValue(attributeValue);
-			match.setAttributeDesignator(attributeDesignator);
-			match.setMatchId(XACML3.ID_FUNCTION_STRING_EQUAL.stringValue());
+			// Match Role
+			final String attributeValue = entry.getValue();
+			final MatchType matchRole = createMatchType(ID_CATEGORY_SUBJECT, this.attributeId, attributeValue);
 			
 			// AllOf
 			final AllOfType allOf = new AllOfType();
-			allOf.getMatch().add(match);
+			allOf.getMatch().add(matchId);
+			allOf.getMatch().add(matchRole);
 			
 			// AnyOf
 			final AnyOfType anyOf = new AnyOfType();
@@ -69,22 +70,67 @@ public class StringEqualityWriter {
 			rule.setRuleId("roletest:" + index);
 			rule.setEffect(EffectType.PERMIT);
 			
+			// deny if not applicable rule
+			final RuleType ruleDenyIfNotApplicable = new RuleType();
+			ruleDenyIfNotApplicable.setDescription("this rule denies if this case is not applicable");
+			ruleDenyIfNotApplicable.setTarget(new TargetType());
+			ruleDenyIfNotApplicable.setRuleId("denyIfNotApplicable");
+			ruleDenyIfNotApplicable.setEffect(EffectType.DENY);
+			
 			// Policy
+			final String entityName = entry.getKey().getEntityName();
 			final PolicyType policy = new PolicyType();
-			policy.setDescription("Role check policy");
+			policy.setDescription("Role check policy for " + entityName);
 			policy.setTarget(new TargetType());
 			policy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(rule);
-			policy.setPolicyId("roletest:policy:" + index);
+			policy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(ruleDenyIfNotApplicable);
+			policy.setPolicyId(entityName);
 			policy.setVersion("1.0");
-			policy.setRuleCombiningAlgId(XACML3.ID_POLICY_DENY_OVERRIDES.stringValue());
+			policy.setRuleCombiningAlgId(XACML3.ID_RULE_PERMIT_OVERRIDES.stringValue());
 			
-			//TODO relating with characteristic, i.e. action/resource in policy
+			// test write single policy
+			final Path filenameSinglePolicy = Path.of("/home/jojo/Schreibtisch/KIT/Bachelorarbeit/out" + index + ".xml");
+			XACMLPolicyWriter.writePolicyFile(filenameSinglePolicy, policy);
 			
-			//TODO not direct write, but creating policy set
-			final Path filename = Path.of("/home/jojo/Schreibtisch/KIT/Bachelorarbeit/out" + index + ".xml");
-			XACMLPolicyWriter.writePolicyFile(filename, policy);
-			
+			policies.add(policy);
 			index++;
 		}
+		
+		// PolicySet
+		final PolicySetType policySet = new PolicySetType();
+		policySet.setDescription("all policies combined");
+		policySet.setPolicySetId("completePolicySet");
+		policySet.setTarget(new TargetType());
+		for (final PolicyType policy : policies) {
+			QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);
+			policySet.getPolicySetOrPolicyOrPolicySetIdReference().add(new JAXBElement<PolicyType>(qname , PolicyType.class, policy));
+		}
+		policySet.setVersion("1.0");
+		policySet.setPolicyCombiningAlgId(XACML3.ID_POLICY_PERMIT_OVERRIDES.stringValue());
+		
+		// test write policySet
+		final Path filenamePolicySet = Path.of("/home/jojo/Schreibtisch/KIT/Bachelorarbeit/outSet.xml");
+		XACMLPolicyWriter.writePolicyFile(filenamePolicySet, policySet);
+	}
+	
+	private MatchType createMatchType(final String categoryId, final String attributeId, final String attributeValueStr) {
+		// Attribute value
+		final AttributeValueType attributeValue = new AttributeValueType();
+		attributeValue.getContent().add(attributeValueStr);
+		attributeValue.setDataType(XACML3.ID_DATATYPE_STRING.stringValue());
+					
+		// Attribute designator
+		final AttributeDesignatorType attributeDesignator = new AttributeDesignatorType();
+		attributeDesignator.setAttributeId(attributeId);
+		attributeDesignator.setCategory(categoryId);
+		attributeDesignator.setDataType(XACML3.ID_DATATYPE_STRING.stringValue());
+		attributeDesignator.setMustBePresent(false);
+					
+		// Match
+		final MatchType match = new MatchType();
+		match.setAttributeValue(attributeValue);
+		match.setAttributeDesignator(attributeDesignator);
+		match.setMatchId(XACML3.ID_FUNCTION_STRING_EQUAL.stringValue());
+		return match;
 	}
 }
