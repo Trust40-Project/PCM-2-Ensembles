@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.feature_1.0.0.qualifier.jar" id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.feature" version="1.0.0.qualifier">
+      <category name="xacmlpolicygeneration"/>
+   </feature>
+   <feature id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.feature.source" version="1.0.0.qualifier">
+      <category name="xacmlpolicygeneration"/>
+   </feature>
+   <category-def name="xacmlpolicygeneration" label="xacmlpolicygeneration">
+      <description>
+	<!-- TODO add a category description for the update site and make the label above nicer -->
+      </description>
+   </category-def>
+</site>

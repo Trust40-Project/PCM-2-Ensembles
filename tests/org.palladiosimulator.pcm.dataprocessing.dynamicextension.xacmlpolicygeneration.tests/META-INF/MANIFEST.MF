@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration;bundle-version="0.0.0"

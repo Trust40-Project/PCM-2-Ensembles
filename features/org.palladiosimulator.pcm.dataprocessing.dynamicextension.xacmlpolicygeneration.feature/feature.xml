@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.feature"
+      label="xacmlpolicygeneration"
+      version="1.0.0.qualifier"
+      provider-name="SDQ">
+   <description url="http://www.example.com/description">
+      [TODO Enter Feature Description here.]
+   </description>
+   <copyright url="http://www.example.com/copyright">
+      [TODO Enter Copyright Description here.]
+   </copyright>
+   <license url="http://www.example.com/license">
+      [TODO Enter License Description here.]
+   </license>
+   <!-- TODO add dependencies to other features here -->
+   <!--<requires>
+      <import plugin="com.google.guava"/>
+      <import feature="org.eclipse.xtend.source"/>
+   </requires>-->
+   <plugin
+         id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <!-- TODO add further plug-ins here -->
+</feature>
