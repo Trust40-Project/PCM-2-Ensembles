@@ -26,6 +26,6 @@
 	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML-PDP/target/xacml-pdp-1.0.2-SNAPSHOT.jar" sourcepath="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML-PDP/target/xacml-pdp-1.0.2-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/guava-28.0-jre.jar"/>
 	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/guava-gwt-28.0-jre.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML/target/xacml-1.0.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML/target/xacml-1.0.2-SNAPSHOT.jar" sourcepath="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML/target/xacml-1.0.2-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -10,8 +10,10 @@
   <artifactId>org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.main</artifactId>
   <packaging>pom</packaging>
   <modules>
-    <module>releng/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.aggregator</module>
-    <module>releng/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.updatesite</module>
-    <module>releng/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.updatesite.aggregated</module>
+  	<module>bundles</module>
+    	<module>releng/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.aggregator</module>
+    	<module>releng/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.updatesite</module>
+    	<module>releng/org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.updatesite.aggregated</module>
+	<module>releng/targetplatform/</module>
   </modules>
 </project>

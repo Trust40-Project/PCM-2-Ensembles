@@ -11,4 +11,7 @@
 	<artifactId>org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.bundles</artifactId>
 	<packaging>pom</packaging>
 	<name>xacmlpolicygeneration Bundle Modules</name>
+ 	<modules>
+ 		<module>org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration</module>
+ 	</modules>
 </project>

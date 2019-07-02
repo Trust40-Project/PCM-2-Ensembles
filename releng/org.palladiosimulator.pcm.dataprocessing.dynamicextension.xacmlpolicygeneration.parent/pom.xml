@@ -30,14 +30,21 @@
     <repository>
       <id>KIT SDQ</id>
       <layout>p2</layout>
-      <url>http://sdqbuild.ipd.kit.edu/nexus/content/repositories/kit-sdq-nightly</url>
+      <url>https://kit-sdq.github.io/updatesite/nightly/</url>
     </repository>
-    
     <repository>
       <id>ATT XACML</id>
       <url>https://repo1.maven.org/maven2/</url>
     </repository>
   </repositories>
+  <dependencies>
+  	<dependency>
+  		<groupId>com.att.research.xacml</groupId>
+    	<artifactId>att-xacml</artifactId>
+    	<version>2.0.1</version>
+    	<type>pom</type>
+  	</dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -89,7 +96,7 @@
           </environments>
         </configuration>
       </plugin>
-      <!-- Compiles Xtend code -->
+      <!-- Compiles Xtend code 
       <plugin>
 	<groupId>org.eclipse.xtend</groupId>
 	<artifactId>xtend-maven-plugin</artifactId>
@@ -106,7 +113,7 @@
 		</execution>
 	</executions>
       </plugin>
-      <!-- Cleans the xtend-gen folder -->
+      <- Cleans the xtend-gen folder 
       <plugin>
 	      <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-clean-plugin</artifactId>
@@ -127,7 +134,7 @@
 			      </configuration>
 		      </execution>
 	      </executions>
-      </plugin>
+      </plugin>-->
       <!-- Creates source versions of bundles -->
       <plugin>
 	      <groupId>org.eclipse.tycho</groupId>

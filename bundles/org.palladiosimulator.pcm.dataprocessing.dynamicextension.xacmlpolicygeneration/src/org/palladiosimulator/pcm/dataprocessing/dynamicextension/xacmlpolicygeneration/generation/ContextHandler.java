@@ -1,64 +1,43 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
-import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
 
-import com.att.research.xacml.api.Request;
-import com.att.research.xacml.api.XACML3;
-import com.att.research.xacml.api.pdp.PDPEngine;
-import com.att.research.xacml.api.pdp.PDPEngineFactory;
-import com.att.research.xacml.api.pdp.PDPException;
-import com.att.research.xacml.std.dom.DOMRequest;
-import com.att.research.xacml.std.dom.DOMStructureException;
-import com.att.research.xacml.util.FactoryException;
+import com.att.research.xacml.util.XACMLPolicyWriter;
 
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Role;
+import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
+import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
 
 public class ContextHandler {
 	private DataSpecification dataContainer;
-	private DynamicSpecification dynamicContainer;
+	private DynamicSpecification dynamicContainer; //TODO frage: wofuer wird der benoetigt?
 
-	public ContextHandler(String pathDynamic, String pathData) {
+	public ContextHandler(final String pathDynamic, final String pathData) {
 		var modelloader = new ModelLoader(pathDynamic, pathData);
 		this.dataContainer = modelloader.loadDataSpecification();
 		this.dynamicContainer = modelloader.loadDynamicModel();
 	}
-	
-	private static final String PATH_DYNAMIC = "/home/jojo/Schreibtisch/KIT/Bachelorarbeit/models/UseCasesTechnicalReport/UC-Combined/uc-combined.dynamicextension";
-	private static final String PATH_DATA = "/home/jojo/Schreibtisch/KIT/Bachelorarbeit/models/UseCasesTechnicalReport/UC-Combined/uc-combined.dataprocessing";
-	
-	public static void main(String[] args) throws IOException, DOMStructureException, FactoryException, PDPException {
-		ContextHandler ch = new ContextHandler(PATH_DYNAMIC, PATH_DATA);
-		var contextGeneration = new ContextGeneration(ch.dataContainer, ch.dynamicContainer);
-		var characteristicToAttributeMap = getAttributeMap(contextGeneration.getRelatedRoleContexts(ch.dataContainer));
-		StringEqualityWriter sew = new StringEqualityWriter(characteristicToAttributeMap, XACML3.ID_SUBJECT_ROLE.stringValue());
-		sew.write();
-		
-		// Request-Test
-		testRequest();
-	}
-	
-	private static Map<RelatedCharacteristics, String> getAttributeMap(Map<RelatedCharacteristics, Role> characteristicToRoleMap) {
-		var characteristicToAttributeMap = new HashMap<RelatedCharacteristics, String>();
-		for (var entry : characteristicToRoleMap.entrySet()) {
-			final String attributeValue = entry.getValue().getEntityName();
-			characteristicToAttributeMap.put(entry.getKey(), attributeValue);
-		}
-		return characteristicToAttributeMap;
-	}
-	
-	private static void testRequest() throws DOMStructureException, FactoryException, PDPException {
-		Request request =  DOMRequest.load(new File("/home/jojo/Schreibtisch/KIT/Bachelorarbeit/test.xml"));
-		
-		PDPEngine pdp = PDPEngineFactory.newInstance().newEngine();
-		System.out.println(pdp.decide(request));
-	}
 
+	public void createContext() throws IOException {
+		final List<PolicyType> policies = new ArrayList<>();
+		this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
+			var matchExtractor = new MatchExtractor(e);
+			final Policy policy = new Policy(matchExtractor.getMatches());
+			policies.add(policy.getPolicyType());
+		});
+		final PolicySetType policySet = new PolicySet(policies).getPolicySet(); 
+		
+		// test write policySet
+		final Path filenamePolicySet = Path.of(SampleHandler.PATH_PREFIX + "outSet.xml");
+		XACMLPolicyWriter.writePolicyFile(filenamePolicySet, policySet);
+	}
+	
+	
 }

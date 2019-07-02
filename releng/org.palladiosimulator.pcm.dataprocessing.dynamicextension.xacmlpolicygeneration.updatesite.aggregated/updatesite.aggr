@@ -6,16 +6,16 @@
     </contributions>
     <contributions label="externals">
       <!-- TODO replace the feature dependencies with those of your plug-ins that you want to make explicit -->
-      <!-- example for an Eclipse project dependency: -->
+      <!-- example for an Eclipse project dependency: 
       <repositories location="http://sdqbuild.ipd.kit.edu/nexus/content/groups/eclipse-oxygen-complete/" mirrorArtifacts="false">
         <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.10.0"/>
-      </repositories>
+      </repositories>-->
       <!-- example for a dependency to another update site: -->
       <repositories location="https://repo1.maven.org/maven2/" mirrorArtifacts="false">
         <features name="com.att.research.xacml" versionRange="1.0.0"/>
       </repositories>
-      <repositories location="https://sdqbuild.ipd.kit.edu/nexus/content/repositories/kit-sdq-nightly" mirrorArtifacts="false">
-	<features name="edu.kit.ipd.sdq.commons.util.java.feature.source.feature.group" versionRange="[1.0.0,2.0.0)"/>
+      <repositories location="https://kit-sdq.github.io/updatesite/nightly" mirrorArtifacts="false">
+		<features name="edu.kit.ipd.sdq.commons.util.java.feature.source.feature.group" versionRange="[1.0.0,2.0.0)"/>
       </repositories>
     </contributions>
   </validationSets>
