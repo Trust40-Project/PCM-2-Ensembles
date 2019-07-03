@@ -10,6 +10,7 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 
@@ -55,6 +56,13 @@ public class MatchExtractor {
 				.map(LocationContext.class::cast).collect(Collectors.toList());
 		for (var locationContext : listLocationContext) {
 			list.addAll(new RegexMatchingMatch(locationContext).getMatches());
+		}
+		
+		// organisations
+		List<OrganisationContext> listOrganisationContext = getContexts(this.relatedCharacteristics).filter(OrganisationContext.class::isInstance)
+				.map(OrganisationContext.class::cast).collect(Collectors.toList());
+		for (var organisationContext : listOrganisationContext) {
+			list.addAll(new RegexMatchingMatch(organisationContext).getMatches());
 		}
 		
 		return list;

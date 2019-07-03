@@ -5,4 +5,5 @@ Bundle-SymbolicName: org.palladiosimulator.pcm.dataprocessing.dynamicextension.x
 Bundle-Version: 1.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration;bundle-version="0.0.0"
+Require-Bundle: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration;bundle-version="0.0.0",
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension

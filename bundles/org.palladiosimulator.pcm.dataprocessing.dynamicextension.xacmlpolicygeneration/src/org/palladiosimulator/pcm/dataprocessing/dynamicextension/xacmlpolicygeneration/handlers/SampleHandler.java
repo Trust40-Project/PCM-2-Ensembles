@@ -20,15 +20,15 @@ public class SampleHandler extends AbstractHandler {
 	// SETTINGS ////////////////////////////////////////////////////////////////////////////////
 	public static final String PATH_PREFIX = "/home/jojo/Schreibtisch/KIT/Bachelorarbeit/";
 	private static final String PATH_INPUT_MODELS = "models/UseCasesTechnicalReport/";
-	private static final String PATH_USECASE = "UC-Combined/uc-combined";
+	private static final String PATH_USECASE = "UC-Test/uc-test";
 	
 	private static final String PATH_TEST_REQUESTS_DIRECTORY = ""; //TODO
 	private static final String FILENAME_TEST_REQUEST = "test.xml";
 	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	
-	private static final String PATH_DYNAMIC = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dynamicextension";
-	private static final String PATH_DATA = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dataprocessing";
+	public static final String PATH_DYNAMIC = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dynamicextension";
+	public static final String PATH_DATA = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dataprocessing";
 
 	private static final String PATH_TEST_REQUEST = PATH_PREFIX + PATH_TEST_REQUESTS_DIRECTORY + FILENAME_TEST_REQUEST; 
 	

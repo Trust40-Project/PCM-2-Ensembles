@@ -1,6 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
@@ -35,7 +36,7 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	
 	private static StringBuilder createRegexLocation(final Location location) {
 		final StringBuilder regex = new StringBuilder("(");
-		regex.append(location.getEntityName()).append(")");
+		regex.append(toRegex(location.getEntityName())).append(")");
 		
 		for (final Location subLocation : location.getIncludes()) {
 			regex.append("|").append(createRegexLocation(subLocation));
@@ -46,7 +47,7 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	
 	private static StringBuilder createRegexRole(final Role role) {
 		final StringBuilder regex = new StringBuilder("(");
-		regex.append(role.getEntityName()).append(")");
+		regex.append(toRegex(role.getEntityName())).append(")");
 		
 		for (final Role subRole : role.getSubordinateroles()) {
 			regex.append("|").append(createRegexRole(subRole));
@@ -57,17 +58,21 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	
 	private static StringBuilder createRegexOrganisation(final Organisation organisation) {
 		final StringBuilder regex = new StringBuilder("(");
-		regex.append(organisation.getEntityName()).append(")");
+		regex.append(toRegex(organisation.getEntityName())).append(")");
 		
 		for (final Subject ownedSubject : organisation.getOwnedSubjects()) {
 			if (ownedSubject.getClass().equals(Organisation.class)) {
 				regex.append("|").append(createRegexOrganisation((Organisation) ownedSubject));
 			} else {
-				regex.append("|").append(ownedSubject.getEntityName());
+				regex.append("|(").append(toRegex(ownedSubject.getEntityName())).append(")");
 			}
 		}
 		
 		return regex;
+	}
+	
+	private static String toRegex(final String literal) {
+		return Pattern.quote(literal);
 	}
 	
 	@Override
