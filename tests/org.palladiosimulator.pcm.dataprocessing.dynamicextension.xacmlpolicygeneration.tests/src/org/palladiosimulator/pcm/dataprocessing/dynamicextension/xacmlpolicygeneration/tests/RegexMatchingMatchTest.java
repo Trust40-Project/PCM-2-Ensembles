@@ -66,7 +66,7 @@ public class RegexMatchingMatchTest {
 		final RegexMatchingMatch match = new RegexMatchingMatch(this.organisation);
 		final MatchType matchType = match.getMatches().get(0);
 		final String organisationRegex = matchType.getAttributeValue().getContent().get(0).toString();
-		Assert.assertEquals("(\\QA\\E)|(\\QHans A.\\E)|(\\QASub\\E)", organisationRegex);
+		Assert.assertEquals("(\\QA\\E)|(\\QASub\\E)", organisationRegex);
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
 	}
 }

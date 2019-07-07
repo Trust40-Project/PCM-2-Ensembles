@@ -26,12 +26,12 @@ public class StringComparisonMatch extends Match {
 	}
 	
 	public StringComparisonMatch(final InternalStateContext context) {
-		super(CONTEXT_INTERNAL_STATE);
+		super(ID_CATEGORY_RESOURCE, CONTEXT_INTERNAL_STATE);
 		this.value = context.getState().getEntityName();
 	}
 	
 	public StringComparisonMatch(final PrivacyLevelContext context) {
-		super(CONTEXT_PRIVACY_LEVEL);
+		super(ID_CATEGORY_RESOURCE, CONTEXT_PRIVACY_LEVEL);
 		this.value = context.getLevel().getEntityName();
 	}
 	

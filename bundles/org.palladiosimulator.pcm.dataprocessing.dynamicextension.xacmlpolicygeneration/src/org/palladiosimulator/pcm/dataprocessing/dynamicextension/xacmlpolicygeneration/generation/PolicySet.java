@@ -20,8 +20,8 @@ public class PolicySet {
 	
 	public PolicySetType getPolicySet() {
 		final PolicySetType policySet = new PolicySetType();
-		policySet.setDescription("all policies combined");
-		policySet.setPolicySetId("completePolicySet");
+		policySet.setDescription("all policies combined"); //TODO
+		policySet.setPolicySetId("completePolicySet"); //TODO
 		policySet.setTarget(new TargetType());
 		for (final PolicyType policy : policies) {
 			QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);

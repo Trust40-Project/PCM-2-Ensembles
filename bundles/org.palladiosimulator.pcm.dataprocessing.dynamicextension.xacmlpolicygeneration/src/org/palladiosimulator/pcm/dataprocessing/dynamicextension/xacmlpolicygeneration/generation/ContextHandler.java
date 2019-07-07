@@ -17,12 +17,12 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
 
 public class ContextHandler {
 	private DataSpecification dataContainer;
-	private DynamicSpecification dynamicContainer; //TODO frage: wofuer wird der benoetigt?
+	//private DynamicSpecification dynamicContainer; //TODO frage: wofuer wird der benoetigt?
 
 	public ContextHandler(final String pathDynamic, final String pathData) {
 		var modelloader = new ModelLoader(pathDynamic, pathData);
 		this.dataContainer = modelloader.loadDataSpecification();
-		this.dynamicContainer = modelloader.loadDynamicModel();
+		//this.dynamicContainer = modelloader.loadDynamicModel();
 	}
 
 	public void createContext() throws IOException {

@@ -61,10 +61,8 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 		regex.append(toRegex(organisation.getEntityName())).append(")");
 		
 		for (final Subject ownedSubject : organisation.getOwnedSubjects()) {
-			if (ownedSubject.getClass().equals(Organisation.class)) {
+			if (Organisation.class.isInstance(ownedSubject)) {
 				regex.append("|").append(createRegexOrganisation((Organisation) ownedSubject));
-			} else {
-				regex.append("|(").append(toRegex(ownedSubject.getEntityName())).append(")");
 			}
 		}
 		

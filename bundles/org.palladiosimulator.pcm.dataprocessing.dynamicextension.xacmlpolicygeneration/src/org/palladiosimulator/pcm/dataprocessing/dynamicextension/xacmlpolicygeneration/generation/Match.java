@@ -9,6 +9,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 public abstract class Match {
 	public static final String ID_CATEGORY_ACTION = XACML3.ID_ATTRIBUTE_CATEGORY_ACTION.stringValue();
 	public static final String ID_CATEGORY_SUBJECT = XACML3.ID_SUBJECT_CATEGORY_ACCESS_SUBJECT.stringValue();
+	public static final String ID_CATEGORY_RESOURCE = XACML3.ID_ATTRIBUTE_CATEGORY_RESOURCE.stringValue(); 
 	
 	private final String categoryId;
 	private final String attributeId;

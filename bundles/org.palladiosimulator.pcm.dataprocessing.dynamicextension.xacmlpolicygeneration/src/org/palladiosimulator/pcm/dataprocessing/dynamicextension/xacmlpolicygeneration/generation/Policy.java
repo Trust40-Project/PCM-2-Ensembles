@@ -13,31 +13,28 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.RuleType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
 
 public class Policy {
-	public static final String ID_ENTITY = "entity:id";
-	public static final String ID_CATEGORY_ACTION = XACML3.ID_ATTRIBUTE_CATEGORY_ACTION.stringValue();
-	public static final String ID_CATEGORY_SUBJECT = XACML3.ID_SUBJECT_CATEGORY_ACCESS_SUBJECT.stringValue(); 
-	//TODO frage wie werden ressourcen behandelt?
+	private final List<List<MatchType>> matches;
 	
-	private final List<MatchType> matches;
-	
-	public Policy(final List<MatchType> matches) {
+	public Policy(final List<List<MatchType>> matches) {
 		this.matches = matches;
 	}
 	
 	public PolicyType getPolicyType() {
-		// AllOf
-		final AllOfType allOf = new AllOfType();
-		allOf.getMatch().addAll(this.matches);
-			
-		// AnyOf
 		final AnyOfType anyOf = new AnyOfType();
-		anyOf.getAllOf().add(allOf);
-			
-		// Target
 		final TargetType target = new TargetType();
+		for (int i = 0; i < this.matches.size(); i++) {
+			// AllOf
+			final AllOfType allOf = new AllOfType();
+			allOf.getMatch().addAll(this.matches.get(i));
+			
+			// AnyOf
+			anyOf.getAllOf().add(allOf);
+		}
+		
+		// Target
 		target.getAnyOf().add(anyOf);
 		
-		final String entityName = "" + this.matches.get(0).getAttributeValue().getContent().get(0);
+		final String entityName = "" + this.matches.get(0).get(0).getAttributeValue().getContent().get(0);
 		
 		// Rule
 		final RuleType rule = new RuleType();
@@ -63,9 +60,5 @@ public class Policy {
 		policy.setVersion("1.0");
 		policy.setRuleCombiningAlgId(XACML3.ID_RULE_PERMIT_OVERRIDES.stringValue());
 		return policy;
-			
-		// test write single policy
-		// final Path filenameSinglePolicy = Path.of("/home/jojo/Schreibtisch/KIT/Bachelorarbeit/out" + index + ".xml");
-		// XACMLPolicyWriter.writePolicyFile(filenameSinglePolicy, policy);
 	}
 }

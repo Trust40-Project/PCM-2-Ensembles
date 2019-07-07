@@ -23,54 +23,59 @@ public class MatchExtractor {
 		this.relatedCharacteristics = relatedCharacteristics;
 	}
 
-	public List<MatchType> getMatches() {
+	public List<List<MatchType>> getMatches() {
+		final List<List<MatchType>> list = new ArrayList<>();
+		for (int i = 0; i < getCharacteristicsList(this.relatedCharacteristics).size(); i++) {
+			list.add(getMatches(i));
+		}
+		return list;
+	}
+	
+	private List<MatchType> getMatches(final int index) {
 		List<MatchType> list = new ArrayList<>();
 		// entity
 		list.addAll(new StringComparisonMatch(this.relatedCharacteristics).getMatches());
 		
-		//TODO: frage ist das && oder ||, momentan &&
-		
 		// privacy level
-		List<PrivacyLevelContext> listPrivacyContext = getContexts(this.relatedCharacteristics).filter(PrivacyLevelContext.class::isInstance)
-				.map(PrivacyLevelContext.class::cast).collect(Collectors.toList());
-		for (var privacyContext : listPrivacyContext) {
-			list.addAll(new StringComparisonMatch(privacyContext).getMatches());
+		for (var privacyContext : getContextList(PrivacyLevelContext.class, index)) {
+			list.addAll(new StringComparisonMatch((PrivacyLevelContext) privacyContext).getMatches());
 		}
 		
 		// internal state
-		List<InternalStateContext> listStateContext = getContexts(this.relatedCharacteristics).filter(InternalStateContext.class::isInstance)
-				.map(InternalStateContext.class::cast).collect(Collectors.toList());
-		for (var stateContext : listStateContext) {
-			list.addAll(new StringComparisonMatch(stateContext).getMatches());
+		for (var stateContext : getContextList(InternalStateContext.class, index)) {
+			list.addAll(new StringComparisonMatch((InternalStateContext) stateContext).getMatches());
 		}
 		
 		// roles
-		List<RoleContext> listRoleContext = getContexts(this.relatedCharacteristics).filter(RoleContext.class::isInstance)
-					.map(RoleContext.class::cast).collect(Collectors.toList());
-		for (var roleContext : listRoleContext) {
-			list.addAll(new RegexMatchingMatch(roleContext).getMatches());
+		for (var roleContext : getContextList(RoleContext.class, index)) {
+			list.addAll(new RegexMatchingMatch((RoleContext) roleContext).getMatches());
 		}
 			
 		// locations
-		List<LocationContext> listLocationContext = getContexts(this.relatedCharacteristics).filter(LocationContext.class::isInstance)
-				.map(LocationContext.class::cast).collect(Collectors.toList());
-		for (var locationContext : listLocationContext) {
-			list.addAll(new RegexMatchingMatch(locationContext).getMatches());
+		for (var locationContext : getContextList(LocationContext.class, index)) {
+			list.addAll(new RegexMatchingMatch((LocationContext) locationContext).getMatches());
 		}
 		
 		// organisations
-		List<OrganisationContext> listOrganisationContext = getContexts(this.relatedCharacteristics).filter(OrganisationContext.class::isInstance)
-				.map(OrganisationContext.class::cast).collect(Collectors.toList());
-		for (var organisationContext : listOrganisationContext) {
-			list.addAll(new RegexMatchingMatch(organisationContext).getMatches());
+		for (var organisationContext :  getContextList(OrganisationContext.class, index)) {
+			list.addAll(new RegexMatchingMatch((OrganisationContext) organisationContext).getMatches());
 		}
 		
 		return list;
 	}
-
-	private Stream<Context> getContexts(RelatedCharacteristics e) {
+	
+	private List<? extends Context> getContextList(final Class<? extends Context> contextClass, final int index) {
+		return getContexts(this.relatedCharacteristics, index).filter(contextClass::isInstance)
+				.map(contextClass::cast).collect(Collectors.toList());
+	}
+	
+	private List<ContextCharacteristic> getCharacteristicsList(final RelatedCharacteristics e) {
 		return e.getCharacteristics().getOwnedCharacteristics().stream().filter(ContextCharacteristic.class::isInstance)
-				.map(ContextCharacteristic.class::cast).flatMap(i -> i.getContext().stream());
+				.map(ContextCharacteristic.class::cast).collect(Collectors.toList());
+	}
+
+	private Stream<Context> getContexts(final RelatedCharacteristics e, final int index) {
+		return getCharacteristicsList(e).get(index).getContext().stream();
 	}
 
 }
