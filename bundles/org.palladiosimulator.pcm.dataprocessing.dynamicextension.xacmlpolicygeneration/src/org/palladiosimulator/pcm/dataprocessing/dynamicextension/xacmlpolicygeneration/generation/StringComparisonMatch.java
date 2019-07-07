@@ -46,22 +46,15 @@ public class StringComparisonMatch extends Match {
 
 	@Override
 	public List<MatchType> getMatches() {
+		final MatchType match = getEmptyMatch();
 		// Attribute value
-		final AttributeValueType attributeValue = new AttributeValueType();
-		attributeValue.getContent().add(this.value);
-		attributeValue.setDataType(XACML3.ID_DATATYPE_STRING.stringValue());
+		match.getAttributeValue().getContent().add(this.value);
+		match.getAttributeValue().setDataType(XACML3.ID_DATATYPE_STRING.stringValue());
 							
 		// Attribute designator
-		final AttributeDesignatorType attributeDesignator = new AttributeDesignatorType();
-		attributeDesignator.setCategory(getCategoryId());
-		attributeDesignator.setAttributeId(getAttributeId());
-		attributeDesignator.setDataType(XACML3.ID_DATATYPE_STRING.stringValue());
-		attributeDesignator.setMustBePresent(false);
+		match.getAttributeDesignator().setDataType(XACML3.ID_DATATYPE_STRING.stringValue());
 							
 		// Match
-		final MatchType match = new MatchType();
-		match.setAttributeValue(attributeValue);
-		match.setAttributeDesignator(attributeDesignator);
 		match.setMatchId(XACML3.ID_FUNCTION_STRING_EQUAL.stringValue());
 		return Arrays.asList(match);
 	}

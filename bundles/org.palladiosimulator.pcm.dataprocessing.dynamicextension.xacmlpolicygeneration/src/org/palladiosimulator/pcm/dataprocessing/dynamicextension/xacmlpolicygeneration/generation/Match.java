@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.att.research.xacml.api.XACML3;
 
+import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeDesignatorType;
+import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeValueType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
 public abstract class Match {
@@ -24,6 +26,23 @@ public abstract class Match {
 	}
 	
 	public abstract List<MatchType> getMatches();
+	
+	protected MatchType getEmptyMatch() {
+		// Attribute value
+		final AttributeValueType attributeValue = new AttributeValueType();
+									
+		// Attribute designator
+		final AttributeDesignatorType attributeDesignator = new AttributeDesignatorType();
+		attributeDesignator.setCategory(getCategoryId());
+		attributeDesignator.setAttributeId(getAttributeId());
+		attributeDesignator.setMustBePresent(false);
+									
+		// Match
+		final MatchType match = new MatchType();
+		match.setAttributeValue(attributeValue);
+		match.setAttributeDesignator(attributeDesignator);
+		return match;
+	}
 	
 	protected String getCategoryId() {
 		return this.categoryId;

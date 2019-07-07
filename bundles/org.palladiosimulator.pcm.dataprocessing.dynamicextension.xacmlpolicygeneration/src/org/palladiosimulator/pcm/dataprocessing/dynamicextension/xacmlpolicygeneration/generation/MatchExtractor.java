@@ -8,6 +8,8 @@ import java.util.stream.Stream;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.FloatingComparisonContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.IntegralComparisonContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
@@ -59,6 +61,14 @@ public class MatchExtractor {
 		// organisations
 		for (var organisationContext :  getContextList(OrganisationContext.class, index)) {
 			list.addAll(new RegexMatchingMatch((OrganisationContext) organisationContext).getMatches());
+		}
+		
+		// comparison
+		for (var comparisonContext : getContextList(IntegralComparisonContext.class, index)) {
+			list.addAll(new ComparisonMatch((IntegralComparisonContext) comparisonContext).getMatches());
+		}
+		for (var comparisonContext : getContextList(FloatingComparisonContext.class, index)) {
+			list.addAll(new ComparisonMatch((FloatingComparisonContext) comparisonContext).getMatches());
 		}
 		
 		return list;
