@@ -6,6 +6,9 @@ import java.io.IOException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextHandler;
 
 import com.att.research.xacml.api.Request;
@@ -23,7 +26,7 @@ public class SampleHandler extends AbstractHandler {
 	private static final String PATH_USECASE = "UC-Test/uc-test";
 	
 	private static final String PATH_TEST_REQUESTS_DIRECTORY = ""; //TODO
-	private static final String FILENAME_TEST_REQUEST = "test.xml";
+	private static final String FILENAME_TEST_REQUEST = "testTime.xml";
 	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -32,23 +35,18 @@ public class SampleHandler extends AbstractHandler {
 
 	private static final String PATH_TEST_REQUEST = PATH_PREFIX + PATH_TEST_REQUESTS_DIRECTORY + FILENAME_TEST_REQUEST; 
 	
-	public static void main(String[] args) throws ExecutionException {
-		//TODO sobald korrektes build, als plugin starten
-		new SampleHandler().execute(null);
-	}
-	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ContextHandler ch = new ContextHandler(PATH_DYNAMIC, PATH_DATA);
 		try {
-			ch.createContext();
+			ch.createPolicySet();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		// Request-Test
 		try {
-			testRequest();
+			testRequest(event);
 		} catch (DOMStructureException e) {
 			e.printStackTrace();
 		} catch (FactoryException e) {
@@ -59,10 +57,17 @@ public class SampleHandler extends AbstractHandler {
 		return null;
 	}
 	
-	private void testRequest() throws DOMStructureException, FactoryException, PDPException {
+	private void testRequest(ExecutionEvent event) throws DOMStructureException, PDPException, FactoryException, ExecutionException {
 		Request request =  DOMRequest.load(new File(PATH_TEST_REQUEST));
 		
 		PDPEngine pdp = PDPEngineFactory.newInstance().newEngine();
-		System.out.println(pdp.decide(request));
+		final var result = pdp.decide(request);
+		//System.out.println(result);
+		
+		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		MessageDialog.openInformation(
+				window.getShell(),
+				"xacml-policygeneration",
+				result.toString());
 	}
 }

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
 
@@ -25,7 +24,7 @@ public class ContextHandler {
 		//this.dynamicContainer = modelloader.loadDynamicModel();
 	}
 
-	public void createContext() throws IOException {
+	public void createPolicySet() throws IOException {
 		final List<PolicyType> policies = new ArrayList<>();
 		this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
 			var matchExtractor = new MatchExtractor(e);
@@ -38,6 +37,5 @@ public class ContextHandler {
 		final Path filenamePolicySet = Path.of(SampleHandler.PATH_PREFIX + "outSet.xml");
 		XACMLPolicyWriter.writePolicyFile(filenamePolicySet, policySet);
 	}
-	
 	
 }

@@ -15,6 +15,7 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Locatio
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ShiftContext;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
@@ -69,6 +70,11 @@ public class MatchExtractor {
 		}
 		for (var comparisonContext : getContextList(FloatingComparisonContext.class, index)) {
 			list.addAll(new ComparisonMatch((FloatingComparisonContext) comparisonContext).getMatches());
+		}
+		
+		// shift
+		for (var shiftContext : getContextList(ShiftContext.class, index)) {
+			list.addAll(new ShiftMatch((ShiftContext) shiftContext).getMatches());
 		}
 		
 		return list;

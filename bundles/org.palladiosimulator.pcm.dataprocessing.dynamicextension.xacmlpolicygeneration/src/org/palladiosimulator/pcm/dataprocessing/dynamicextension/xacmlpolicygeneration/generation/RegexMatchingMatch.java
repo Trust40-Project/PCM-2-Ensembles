@@ -15,8 +15,6 @@ import com.att.research.xacml.api.XACML3;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
-//TODO frage: regex matching mit oder ok?, einfacher, da domain matching erst namensaenderung erfordern wuerde
-
 public class RegexMatchingMatch extends StringComparisonMatch {
 	private static final String CONTEXT_LOCATION = "context:location";
 	private static final String CONTEXT_ROLE = "context:role";

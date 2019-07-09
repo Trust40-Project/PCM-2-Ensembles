@@ -7,25 +7,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/commons-logging-1.1.2.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/jaxb-runtime.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/codemodel.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/dtd-parser.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/FastInfoset.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/istack-commons-runtime.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/istack-commons-tools.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/javax.activation-api.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/jaxb-jxc.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/relaxng-datatype.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/rngom.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/stax-ex.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/txw2.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/jaxb-ri-2.3.1/jaxb-ri/mod/xsom.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML-PDP/target/xacml-pdp-1.0.2-SNAPSHOT.jar" sourcepath="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML-PDP/target/xacml-pdp-1.0.2-SNAPSHOT-sources.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/guava-28.0-jre.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/guava-gwt-28.0-jre.jar"/>
-	<classpathentry kind="lib" path="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML/target/xacml-1.0.2-SNAPSHOT.jar" sourcepath="/home/jojo/Schreibtisch/KIT/Bachelorarbeit/XACML-1.0/XACML/target/xacml-1.0.2-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
