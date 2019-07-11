@@ -15,19 +15,40 @@ import com.att.research.xacml.api.XACML3;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
+/**
+ * Represents a match which uses regex matching.
+ * 
+ * @author Jonathan Schenkenberger
+ * @version 1.0
+ */
 public class RegexMatchingMatch extends StringComparisonMatch {
 	private static final String CONTEXT_LOCATION = "context:location";
 	private static final String CONTEXT_ROLE = "context:role";
 	private static final String CONTEXT_ORGANISATION = "context:organisation";
 	
+	/**
+	 * Creates a new RegexMatchingMatch with a location context and all its sub-locations.
+	 * 
+	 * @param context - a location context
+	 */
 	public RegexMatchingMatch(final LocationContext context) {
 		super(CONTEXT_LOCATION, createRegexLocation(context.getCurrentLocation()).toString());
 	}
 	
+	/**
+	 * Creates a new RegexMatchingMatch with a role context and all its sub-roles.
+	 * 
+	 * @param context - a role context
+	 */
 	public RegexMatchingMatch(final RoleContext context) {
 		super(CONTEXT_ROLE, createRegexRole(context.getRole()).toString());
 	}
 	
+	/**
+	 * Creates a new RegexMatchingMatch with an organisation context and all its sub-organisations.
+	 * 
+	 * @param context - an organisation context
+	 */
 	public RegexMatchingMatch(final OrganisationContext context) {
 		super(CONTEXT_ORGANISATION, createRegexOrganisation(context.getOrganisation()).toString());
 	}

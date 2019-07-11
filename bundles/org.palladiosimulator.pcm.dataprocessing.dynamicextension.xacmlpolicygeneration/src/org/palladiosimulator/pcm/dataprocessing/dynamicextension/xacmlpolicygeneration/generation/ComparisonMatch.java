@@ -11,6 +11,11 @@ import com.att.research.xacml.api.XACML3;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
+/**
+ * Represents a match used for comparisons.
+ * @author Jonathan Schenkenberger
+ * @version 1.0
+ */
 public class ComparisonMatch extends Match {
 	private static final String CONTEXT_INT_COMPARISON = "context:comparison:int";
 	private static final String CONTEXT_DOUBLE_COMPARISON = "context:comparison:double";
@@ -20,6 +25,11 @@ public class ComparisonMatch extends Match {
 	private final double doubleValue;
 	private final Comparison comparison;
 
+	/**
+	 * Creates a new ComparisonMatch.
+	 * 
+	 * @param context - an integral comparison context
+	 */
 	public ComparisonMatch(final IntegralComparisonContext context) {
 		super(ID_CATEGORY_RESOURCE, CONTEXT_INT_COMPARISON);
 		this.comparison = context.getComparison();
@@ -28,6 +38,11 @@ public class ComparisonMatch extends Match {
 		this.isFloating = false;
 	}
 
+	/**
+	 * Creates a new ComparisonMatch.
+	 * 
+	 * @param context - a floating comparison context
+	 */
 	public ComparisonMatch(final FloatingComparisonContext context) {
 		super(ID_CATEGORY_RESOURCE, CONTEXT_DOUBLE_COMPARISON);
 		this.comparison = context.getComparison();

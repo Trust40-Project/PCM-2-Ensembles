@@ -9,10 +9,14 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Privacy
 
 import com.att.research.xacml.api.XACML3;
 
-import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeDesignatorType;
-import oasis.names.tc.xacml._3_0.core.schema.wd_17.AttributeValueType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
+/**
+ * Represents a match which uses a string comparison. Standard implementation uses string equality.
+ * 
+ * @author Jonathan Schenkenberger
+ * @version 1.0
+ */
 public class StringComparisonMatch extends Match {
 	private static final String NAME_ENTITY = "entity:name";
 	private static final String CONTEXT_INTERNAL_STATE = "context:internalstate";
@@ -20,16 +24,31 @@ public class StringComparisonMatch extends Match {
 	
 	private final String value;
 	
+	/**
+	 * Creates a new StringComparisonMatch for the entity name.
+	 * 
+	 * @param entity - the related characteristics representing the entity
+	 */
 	public StringComparisonMatch(final RelatedCharacteristics entity) {
 		super(ID_CATEGORY_ACTION, NAME_ENTITY);
 		this.value = entity.getEntityName();
 	}
 	
+	/**
+	 * Creates a new StringComparisonMatch for an internal state.
+	 * 
+	 * @param context - the internal state context
+	 */
 	public StringComparisonMatch(final InternalStateContext context) {
 		super(ID_CATEGORY_RESOURCE, CONTEXT_INTERNAL_STATE);
 		this.value = context.getState().getEntityName();
 	}
 	
+	/**
+	 * Creates a new StringComparisonMatch for a privacy level.
+	 * 
+	 * @param context - the privacy level context
+	 */
 	public StringComparisonMatch(final PrivacyLevelContext context) {
 		super(ID_CATEGORY_RESOURCE, CONTEXT_PRIVACY_LEVEL);
 		this.value = context.getLevel().getEntityName();

@@ -12,13 +12,28 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.RuleType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
 
+/**
+ * Represents a policy which can be created with a list of extracted matches.
+ * 
+ * @author Jonathan Schenkenberger
+ * @version 1.0
+ */
 public class Policy {
 	private final List<List<MatchType>> matches;
 	
+	/**
+	 * Creates a new policy with the given matches.
+	 * @param matches - the given matches
+	 */
 	public Policy(final List<List<MatchType>> matches) {
 		this.matches = matches;
 	}
 	
+	/**
+	 * Generates the XACML policy with the given matches.
+	 * 
+	 * @return the XACML policy
+	 */
 	public PolicyType getPolicyType() {
 		final AnyOfType anyOf = new AnyOfType();
 		final TargetType target = new TargetType();

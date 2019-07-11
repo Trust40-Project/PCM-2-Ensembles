@@ -11,6 +11,8 @@ import com.att.research.xacml.api.XACML3;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
+//TODO: noch fragen beantworten, dann noch java doc und test
+
 public class ShiftMatch extends Match {
 	private static final String CONTEXT_SHIFT = "context:shift";
 	

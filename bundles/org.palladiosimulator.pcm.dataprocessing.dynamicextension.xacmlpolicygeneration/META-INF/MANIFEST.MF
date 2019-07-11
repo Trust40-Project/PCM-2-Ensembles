@@ -8,7 +8,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension;bundle-version="0.1.0",
  org.eclipse.emf.codegen;bundle-version="2.14.0",
- ThirdParty;bundle-version="1.0.0"
+ ThirdParty;bundle-version="1.0.0";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration
 Bundle-ActivationPolicy: lazy
