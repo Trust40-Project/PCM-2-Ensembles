@@ -1,5 +1,6 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.att.research.xacml.api.XACML3;
@@ -21,48 +22,50 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
  */
 public class Policy {
 	private final List<List<MatchType>> matches;
-	private final ObligationExpressionsType obligations;
+	private final List<ObligationExpressionsType> obligationsList;
 	
 	/**
 	 * Creates a new policy with the given matches.
 	 * @param matches - the given matches
 	 */
-	public Policy(final List<List<MatchType>> matches, final ObligationExpressionsType obligations) {
+	public Policy(final List<List<MatchType>> matches, final List<ObligationExpressionsType> obligationsList) {
 		this.matches = matches;
-		this.obligations = obligations;
+		this.obligationsList = obligationsList;
 	}
 	
 	/**
-	 * Generates the XACML policy with the given matches.
+	 * Generates the XACML policy with the given matches and obligations. The different characteristics are mapped
+	 * to different rules which are combined with OR.
 	 * 
-	 * @return the XACML policy
+	 * @return the XACML policy representing the action defined in the attribute found in {@code matches.get(0).get(0)}.
 	 */
 	public PolicyType getPolicyType() {
-		final AnyOfType anyOf = new AnyOfType();
-		final TargetType target = new TargetType();
+		final String entityName = "" + this.matches.get(0).get(0).getAttributeValue().getContent().get(0);
+		final List<RuleType> rules = new ArrayList<>();
 		for (int i = 0; i < this.matches.size(); i++) {
 			// AllOf
 			final AllOfType allOf = new AllOfType();
-			allOf.getMatch().addAll(this.matches.get(i));
-			
+			allOf.getMatch().addAll(this.matches.get(i));			
+		
 			// AnyOf
+			final AnyOfType anyOf = new AnyOfType();
 			anyOf.getAllOf().add(allOf);
+		
+			// Target
+			final TargetType target = new TargetType();
+			target.getAnyOf().add(anyOf);
+		
+			// Rule
+			final RuleType rule = new RuleType();
+			rule.setDescription("Context check rule for entity " + entityName + "'s characteristic " + i); //TODO
+			rule.setTarget(target);
+			rule.setRuleId("rule:" + entityName + ":" + i); //TODO
+			rule.setEffect(EffectType.PERMIT);
+			if (!this.obligationsList.get(i).getObligationExpression().isEmpty()) {
+				rule.setObligationExpressions(this.obligationsList.get(i));
+			}
+			rules.add(rule);
 		}
-		
-		// Target
-		target.getAnyOf().add(anyOf);
-		
-		final String entityName = "" + this.matches.get(0).get(0).getAttributeValue().getContent().get(0);
-		
-		// Rule
-		final RuleType rule = new RuleType();
-		rule.setDescription("Context check"); //TODO
-		rule.setTarget(target);
-		rule.setRuleId("c:" + entityName); //TODO
-		rule.setEffect(EffectType.PERMIT);
-		rule.setObligationExpressions(this.obligations); 
-		//TODO noch || unterstuetzen --> anstatt allOf / anyOf, nur allOf und die verschiedenen matchlisten
-		//TODO in verschiedene regeln machen
 			
 		// deny if not applicable rule
 		final RuleType ruleDenyIfNotApplicable = new RuleType();
@@ -75,9 +78,9 @@ public class Policy {
 		final PolicyType policy = new PolicyType();
 		policy.setDescription("Policy for " + entityName); //TODO
 		policy.setTarget(new TargetType());
-		policy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(rule);
+		policy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().addAll(rules);
 		policy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().add(ruleDenyIfNotApplicable);
-		policy.setPolicyId(entityName);
+		policy.setPolicyId("policy:" + entityName); //TODO
 		policy.setVersion("1.0");
 		policy.setRuleCombiningAlgId(XACML3.ID_RULE_PERMIT_OVERRIDES.stringValue());
 		return policy;

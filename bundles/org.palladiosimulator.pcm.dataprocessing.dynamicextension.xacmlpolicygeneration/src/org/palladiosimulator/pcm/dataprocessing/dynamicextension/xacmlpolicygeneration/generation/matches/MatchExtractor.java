@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextHandler;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.Extractor;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 
@@ -17,41 +18,27 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
  * @author Jonathan Schenkenberger
  * @version 1.0
  */
-public class MatchExtractor {
-	private final RelatedCharacteristics relatedCharacteristics;
-
+public class MatchExtractor extends Extractor<List<MatchType>> {
+	
 	/**
 	 * Creates a new match extractor.
 	 * 
 	 * @param relatedCharacteristics - the characteristics
 	 */
 	public MatchExtractor(final RelatedCharacteristics relatedCharacteristics) {
-		this.relatedCharacteristics = relatedCharacteristics;
+		super(relatedCharacteristics);
 	}
 
-	/**
-	 * Extracts a list of lists of matches from the given characteristic. The
-	 * matches in a list are to be combinde with AND. The different lists of matches
-	 * are to be combined with AND.
-	 * 
-	 * @return a list of lists which are to be combined with OR
-	 */
-	public List<List<MatchType>> getMatches() {
-		final List<List<MatchType>> list = new ArrayList<>();
-		for (int i = 0; i < ContextHandler.getCharacteristicsList(this.relatedCharacteristics).size(); i++) {
-			list.add(getMatches(i));
-		}
-		return list;
-	}
-
-	private List<MatchType> getMatches(final int index) {
-		List<MatchType> list = new ArrayList<>();
+	@Override
+	protected List<MatchType> extractOneElement(final int index) {
+		final List<MatchType> list = new ArrayList<>();
 		// entity
-		list.addAll(new StringComparisonMatch(this.relatedCharacteristics).getMatches());
+		list.addAll(new StringComparisonMatch(getRelatedCharacteristic()).getMatches());
 
 		// contexts
 		final Stream<Match> matches = MatchRegistry.getInstance()
-				.getAllMatches(ContextHandler.getContexts(this.relatedCharacteristics, index)).stream();
+				.getAll(ContextHandler.getContexts(getRelatedCharacteristic(), index)).stream();
+		// adding all matches representing the different contexts to the match list
 		list.addAll(matches.map(Match::getMatches).flatMap(List::stream).collect(Collectors.toList()));
 
 		return list;

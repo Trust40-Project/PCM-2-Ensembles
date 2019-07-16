@@ -52,7 +52,7 @@ public class ContextHandler {
 		this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
 			var matchExtractor = new MatchExtractor(e);
 			var obligationExtractor = new ObligationExtractor(e);
-			final Policy policy = new Policy(matchExtractor.getMatches(), obligationExtractor.getObligations());
+			final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
 			policies.add(policy.getPolicyType());
 		});
 		final PolicySetType policySet = new PolicySet(policies).getPolicySet(); 

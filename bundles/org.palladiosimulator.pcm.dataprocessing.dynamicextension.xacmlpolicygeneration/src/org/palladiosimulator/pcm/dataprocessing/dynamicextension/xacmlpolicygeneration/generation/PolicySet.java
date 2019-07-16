@@ -30,7 +30,7 @@ public class PolicySet {
 	}
 	
 	/**
-	 * Generates the combined XACML policy set.
+	 * Generates the combined XACML policy set for all actions.
 	 * 
 	 * @return the combined XACML policy set
 	 */
@@ -39,9 +39,10 @@ public class PolicySet {
 		policySet.setDescription("all policies combined"); //TODO
 		policySet.setPolicySetId("completePolicySet"); //TODO
 		policySet.setTarget(new TargetType());
-		for (final PolicyType policy : policies) {
+		for (final PolicyType policy : this.policies) {
 			final QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);
-			policySet.getPolicySetOrPolicyOrPolicySetIdReference().add(new JAXBElement<PolicyType>(qname , PolicyType.class, policy));
+			policySet.getPolicySetOrPolicyOrPolicySetIdReference()
+				.add(new JAXBElement<PolicyType>(qname , PolicyType.class, policy));
 		}
 		policySet.setVersion("1.0");
 		policySet.setPolicyCombiningAlgId(XACML3.ID_POLICY_PERMIT_OVERRIDES.stringValue());

@@ -47,7 +47,7 @@ public class ComparisonMatchTest {
 		Assert.assertEquals(this.intComparison.getThreshold(), Integer.parseInt((String) matchType.getAttributeValue().getContent().get(0)));
 		Assert.assertEquals(XACML3.ID_DATATYPE_INTEGER.stringValue(), matchType.getAttributeValue().getDataType());
 		Assert.assertEquals(XACML3.ID_DATATYPE_INTEGER.stringValue(), matchType.getAttributeDesignator().getDataType());
-		final String comparisonStr = this.intComparison.getComparison() == Comparison.GREATER //TODO: evtl. andersrum
+		final String comparisonStr = this.intComparison.getComparison() == Comparison.GREATER
 				? XACML3.ID_FUNCTION_INTEGER_GREATER_THAN.stringValue() : XACML3.ID_FUNCTION_INTEGER_LESS_THAN.stringValue();
 		Assert.assertEquals(comparisonStr, matchType.getMatchId());
 	}
@@ -60,7 +60,7 @@ public class ComparisonMatchTest {
 		Assert.assertEquals(this.floComparison.getThreshold(), Double.parseDouble((String) matchType.getAttributeValue().getContent().get(0)), delta);
 		Assert.assertEquals(XACML3.ID_DATATYPE_DOUBLE.stringValue(), matchType.getAttributeValue().getDataType());
 		Assert.assertEquals(XACML3.ID_DATATYPE_DOUBLE.stringValue(), matchType.getAttributeDesignator().getDataType());
-		final String comparisonStr = this.intComparison.getComparison() == Comparison.GREATER //TODO: evtl. andersrum
+		final String comparisonStr = this.intComparison.getComparison() == Comparison.GREATER
 				? XACML3.ID_FUNCTION_DOUBLE_GREATER_THAN.stringValue() : XACML3.ID_FUNCTION_DOUBLE_LESS_THAN.stringValue();
 		Assert.assertEquals(comparisonStr, matchType.getMatchId());
 	}
