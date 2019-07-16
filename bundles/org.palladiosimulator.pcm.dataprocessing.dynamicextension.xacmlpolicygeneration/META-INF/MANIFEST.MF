@@ -14,4 +14,5 @@ Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation,
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers

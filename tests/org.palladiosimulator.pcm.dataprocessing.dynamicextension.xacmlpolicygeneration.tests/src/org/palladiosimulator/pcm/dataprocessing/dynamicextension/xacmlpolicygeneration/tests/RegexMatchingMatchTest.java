@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Locatio
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.RegexMatchingMatch;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.RegexMatchingMatch;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
 
 import com.att.research.xacml.api.XACML3;

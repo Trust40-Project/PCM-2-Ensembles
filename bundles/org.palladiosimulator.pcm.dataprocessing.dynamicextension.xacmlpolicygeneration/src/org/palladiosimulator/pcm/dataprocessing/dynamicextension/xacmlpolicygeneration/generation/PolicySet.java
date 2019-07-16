@@ -40,7 +40,7 @@ public class PolicySet {
 		policySet.setPolicySetId("completePolicySet"); //TODO
 		policySet.setTarget(new TargetType());
 		for (final PolicyType policy : policies) {
-			QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);
+			final QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);
 			policySet.getPolicySetOrPolicyOrPolicySetIdReference().add(new JAXBElement<PolicyType>(qname , PolicyType.class, policy));
 		}
 		policySet.setVersion("1.0");

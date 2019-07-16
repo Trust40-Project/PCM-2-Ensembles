@@ -8,6 +8,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.AllOfType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.AnyOfType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.EffectType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
+import oasis.names.tc.xacml._3_0.core.schema.wd_17.ObligationExpressionsType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.RuleType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
@@ -20,13 +21,15 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
  */
 public class Policy {
 	private final List<List<MatchType>> matches;
+	private final ObligationExpressionsType obligations;
 	
 	/**
 	 * Creates a new policy with the given matches.
 	 * @param matches - the given matches
 	 */
-	public Policy(final List<List<MatchType>> matches) {
+	public Policy(final List<List<MatchType>> matches, final ObligationExpressionsType obligations) {
 		this.matches = matches;
+		this.obligations = obligations;
 	}
 	
 	/**
@@ -57,6 +60,9 @@ public class Policy {
 		rule.setTarget(target);
 		rule.setRuleId("c:" + entityName); //TODO
 		rule.setEffect(EffectType.PERMIT);
+		rule.setObligationExpressions(this.obligations); 
+		//TODO noch || unterstuetzen --> anstatt allOf / anyOf, nur allOf und die verschiedenen matchlisten
+		//TODO in verschiedene regeln machen
 			
 		// deny if not applicable rule
 		final RuleType ruleDenyIfNotApplicable = new RuleType();
