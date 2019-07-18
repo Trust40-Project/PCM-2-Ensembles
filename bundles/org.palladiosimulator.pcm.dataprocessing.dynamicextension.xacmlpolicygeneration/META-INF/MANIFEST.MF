@@ -12,7 +12,10 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration
 Bundle-ActivationPolicy: lazy
-Export-Package: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader,
+Export-Package: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration,
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches,
- org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations,
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers,
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.util

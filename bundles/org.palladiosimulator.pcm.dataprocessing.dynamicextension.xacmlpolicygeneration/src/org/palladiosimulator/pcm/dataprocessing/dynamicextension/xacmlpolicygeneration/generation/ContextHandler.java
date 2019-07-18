@@ -1,7 +1,5 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation;
 
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,9 +11,6 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.MatchExtractor;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations.ObligationExtractor;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
-
-import com.att.research.xacml.util.XACMLPolicyWriter;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
@@ -45,9 +40,9 @@ public class ContextHandler {
 	/**
 	 * Generates the policy set for the whole model instance.
 	 * 
-	 * @throws IOException - if an read/write error occurs
+	 * @return the XACML policy set type representing the policy set for the whole model instance
 	 */
-	public void createPolicySet() throws IOException {
+	public PolicySetType createPolicySet() {
 		final List<PolicyType> policies = new ArrayList<>();
 		this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
 			var matchExtractor = new MatchExtractor(e);
@@ -55,11 +50,7 @@ public class ContextHandler {
 			final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
 			policies.add(policy.getPolicyType());
 		});
-		final PolicySetType policySet = new PolicySet(policies).getPolicySet(); 
-		
-		// test write policySet
-		final Path filenamePolicySet = Path.of(SampleHandler.PATH_OUTPUT_POLICYSET);
-		XACMLPolicyWriter.writePolicyFile(filenamePolicySet, policySet);
+		return new PolicySet(policies).getPolicySet(); 
 	}
 	
 	/**
