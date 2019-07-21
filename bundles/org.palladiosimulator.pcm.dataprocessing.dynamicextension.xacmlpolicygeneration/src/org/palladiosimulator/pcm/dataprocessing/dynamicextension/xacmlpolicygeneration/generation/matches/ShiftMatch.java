@@ -54,7 +54,7 @@ public class ShiftMatch extends Match {
 		matches.add(end);
 		
 		// add subject attribute match
-		matches.addAll(new StringComparisonMatch(CONTEXT_SHIFT, this.shiftName).getMatches());
+		matches.addAll(new StringComparisonMatch(ID_CATEGORY_SUBJECT, CONTEXT_SHIFT, this.shiftName).getMatches());
 		
 		return matches;
 	}

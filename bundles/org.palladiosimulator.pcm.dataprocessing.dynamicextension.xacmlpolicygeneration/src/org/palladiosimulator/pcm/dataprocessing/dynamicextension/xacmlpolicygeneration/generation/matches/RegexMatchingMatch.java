@@ -3,8 +3,10 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.EnumCharacteristicLiteral;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Location;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Role;
@@ -25,6 +27,7 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	private static final String CONTEXT_LOCATION = "context:location";
 	private static final String CONTEXT_ROLE = "context:role";
 	private static final String CONTEXT_ORGANISATION = "context:organisation";
+	private static final String CONTEXT_PRIVACY_LEVEL = "context:privacylevel";
 	
 	/**
 	 * Creates a new RegexMatchingMatch with a location context and all its sub-locations.
@@ -32,7 +35,7 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	 * @param context - a location context
 	 */
 	public RegexMatchingMatch(final LocationContext context) {
-		super(CONTEXT_LOCATION, createRegexLocation(context.getCurrentLocation()).toString());
+		super(ID_CATEGORY_SUBJECT, CONTEXT_LOCATION, createRegexLocation(context.getCurrentLocation()).toString());
 	}
 	
 	/**
@@ -41,7 +44,7 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	 * @param context - a role context
 	 */
 	public RegexMatchingMatch(final RoleContext context) {
-		super(CONTEXT_ROLE, createRegexRole(context.getRole()).toString());
+		super(ID_CATEGORY_SUBJECT, CONTEXT_ROLE, createRegexRole(context.getRole()).toString());
 	}
 	
 	/**
@@ -50,7 +53,16 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 	 * @param context - an organisation context
 	 */
 	public RegexMatchingMatch(final OrganisationContext context) {
-		super(CONTEXT_ORGANISATION, createRegexOrganisation(context.getOrganisation()).toString());
+		super(ID_CATEGORY_SUBJECT, CONTEXT_ORGANISATION, createRegexOrganisation(context.getOrganisation()).toString());
+	}
+	
+	/**
+	 * Creates a new RegexMatchingMatch for a privacy level and its contained privacy level.
+	 * 
+	 * @param context - the privacy level context representing the minimal privacy level
+	 */
+	public RegexMatchingMatch(final PrivacyLevelContext context) {
+		super(ID_CATEGORY_RESOURCE, CONTEXT_PRIVACY_LEVEL, createRegexPrivacyLevel(context.getLevel()));
 	}
 	
 	private static StringBuilder createRegexLocation(final Location location) {
@@ -88,6 +100,15 @@ public class RegexMatchingMatch extends StringComparisonMatch {
 		return regex;
 	}
 	
+	private static String createRegexPrivacyLevel(final EnumCharacteristicLiteral level) {
+		final String onlyThisLevel = "(" + level.getEntityName() + ")";
+		switch (level.getEntityName()) {
+			case "PUBLIC": return onlyThisLevel + "|(" + "RESTRICTED" + ")|(" + "SECRET" + ")|(" + "UNDEFINED" + ")";
+			case "RESTRICTED": return onlyThisLevel + "|(" + "SECRET" + ")";
+			default: return onlyThisLevel;
+		}
+	}
+
 	private static String toRegex(final String literal) {
 		return Pattern.quote(literal);
 	}

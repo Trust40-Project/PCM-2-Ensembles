@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -20,7 +19,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 public class StringComparisonMatch extends Match {
 	private static final String NAME_ENTITY = "entity:name";
 	private static final String CONTEXT_INTERNAL_STATE = "context:internalstate";
-	private static final String CONTEXT_PRIVACY_LEVEL = "context:privacylevel";
+	
 	
 	private final String value;
 	
@@ -44,18 +43,8 @@ public class StringComparisonMatch extends Match {
 		this.value = context.getState().getEntityName();
 	}
 	
-	/**
-	 * Creates a new StringComparisonMatch for a privacy level.
-	 * 
-	 * @param context - the privacy level context
-	 */
-	public StringComparisonMatch(final PrivacyLevelContext context) {
-		super(ID_CATEGORY_RESOURCE, CONTEXT_PRIVACY_LEVEL);
-		this.value = context.getLevel().getEntityName();
-	}
-	
-	protected StringComparisonMatch(final String contextId, final String value) {
-		super(contextId);
+	protected StringComparisonMatch(final String categoryId, final String contextId, final String value) {
+		super(categoryId, contextId);
 		this.value = value;
 	}
 	

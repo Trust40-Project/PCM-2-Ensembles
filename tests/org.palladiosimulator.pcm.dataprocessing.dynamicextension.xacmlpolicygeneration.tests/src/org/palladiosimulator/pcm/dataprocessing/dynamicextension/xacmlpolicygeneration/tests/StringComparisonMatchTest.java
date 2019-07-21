@@ -23,7 +23,7 @@ public class StringComparisonMatchTest {
 	
 	private RelatedCharacteristics action;
 	private InternalStateContext state;
-	private PrivacyLevelContext privacy;
+	
 	
 	@Before
 	public void setUp() {
@@ -32,8 +32,6 @@ public class StringComparisonMatchTest {
 		this.action = data.getRelatedCharacteristics().get(0);
 		this.state = getContexts(this.action).filter(InternalStateContext.class::isInstance)
 				.map(InternalStateContext.class::cast).collect(Collectors.toList()).get(0);
-		this.privacy = getContexts(this.action).filter(PrivacyLevelContext.class::isInstance)
-				.map(PrivacyLevelContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
 	@Test
@@ -51,15 +49,6 @@ public class StringComparisonMatchTest {
 		Assert.assertEquals(1, match.getMatches().size());
 		final MatchType matchType = match.getMatches().get(0);
 		Assert.assertEquals("INCIDENT_HAPPENED", matchType.getAttributeValue().getContent().get(0));
-		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_EQUAL.toString(), matchType.getMatchId());
-	}
-	
-	@Test
-	public void privacyTest() {
-		final StringComparisonMatch match = new StringComparisonMatch(this.privacy);
-		Assert.assertEquals(1, match.getMatches().size());
-		final MatchType matchType = match.getMatches().get(0);
-		Assert.assertEquals("PUBLIC", matchType.getAttributeValue().getContent().get(0));
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_EQUAL.toString(), matchType.getMatchId());
 	}
 }

@@ -41,8 +41,9 @@ public class ContextHandler {
 	 * Generates the policy set for the whole model instance.
 	 * 
 	 * @return the XACML policy set type representing the policy set for the whole model instance
+	 * @throws IllegalStateException - when an illegal mapping is detected
 	 */
-	public PolicySetType createPolicySet() {
+	public PolicySetType createPolicySet() throws IllegalStateException {
 		final List<PolicyType> policies = new ArrayList<>();
 		this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
 			var matchExtractor = new MatchExtractor(e);
@@ -50,7 +51,7 @@ public class ContextHandler {
 			final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
 			policies.add(policy.getPolicyType());
 		});
-		return new PolicySet(policies).getPolicySet(); 
+		return new PolicySet(policies).getPolicySet();
 	}
 	
 	/**

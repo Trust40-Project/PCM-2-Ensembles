@@ -21,9 +21,8 @@ public class MatchRegistry extends ContextRegistry<Match> {
 
 	private MatchRegistry() {
 		super();
-		put(PrivacyLevelContext.class, StringComparisonMatch.class); // TODO evtl. noch auf regex umstellen und
-																	 // TODO inkludierte privacy levels beachten
 		put(InternalStateContext.class, StringComparisonMatch.class);
+		put(PrivacyLevelContext.class, RegexMatchingMatch.class); 
 		put(RoleContext.class, RegexMatchingMatch.class);
 		put(LocationContext.class, RegexMatchingMatch.class);
 		put(OrganisationContext.class, RegexMatchingMatch.class);

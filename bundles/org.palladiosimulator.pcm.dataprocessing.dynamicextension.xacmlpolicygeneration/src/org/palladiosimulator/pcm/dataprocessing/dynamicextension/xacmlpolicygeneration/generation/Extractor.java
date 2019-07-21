@@ -28,8 +28,9 @@ public abstract class Extractor<T> {
 	 * Extracts a list of T from the given characteristic.
 	 * 
 	 * @return a list of T which are to be combined with OR
+	 * @throws IllegalStateException - when an illegal mapping is detected
 	 */
-	public List<T> extract() {
+	public List<T> extract() throws IllegalStateException {
 		final List<T> list = new ArrayList<>();
 		for (int i = 0; i < ContextHandler.getCharacteristicsList(this.relatedCharacteristics).size() ; i++) {
 			list.add(extractOneElement(i));
@@ -37,7 +38,7 @@ public abstract class Extractor<T> {
 		return list;
 	}
 	
-	protected abstract T extractOneElement(int index);
+	protected abstract T extractOneElement(int index) throws IllegalStateException;
 	
 	protected RelatedCharacteristics getRelatedCharacteristic() {
 		return this.relatedCharacteristics;

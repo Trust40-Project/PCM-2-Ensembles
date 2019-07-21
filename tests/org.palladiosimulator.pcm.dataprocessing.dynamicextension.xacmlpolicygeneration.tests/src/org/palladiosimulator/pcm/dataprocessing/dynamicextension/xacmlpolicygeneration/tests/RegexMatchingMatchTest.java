@@ -6,9 +6,11 @@ import org.junit.*;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.RegexMatchingMatch;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.StringComparisonMatch;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -23,6 +25,8 @@ public class RegexMatchingMatchTest {
 	private RoleContext role;
 	private OrganisationContext organisation;
 	
+	private PrivacyLevelContext privacy;
+	
 	@Before
 	public void setUp() {
 		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DYNAMIC, TestUnitHandler.PATH_DATA);
@@ -33,6 +37,9 @@ public class RegexMatchingMatchTest {
 				.map(RoleContext.class::cast).collect(Collectors.toList()).get(0);
 		this.organisation = getContexts(data.getRelatedCharacteristics().get(0)).filter(OrganisationContext.class::isInstance)
 				.map(OrganisationContext.class::cast).collect(Collectors.toList()).get(0);
+		
+		this.privacy = getContexts(data.getRelatedCharacteristics().get(0)).filter(PrivacyLevelContext.class::isInstance)
+				.map(PrivacyLevelContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
 	@Test
@@ -62,6 +69,15 @@ public class RegexMatchingMatchTest {
 		final MatchType matchType = match.getMatches().get(0);
 		final String organisationRegex = matchType.getAttributeValue().getContent().get(0).toString();
 		Assert.assertEquals("(\\QA\\E)|(\\QASub\\E)", organisationRegex);
+		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
+	}
+	
+	@Test
+	public void privacyTest() {
+		final RegexMatchingMatch match = new RegexMatchingMatch(this.privacy);
+		Assert.assertEquals(1, match.getMatches().size());
+		final MatchType matchType = match.getMatches().get(0);
+		Assert.assertEquals("(PUBLIC)|(RESTRICTED)|(SECRET)|(UNDEFINED)", matchType.getAttributeValue().getContent().get(0));
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
 	}
 }
