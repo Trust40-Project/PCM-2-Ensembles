@@ -1,5 +1,8 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests.scenarios;
 
+import java.io.File;
+import java.util.Arrays;
+
 import com.att.research.xacml.api.Decision;
 
 public class TestScenario {
@@ -12,6 +15,7 @@ public class TestScenario {
 	private static final String PATH_GITBASE = "models/PCM-2-XACML/"; 
 	
 	private static final String FILENAME_OUTPUT_POLICYSET = "outSet.xml";
+	private static final String EXPLICIT_OUTPUT_POLICYSET_DIR = "out/";
 	////////////////////////////////////////////////////////////////////////////////////////////
 	
 	private static final String PATH_TEST_DIR = PATH_PREFIX + PATH_GITBASE
@@ -19,25 +23,21 @@ public class TestScenario {
 		
 	public static final String PATH_OUTPUT_POLICYSET = PATH_PREFIX + FILENAME_OUTPUT_POLICYSET;
 	
+	private final String scenarioDirectoryName;
+	
 	private final String modelPath;
 	private final String testRequestPath;
 	private final String testName;
 	private final Decision expected;
 	
 	public TestScenario(final String scenarioDirectoryName, final String testFileName, final Decision expected) {
-		this.modelPath = PATH_PREFIX + PATH_INPUT_MODELS + scenarioDirectoryName + FILENAME_PREFIX_INPUT_MODEL;
+		this.scenarioDirectoryName = scenarioDirectoryName;
+		this.modelPath = PATH_PREFIX + PATH_INPUT_MODELS + scenarioDirectoryName + getFilenamePrefixInputModel(scenarioDirectoryName);
 		this.testRequestPath = PATH_TEST_DIR + testFileName;
 		this.testName = testFileName.replaceAll("\\.xml", "");
 		this.expected = expected;
 	}
-	
-	public TestScenario(final TestScenario sameModelScenario, final String testFileName, final Decision expected) {
-		this.modelPath = sameModelScenario.modelPath;
-		this.testRequestPath = PATH_TEST_DIR + testFileName;
-		this.testName = testFileName.replaceAll("\\.xml", "");
-		this.expected = expected;
-	}
-	
+
 	public String getDataPath() {
 		return this.modelPath + ".dataprocessing";
 	}
@@ -56,5 +56,22 @@ public class TestScenario {
 	
 	public Decision getExpected() {
 		return this.expected;
+	}
+	
+	private String getFilenamePrefixInputModel(final String scenarioDirectoryName) {
+		final File[] fileList = new File(PATH_PREFIX + PATH_INPUT_MODELS + scenarioDirectoryName).listFiles();
+		if (Arrays.stream(fileList).anyMatch(f -> f.getName().endsWith(".dynamicextension"))) {
+			// get filename prefix
+			return Arrays.stream(fileList)
+					.filter(f -> f.getName().endsWith(".dynamicextension"))
+					.map(f -> f.getName().replaceAll("\\.dynamicextension", ""))
+					.toArray()[0].toString();
+		}
+		return FILENAME_PREFIX_INPUT_MODEL;
+	}
+
+	public String getExplicitOutputPolicyPath() {
+		return PATH_PREFIX + EXPLICIT_OUTPUT_POLICYSET_DIR
+				+ this.scenarioDirectoryName.substring(0, this.scenarioDirectoryName.length() - 1) + ".xml";
 	}
 }

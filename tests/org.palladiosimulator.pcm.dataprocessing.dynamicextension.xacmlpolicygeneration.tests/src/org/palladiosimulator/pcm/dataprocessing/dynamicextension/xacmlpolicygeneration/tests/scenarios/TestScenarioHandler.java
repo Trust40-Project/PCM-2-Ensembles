@@ -41,7 +41,10 @@ public class TestScenarioHandler {
 		var policySet = ch.createPolicySet();
 		// write policySet
 		final Path filenamePolicySet = Path.of(TestScenario.PATH_OUTPUT_POLICYSET);
+		final Path filenamePolicySetExplicit = Path.of(scenario.getExplicitOutputPolicyPath());
 		XACMLPolicyWriter.writePolicyFile(filenamePolicySet, policySet);
+		// also writing policy set to extra file for manual checks for correctness
+		XACMLPolicyWriter.writePolicyFile(filenamePolicySetExplicit, policySet);
 		
 		// Request-Test
 		try {
