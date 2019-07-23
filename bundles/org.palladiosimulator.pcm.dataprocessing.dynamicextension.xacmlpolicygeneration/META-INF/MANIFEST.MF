@@ -18,5 +18,4 @@ Export-Package: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlp
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches,
  org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations,
- org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers,
- org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.util
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers
