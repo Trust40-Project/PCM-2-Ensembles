@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.StringComparisonMatch;
 
