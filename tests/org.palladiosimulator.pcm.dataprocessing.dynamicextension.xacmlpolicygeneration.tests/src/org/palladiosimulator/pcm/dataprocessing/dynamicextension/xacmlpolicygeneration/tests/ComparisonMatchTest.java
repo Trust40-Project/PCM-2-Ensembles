@@ -24,7 +24,7 @@ public class ComparisonMatchTest {
 	
 	@Before
 	public void setUp() {
-		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DYNAMIC, TestUnitHandler.PATH_DATA);
+		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DATA);
 		this.data = loader.loadDataSpecification();
 		this.intComparison = getContexts(data.getRelatedCharacteristics().get(0)).filter(IntegralComparisonContext.class::isInstance)
 				.map(IntegralComparisonContext.class::cast).collect(Collectors.toList()).get(0);

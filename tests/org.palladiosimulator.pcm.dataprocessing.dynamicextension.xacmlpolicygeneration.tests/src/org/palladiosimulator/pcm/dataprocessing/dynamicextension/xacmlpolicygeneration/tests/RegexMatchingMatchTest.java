@@ -10,7 +10,6 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Privacy
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.RegexMatchingMatch;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.StringComparisonMatch;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -29,7 +28,7 @@ public class RegexMatchingMatchTest {
 	
 	@Before
 	public void setUp() {
-		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DYNAMIC, TestUnitHandler.PATH_DATA);
+		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DATA);
 		this.data = loader.loadDataSpecification();
 		this.location = getContexts(data.getRelatedCharacteristics().get(0)).filter(LocationContext.class::isInstance)
 				.map(LocationContext.class::cast).collect(Collectors.toList()).get(0);

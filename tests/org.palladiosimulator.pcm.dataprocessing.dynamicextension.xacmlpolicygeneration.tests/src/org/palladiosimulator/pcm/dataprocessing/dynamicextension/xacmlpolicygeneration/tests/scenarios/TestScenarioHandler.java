@@ -37,7 +37,7 @@ public class TestScenarioHandler {
 	}
 	
 	private void testScenario(final TestScenario scenario) {
-		ContextHandler ch = new ContextHandler(scenario.getDynamicPath(), scenario.getDataPath());
+		ContextHandler ch = new ContextHandler(scenario.getDataPath());
 		var policySet = ch.createPolicySet();
 		// write policySet
 		final Path filenamePolicySet = Path.of(TestScenario.PATH_OUTPUT_POLICYSET);

@@ -10,54 +10,58 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataprocessingPackage;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicextensionPackage;
 
 /**
+ * Loads the data processing part of the model.
  * 
  * @author majuwa
- *
+ * @author Jonathan Schenkenberger
+ * @version 1.01
  */
 public class ModelLoader {
-	private String pathDynamic;
-	private String pathDataprocessing;
-	private ResourceSet resourceSet;
-	private Registry resourceRegistry;
+    //private String pathDynamic;
+    private String pathDataprocessing;
+    private ResourceSet resourceSet;
+    private Registry resourceRegistry;
 
-	public ModelLoader(String pathDynamic, String pathDataprocessing) {
-		this.pathDynamic = pathDynamic;
-		this.pathDataprocessing = pathDataprocessing;
-		// here start loading
-		// Datap
-		DataprocessingPackage.eINSTANCE.eClass();
-		DynamicextensionPackage.eINSTANCE.eClass();
-		resourceSet = new ResourceSetImpl();
-		resourceRegistry = Resource.Factory.Registry.INSTANCE;
-		final Map<String, Object> map = resourceRegistry.getExtensionToFactoryMap();
-		map.put("*", new XMIResourceFactoryImpl());
-		resourceSet.setResourceFactoryRegistry(resourceRegistry);
+    /**
+     * Creates a new model loader.
+     * 
+     * @param pathDataprocessing - the path to the data processing part of the model
+     */
+    public ModelLoader(final String pathDataprocessing) {
+        this.pathDataprocessing = pathDataprocessing;
+        // here start loading
+        // Datap
+        DataprocessingPackage.eINSTANCE.eClass();
+        DynamicextensionPackage.eINSTANCE.eClass();
+        this.resourceSet = new ResourceSetImpl();
+        this.resourceRegistry = Resource.Factory.Registry.INSTANCE;
+        final Map<String, Object> map = this.resourceRegistry.getExtensionToFactoryMap();
+        map.put("*", new XMIResourceFactoryImpl());
+        this.resourceSet.setResourceFactoryRegistry(this.resourceRegistry);
+    }
 
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public DynamicSpecification loadDynamicModel() {
-		var resourceDynamic = loadResource(resourceSet, pathDynamic);
-		return (DynamicSpecification) resourceDynamic.getContents().get(0);
+    /**
+     * Loads the data specification.
+     * 
+     * @return the data specification
+     */
+    public DataSpecification loadDataSpecification() {
+        var resourceData = loadResource(this.resourceSet, this.pathDataprocessing);
+        return (DataSpecification) resourceData.getContents().get(0);
+    }
 
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public DataSpecification loadDataSpecification() {
-		var resourceData = loadResource(resourceSet, pathDataprocessing);
-		return (DataSpecification) resourceData.getContents().get(0);
-	}
-
-	private Resource loadResource(ResourceSet resourceSet, String path) {
-		return resourceSet.getResource(URI.createFileURI(path), true);
-	}
+    /**
+     * Loads a resource.
+     * 
+     * @param resourceSet - the resource set
+     * @param path - the path
+     * @return the resource
+     */
+    private Resource loadResource(final ResourceSet resourceSet, final String path) {
+        return resourceSet.getResource(URI.createFileURI(path), true);
+    }
 
 }

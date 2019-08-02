@@ -22,61 +22,64 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
  * @version 1.0
  */
 public class ContextHandler {
-	private DataSpecification dataContainer;
-	//private DynamicSpecification dynamicContainer; //TODO frage: wofuer wird der benoetigt?
+    private DataSpecification dataContainer;
 
-	/**
-	 * Creates a new ContextHandler with the model instance at the given path.
-	 * 
-	 * @param pathDynamic - unused at the moment //TODO
-	 * @param pathData - the path to the data specification
-	 */
-	public ContextHandler(final String pathDynamic, final String pathData) {
-		var modelloader = new ModelLoader(pathDynamic, pathData);
-		this.dataContainer = modelloader.loadDataSpecification();
-		//this.dynamicContainer = modelloader.loadDynamicModel();
-	}
+    /**
+     * Creates a new ContextHandler with the model instance at the given path.
+     * 
+     * @param pathData
+     *            - the path to the data specification
+     */
+    public ContextHandler(final String pathData) {
+        var modelloader = new ModelLoader(pathData);
+        this.dataContainer = modelloader.loadDataSpecification();
+    }
 
-	/**
-	 * Generates the policy set for the whole model instance.
-	 * 
-	 * @return the XACML policy set type representing the policy set for the whole model instance
-	 * @throws IllegalStateException - when an illegal mapping is detected
-	 */
-	public PolicySetType createPolicySet() throws IllegalStateException {
-		final List<PolicyType> policies = new ArrayList<>();
-		this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
-			var matchExtractor = new MatchExtractor(e);
-			var obligationExtractor = new ObligationExtractor(e);
-			final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
-			policies.add(policy.getPolicyType());
-		});
-		return new PolicySet(policies).getPolicySet();
-	}
-	
-	/**
-	 * Gets the contexts of the characteristic with the given index in the characteristic list
-	 * of the given related characteristic.
-	 * 
-	 * @param relatedCharacteristic - the related characteristic
-	 * @param index - the list index of the characteristic list
-	 * @return the contexts of the characteristic specified by the related characteristic and the index
-	 */
-	public static List<Context> getContexts(final RelatedCharacteristics relatedCharacteristic, final int index) {
-		return getCharacteristicsList(relatedCharacteristic).get(index).getContext();
-	}
-	
-	/**
-	 * Gets the characteristic list of the given related characteristic.
-	 * 
-	 * @param relatedCharacteristic - the related characteristic
-	 * @return the characteristic list of the given related characteristic
-	 */
-	public static List<ContextCharacteristic> getCharacteristicsList(final RelatedCharacteristics relatedCharacteristic) {
-		return relatedCharacteristic.getCharacteristics().getOwnedCharacteristics().stream()
-				.filter(ContextCharacteristic.class::isInstance)
-				.map(ContextCharacteristic.class::cast)
-				.collect(Collectors.toList());
-	}
-	
+    /**
+     * Generates the policy set for the whole model instance.
+     * 
+     * @return the XACML policy set type representing the policy set for the whole model instance
+     * @throws IllegalStateException
+     *             - when an illegal mapping is detected
+     */
+    public PolicySetType createPolicySet() throws IllegalStateException {
+        final List<PolicyType> policies = new ArrayList<>();
+        this.dataContainer.getRelatedCharacteristics().stream().forEach(e -> {
+            var matchExtractor = new MatchExtractor(e);
+            var obligationExtractor = new ObligationExtractor(e);
+            final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
+            policies.add(policy.getPolicyType());
+        });
+        return new PolicySet(policies).getPolicySet();
+    }
+
+    /**
+     * Gets the contexts of the characteristic with the given index in the characteristic list of
+     * the given related characteristic.
+     * 
+     * @param relatedCharacteristic
+     *            - the related characteristic
+     * @param index
+     *            - the list index of the characteristic list
+     * @return the contexts of the characteristic specified by the related characteristic and the
+     *         index
+     */
+    public static List<Context> getContexts(final RelatedCharacteristics relatedCharacteristic, final int index) {
+        return getCharacteristicsList(relatedCharacteristic).get(index).getContext();
+    }
+
+    /**
+     * Gets the characteristic list of the given related characteristic.
+     * 
+     * @param relatedCharacteristic
+     *            - the related characteristic
+     * @return the characteristic list of the given related characteristic
+     */
+    public static List<ContextCharacteristic> getCharacteristicsList(
+            final RelatedCharacteristics relatedCharacteristic) {
+        return relatedCharacteristic.getCharacteristics().getOwnedCharacteristics().stream()
+                .filter(ContextCharacteristic.class::isInstance).map(ContextCharacteristic.class::cast)
+                .collect(Collectors.toList());
+    }
+
 }

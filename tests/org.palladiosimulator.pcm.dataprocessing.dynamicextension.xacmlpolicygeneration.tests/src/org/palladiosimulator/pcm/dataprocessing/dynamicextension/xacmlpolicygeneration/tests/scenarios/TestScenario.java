@@ -42,10 +42,6 @@ public class TestScenario {
 		return this.modelPath + ".dataprocessing";
 	}
 	
-	public String getDynamicPath() {
-		return this.modelPath + ".dynamicextension";
-	}
-	
 	public String getTestRequestPath() {
 		return this.testRequestPath;
 	}

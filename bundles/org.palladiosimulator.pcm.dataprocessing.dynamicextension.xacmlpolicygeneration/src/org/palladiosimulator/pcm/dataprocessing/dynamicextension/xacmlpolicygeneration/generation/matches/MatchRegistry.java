@@ -16,30 +16,34 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygene
  * @author Jonathan Schenkenberger
  * @version 1.0
  */
-public class MatchRegistry extends ContextRegistry<Match> {
-	private static MatchRegistry instance;
+public final class MatchRegistry extends ContextRegistry<Match> {
+    private static MatchRegistry instance;
 
-	private MatchRegistry() {
-		super();
-		put(InternalStateContext.class, StringComparisonMatch.class);
-		put(PrivacyLevelContext.class, RegexMatchingMatch.class); 
-		put(RoleContext.class, RegexMatchingMatch.class);
-		put(LocationContext.class, RegexMatchingMatch.class);
-		put(OrganisationContext.class, RegexMatchingMatch.class);
-		put(IntegralComparisonContext.class, ComparisonMatch.class);
-		put(FloatingComparisonContext.class, ComparisonMatch.class);
-		put(ShiftContext.class, ShiftMatch.class);
-		// TODO insert new context to match mappings here
-	}
+    /**
+     * Private constructor of match registry.
+     */
+    private MatchRegistry() {
+        super();
+        put(InternalStateContext.class, StringComparisonMatch.class);
+        put(PrivacyLevelContext.class, RegexMatchingMatch.class);
+        put(RoleContext.class, RegexMatchingMatch.class);
+        put(LocationContext.class, RegexMatchingMatch.class);
+        put(OrganisationContext.class, RegexMatchingMatch.class);
+        put(IntegralComparisonContext.class, ComparisonMatch.class);
+        put(FloatingComparisonContext.class, ComparisonMatch.class);
+        put(ShiftContext.class, ShiftMatch.class);
+        // TODO insert new context to match mappings here
+    }
 
-	/**
-	 * Gets an instance of the registry.
-	 * @return an instance of the registry
-	 */
-	public static MatchRegistry getInstance() {
-		if (instance == null) {
-			instance = new MatchRegistry();
-		}
-		return instance;
-	}
+    /**
+     * Gets an instance of the registry.
+     * 
+     * @return an instance of the registry
+     */
+    public static MatchRegistry getInstance() {
+        if (instance == null) {
+            instance = new MatchRegistry();
+        }
+        return instance;
+    }
 }

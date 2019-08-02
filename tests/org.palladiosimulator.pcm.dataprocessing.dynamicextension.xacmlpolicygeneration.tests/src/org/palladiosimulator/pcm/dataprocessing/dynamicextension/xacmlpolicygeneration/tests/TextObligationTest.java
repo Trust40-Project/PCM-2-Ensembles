@@ -24,7 +24,7 @@ public class TextObligationTest {
 	
 	@Before
 	public void setUp() {
-		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DYNAMIC, TestUnitHandler.PATH_DATA);
+		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DATA);
 		this.data = loader.loadDataSpecification();
 		this.extension = getContexts(this.data.getRelatedCharacteristics().get(0)).filter(ExtensionContext.class::isInstance)
 				.map(ExtensionContext.class::cast).collect(Collectors.toList()).get(0);

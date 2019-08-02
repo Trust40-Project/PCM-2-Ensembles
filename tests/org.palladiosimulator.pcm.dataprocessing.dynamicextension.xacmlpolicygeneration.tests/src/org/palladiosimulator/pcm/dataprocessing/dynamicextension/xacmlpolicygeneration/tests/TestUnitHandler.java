@@ -17,7 +17,6 @@ public final class TestUnitHandler {
 	private static final String PATH_INPUT_MODELS = "models/UseCasesTechnicalReport/";
 	private static final String PATH_USECASE = "UC-Test/uc-test";
 
-	public static final String PATH_DYNAMIC = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dynamicextension";
 	public static final String PATH_DATA = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dataprocessing";
 	
 	private TestUnitHandler() {

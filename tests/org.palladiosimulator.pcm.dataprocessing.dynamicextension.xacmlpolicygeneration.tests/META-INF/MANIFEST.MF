@@ -7,3 +7,5 @@ Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration;bundle-version="0.0.0",
  org.palladiosimulator.pcm.dataprocessing.dynamicextension
+Export-Package: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests,
+ org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests.scenarios

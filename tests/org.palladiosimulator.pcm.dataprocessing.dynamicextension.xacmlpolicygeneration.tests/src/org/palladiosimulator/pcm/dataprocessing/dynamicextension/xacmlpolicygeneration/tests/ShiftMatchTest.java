@@ -23,7 +23,7 @@ public class ShiftMatchTest {
 	
 	@Before
 	public void setUp() {
-		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DYNAMIC, TestUnitHandler.PATH_DATA);
+		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DATA);
 		this.data = loader.loadDataSpecification();
 		this.shiftContext = getContexts(data.getRelatedCharacteristics().get(0)).filter(ShiftContext.class::isInstance)
 				.map(ShiftContext.class::cast).collect(Collectors.toList()).get(0);
