@@ -11,6 +11,7 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.MatchExtractor;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations.ObligationExtractor;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
@@ -71,15 +72,21 @@ public class ContextHandler {
     /**
      * Gets the characteristic list of the given related characteristic.
      * 
-     * @param relatedCharacteristic
-     *            - the related characteristic
+     * @param relatedCharacteristics
+     *            - the related characteristics
      * @return the characteristic list of the given related characteristic
      */
     public static List<ContextCharacteristic> getCharacteristicsList(
-            final RelatedCharacteristics relatedCharacteristic) {
-        return relatedCharacteristic.getCharacteristics().getOwnedCharacteristics().stream()
-                .filter(ContextCharacteristic.class::isInstance).map(ContextCharacteristic.class::cast)
-                .collect(Collectors.toList());
+            final RelatedCharacteristics relatedCharacteristics) {
+        if (relatedCharacteristics != null && relatedCharacteristics.getCharacteristics() != null) {
+            return relatedCharacteristics.getCharacteristics().getOwnedCharacteristics().stream()
+                    .filter(ContextCharacteristic.class::isInstance).map(ContextCharacteristic.class::cast)
+                    .collect(Collectors.toList());
+        } else {
+            SampleHandler.LOGGER.warn("an element concerning a related characteristics of one action is null!"
+                    + " assuming empty list");
+            return new ArrayList<>();
+        }
     }
 
 }

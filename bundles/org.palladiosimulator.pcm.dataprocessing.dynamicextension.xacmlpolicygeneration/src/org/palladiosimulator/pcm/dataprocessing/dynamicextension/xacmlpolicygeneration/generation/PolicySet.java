@@ -5,6 +5,8 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
+
 import com.att.research.xacml.api.XACML3;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
@@ -44,6 +46,9 @@ public class PolicySet {
             final QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);
             policySet.getPolicySetOrPolicyOrPolicySetIdReference()
                     .add(new JAXBElement<PolicyType>(qname, PolicyType.class, policy));
+        }
+        if (this.policies.isEmpty()) {
+            SampleHandler.LOGGER.warn("model error: model defines no actions!");
         }
         policySet.setVersion("1.0");
         policySet.setPolicyCombiningAlgId(XACML3.ID_POLICY_PERMIT_OVERRIDES.stringValue());

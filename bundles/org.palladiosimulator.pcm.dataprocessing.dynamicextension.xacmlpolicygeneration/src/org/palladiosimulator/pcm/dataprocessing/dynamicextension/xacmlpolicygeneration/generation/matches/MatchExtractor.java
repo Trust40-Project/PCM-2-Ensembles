@@ -28,12 +28,29 @@ public class MatchExtractor extends Extractor<List<MatchType>> {
     public MatchExtractor(final RelatedCharacteristics relatedCharacteristics) {
         super(relatedCharacteristics);
     }
+    
+    @Override
+    public List<List<MatchType>> extract() {
+        final var extractionResult = super.extract();
+        
+        for (var list : extractionResult) {
+            if (list.isEmpty()) {
+                addActionNameMatch(list);
+            }
+        }
+        
+        if (extractionResult.isEmpty()) {
+            extractionResult.add(addActionNameMatch(new ArrayList<MatchType>()));
+        }
+        
+        return extractionResult;
+    }
 
     @Override
     protected List<MatchType> extractOneElement(final int index) {
         final List<MatchType> list = new ArrayList<>();
         // entity
-        list.addAll(new StringComparisonMatch(getRelatedCharacteristics()).getMatches());
+        addActionNameMatch(list);
 
         // contexts
         final Stream<Match> matches = MatchRegistry.getInstance()
@@ -44,4 +61,14 @@ public class MatchExtractor extends Extractor<List<MatchType>> {
         return list;
     }
 
+    /**
+     * Adds the action name to the matches list.
+     * 
+     * @param list - the matches list
+     * @return the matches list
+     */
+    private List<MatchType> addActionNameMatch(final List<MatchType> list) {
+        list.addAll(new StringComparisonMatch(getRelatedCharacteristics()).getMatches());
+        return list;
+    }
 }

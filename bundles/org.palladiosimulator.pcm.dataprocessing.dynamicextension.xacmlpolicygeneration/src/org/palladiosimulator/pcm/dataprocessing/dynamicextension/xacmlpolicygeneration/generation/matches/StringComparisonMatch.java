@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -30,7 +31,11 @@ public class StringComparisonMatch extends Match {
      */
     public StringComparisonMatch(final RelatedCharacteristics entity) {
         super(ID_CATEGORY_ACTION, NAME_ENTITY);
-        this.value = entity.getEntityName();
+        final boolean entityNameExists = entity != null && entity.getEntityName() != null;
+        this.value = entityNameExists ? entity.getEntityName() : "NO_ENTITY";
+        if (!entityNameExists) {
+            SampleHandler.LOGGER.warn("model error: entity without name!");
+        }
     }
 
     /**

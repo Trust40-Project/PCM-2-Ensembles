@@ -3,8 +3,6 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 import java.util.ArrayList;
 import java.util.List;
 
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
-
 import com.att.research.xacml.api.XACML3;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.AllOfType;
@@ -26,21 +24,17 @@ public class Policy {
     private final List<List<MatchType>> matches;
     private final List<ObligationExpressionsType> obligationsList;
 
-    private final boolean isModelEmpty;
-
     /**
      * Creates a new policy with the given matches.
      * 
      * @param matches
      *            - the given matches
-     * @param obligationsList 
+     * @param obligationsList
      *            - the given obligations
      */
     public Policy(final List<List<MatchType>> matches, final List<ObligationExpressionsType> obligationsList) {
         this.matches = matches;
         this.obligationsList = obligationsList;
-
-        this.isModelEmpty = this.matches.isEmpty() || this.matches.get(0).isEmpty();
     }
 
     /**
@@ -51,38 +45,8 @@ public class Policy {
      *         {@code matches.get(0).get(0)}.
      */
     public PolicyType getPolicyType() {
-        final String entityName;
-        final List<RuleType> rules = new ArrayList<>();
-        if (!this.isModelEmpty) {
-            entityName = "" + this.matches.get(0).get(0).getAttributeValue().getContent().get(0);
-            for (int i = 0; i < this.matches.size(); i++) {
-                // AllOf
-                final AllOfType allOf = new AllOfType();
-                allOf.getMatch().addAll(this.matches.get(i));
-
-                // AnyOf
-                final AnyOfType anyOf = new AnyOfType();
-                anyOf.getAllOf().add(allOf);
-
-                // Target
-                final TargetType target = new TargetType();
-                target.getAnyOf().add(anyOf);
-
-                // Rule
-                final RuleType rule = new RuleType();
-                rule.setDescription("Context check rule for entity " + entityName + "'s characteristic " + i);
-                rule.setTarget(target);
-                rule.setRuleId("rule:" + entityName + ":" + i);
-                rule.setEffect(EffectType.PERMIT);
-                if (!this.obligationsList.get(i).getObligationExpression().isEmpty()) {
-                    rule.setObligationExpressions(this.obligationsList.get(i));
-                }
-                rules.add(rule);
-            }
-        } else {
-            entityName = "NO_ENTITY";
-            SampleHandler.LOGGER.warn("model defines no entities");
-        }
+        final String entityName = "" + this.matches.get(0).get(0).getAttributeValue().getContent().get(0);
+        final List<RuleType> rules = getRules(entityName);
 
         // deny if not applicable rule
         final RuleType ruleDenyIfNotApplicable = new RuleType();
@@ -104,11 +68,37 @@ public class Policy {
     }
 
     /**
-     * Determines whether the model is empty, i.e. defines no action entities.
+     * Gets the rules for this policy.
      * 
-     * @return whether the model is empty
+     * @param entityName - the name of the action entity
+     * @return the rules for this policy
      */
-    public boolean isModelEmpty() {
-        return this.isModelEmpty;
+    private List<RuleType> getRules(final String entityName) {
+        final List<RuleType> rules = new ArrayList<>();
+        for (int i = 0; i < this.matches.size(); i++) {
+            // AllOf
+            final AllOfType allOf = new AllOfType();
+            allOf.getMatch().addAll(this.matches.get(i));
+
+            // AnyOf
+            final AnyOfType anyOf = new AnyOfType();
+            anyOf.getAllOf().add(allOf);
+
+            // Target
+            final TargetType target = new TargetType();
+            target.getAnyOf().add(anyOf);
+
+            // Rule
+            final RuleType rule = new RuleType();
+            rule.setDescription("Context check rule for entity " + entityName + "'s characteristic " + i);
+            rule.setTarget(target);
+            rule.setRuleId("rule:" + entityName + ":" + i);
+            rule.setEffect(EffectType.PERMIT);
+            if (!this.obligationsList.isEmpty() && !this.obligationsList.get(i).getObligationExpression().isEmpty()) {
+                rule.setObligationExpressions(this.obligationsList.get(i));
+            }
+            rules.add(rule);
+        }
+        return rules;
     }
 }

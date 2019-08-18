@@ -27,6 +27,9 @@ public class Main {
 		scenarios.add(new TestScenario(ucTest, "testDeny2.xml", Decision.DENY));
 		scenarios.add(new TestScenario(ucTest, "testDeny2_2.xml", Decision.DENY));
 
+		// empty model test
+		scenarios.add(new TestScenario("UC-Empty/", "testEmpty.xml", Decision.NOTAPPLICABLE));
+		
 		// uc3 test
 		final String uc3 = "UC3/";
 		scenarios.add(new TestScenario(uc3, "test3Permit_1.xml", Decision.PERMIT));
