@@ -5,6 +5,12 @@ import java.util.Arrays;
 
 import com.att.research.xacml.api.Decision;
 
+/**
+ * Defines a test scenario. Change settings here in order to adapt to where you have stored the input files.
+ * 
+ * @author Jonathan Schenkenberger
+ * @version 1.0
+ */
 public class TestScenario {
 	// SETTINGS ////////////////////////////////////////////////////////////////////////////////
 	public static final String PATH_PREFIX = "/home/jojo/Schreibtisch/KIT/Bachelorarbeit/";

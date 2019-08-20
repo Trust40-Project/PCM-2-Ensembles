@@ -32,6 +32,9 @@ public class TextObligationTest {
 				.map(PrerequisiteContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
+	/**
+	 * Tests an extension obligation.
+	 */
 	@Test
 	public void extensionTest() {
 		final TextObligation obligation = new TextObligation(this.extension);
@@ -40,6 +43,9 @@ public class TextObligationTest {
 		Assert.assertEquals("// Placeholder-Code", textValue);
 	}
 	
+	/**
+	 * Tests a prerequisite obligation.
+	 */
 	@Test
 	public void prerequisiteTest() {
 		final TextObligation obligation = new TextObligation(this.prerequisite);

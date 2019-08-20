@@ -41,6 +41,9 @@ public class RegexMatchingMatchTest {
 				.map(PrivacyLevelContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
+	/**
+	 * Tests a location match.
+	 */
 	@Test
 	public void locationTest() {
 		final RegexMatchingMatch match = new RegexMatchingMatch(this.location);
@@ -51,6 +54,9 @@ public class RegexMatchingMatchTest {
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
 	}
 	
+	/**
+	 * Tests a role match.
+	 */
 	@Test
 	public void roleTest() {
 		final RegexMatchingMatch match = new RegexMatchingMatch(this.role);
@@ -61,6 +67,9 @@ public class RegexMatchingMatchTest {
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
 	}
 	
+	/**
+	 * Tests an organisation match.
+	 */
 	@Test
 	public void organisationTest() {
 		final RegexMatchingMatch match = new RegexMatchingMatch(this.organisation);
@@ -71,6 +80,9 @@ public class RegexMatchingMatchTest {
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
 	}
 	
+	/**
+	 * Tests a privacy level match.
+	 */
 	@Test
 	public void privacyTest() {
 		final RegexMatchingMatch match = new RegexMatchingMatch(this.privacy);

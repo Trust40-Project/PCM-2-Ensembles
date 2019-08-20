@@ -29,6 +29,9 @@ public class ShiftMatchTest {
 				.map(ShiftContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
+	/**
+	 * Tests a shift match.
+	 */
 	@Test
 	public void shiftTest() {
 		final ShiftMatch match = new ShiftMatch(this.shiftContext);

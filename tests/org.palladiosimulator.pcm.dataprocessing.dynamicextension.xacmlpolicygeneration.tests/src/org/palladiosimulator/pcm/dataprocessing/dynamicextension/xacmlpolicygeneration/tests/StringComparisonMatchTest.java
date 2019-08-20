@@ -33,6 +33,9 @@ public class StringComparisonMatchTest {
 				.map(InternalStateContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
+	/**
+	 * Tests an action name match.
+	 */
 	@Test
 	public void actionTest() {
 		final StringComparisonMatch match = new StringComparisonMatch(this.action);
@@ -42,6 +45,9 @@ public class StringComparisonMatchTest {
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_EQUAL.toString(), matchType.getMatchId());
 	}
 	
+	/**
+	 * Tests an internal state match.
+	 */
 	@Test
 	public void stateTest() {
 		final StringComparisonMatch match = new StringComparisonMatch(this.state);

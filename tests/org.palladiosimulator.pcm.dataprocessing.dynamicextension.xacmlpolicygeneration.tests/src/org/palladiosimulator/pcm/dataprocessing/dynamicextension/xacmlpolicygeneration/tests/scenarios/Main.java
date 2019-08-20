@@ -7,6 +7,13 @@ import java.util.List;
 
 import com.att.research.xacml.api.Decision;
 
+/**
+ * The main class for testing scenarios for PCM-2-XACML transformation.
+ * Add scenarios here in order to do further testing.
+ * 
+ * @author Jonathan Schenkenberger
+ * @version 1.0
+ */
 public class Main {
 	public static void main(String[] args) {
 		final List<TestScenario> scenarios = new ArrayList<>();

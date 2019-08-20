@@ -32,6 +32,9 @@ public class ComparisonMatchTest {
 				.map(FloatingComparisonContext.class::cast).collect(Collectors.toList()).get(0);
 	}
 	
+	/**
+	 * Tests an int comparison.
+	 */
 	@Test
 	public void intTest() {
 		final ComparisonMatch match = new ComparisonMatch(this.intComparison);
@@ -45,6 +48,9 @@ public class ComparisonMatchTest {
 		Assert.assertEquals(comparisonStr, matchType.getMatchId());
 	}
 	
+	/**
+     * Tests a double comparison.
+     */
 	@Test
 	public void floTest() {
 		final ComparisonMatch match = new ComparisonMatch(this.floComparison);
