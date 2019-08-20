@@ -37,7 +37,7 @@ public class PolicySet {
      * 
      * @return the combined XACML policy set
      */
-    public PolicySetType getPolicySet() {
+    public PolicySetType getPolicySetType() {
         final PolicySetType policySet = new PolicySetType();
         policySet.setDescription("all policies combined"); // TODO
         policySet.setPolicySetId("completePolicySet"); // TODO

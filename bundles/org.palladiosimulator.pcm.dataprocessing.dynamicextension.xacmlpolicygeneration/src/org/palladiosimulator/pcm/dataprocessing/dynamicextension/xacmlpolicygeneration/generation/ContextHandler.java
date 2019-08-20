@@ -51,7 +51,7 @@ public class ContextHandler {
             final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
             policies.add(policy.getPolicyType());
         });
-        return new PolicySet(policies).getPolicySet();
+        return new PolicySet(policies).getPolicySetType();
     }
 
     /**
