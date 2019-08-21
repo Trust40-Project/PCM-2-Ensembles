@@ -32,6 +32,9 @@ public class ScalabilityEvaluation {
     private static final int[] COPY_NUMS = 
         {ONE, TEN, HUNDRED, THOUSAND, TEN_THOUSAND, HUNDRED_THOUSAND, MILLION, TWO_MILLION};
 
+    //TODO eval with UC-Scale AND UC-Test
+    //TODO eval with UC-Scale with AND copying
+    
     public static void main(String[] args) {
         final String ucScale = "UC-Scale/";
 

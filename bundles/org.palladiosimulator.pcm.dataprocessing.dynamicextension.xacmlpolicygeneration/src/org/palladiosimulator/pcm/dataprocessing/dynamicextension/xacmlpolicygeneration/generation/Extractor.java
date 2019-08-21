@@ -60,16 +60,16 @@ public abstract class Extractor<T> {
     /**
      * Gets the list of context characteristics.
      * 
-     * @return the list of context characteristics.
+     * @return the list of context characteristics
      */
     protected List<ContextCharacteristic> getCharacteristicsList() {
         return this.characteristicsList;
     }
     
     /**
-     * Gets the list of context characteristics.
+     * Gets the related characteristics.
      * 
-     * @return the list of context characteristics.
+     * @return the related characteristics
      */
     protected RelatedCharacteristics getRelatedCharacteristics() {
         return this.relatedCharacteristics;
