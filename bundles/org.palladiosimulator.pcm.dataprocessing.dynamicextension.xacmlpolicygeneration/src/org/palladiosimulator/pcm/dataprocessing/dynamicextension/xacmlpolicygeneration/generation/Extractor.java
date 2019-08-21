@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
 
 /**
  * Represents an abstract extractor, which extracts a list of T using information saved in a related
@@ -16,6 +17,7 @@ import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.R
  */
 public abstract class Extractor<T> {
     private final RelatedCharacteristics relatedCharacteristics;
+    private final List<ContextCharacteristic> characteristicsList;
 
     /**
      * Constructor of the extractor.
@@ -25,6 +27,7 @@ public abstract class Extractor<T> {
      */
     public Extractor(final RelatedCharacteristics relatedCharacteristics) {
         this.relatedCharacteristics = relatedCharacteristics;
+        this.characteristicsList = ContextHandler.getCharacteristicsList(this.relatedCharacteristics);
     }
 
     /**
@@ -36,7 +39,8 @@ public abstract class Extractor<T> {
      */
     public List<T> extract() throws IllegalStateException {
         final List<T> list = new ArrayList<>();
-        for (int i = 0; i < ContextHandler.getCharacteristicsList(this.relatedCharacteristics).size(); i++) {
+        final var contextListSize = this.characteristicsList.size();
+        for (int i = 0; i < contextListSize; i++) {
             list.add(extractOneElement(i));
         }
         return list;
@@ -54,9 +58,18 @@ public abstract class Extractor<T> {
     protected abstract T extractOneElement(int index) throws IllegalStateException;
 
     /**
-     * Gets the relatedCharacteristics. This method should only be used by subclasses.
+     * Gets the list of context characteristics.
      * 
-     * @return the relatedCharacteristics
+     * @return the list of context characteristics.
+     */
+    protected List<ContextCharacteristic> getCharacteristicsList() {
+        return this.characteristicsList;
+    }
+    
+    /**
+     * Gets the list of context characteristics.
+     * 
+     * @return the list of context characteristics.
      */
     protected RelatedCharacteristics getRelatedCharacteristics() {
         return this.relatedCharacteristics;

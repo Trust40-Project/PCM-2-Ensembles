@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextHandler;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.Extractor;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.ObligationExpressionType;
@@ -31,7 +30,7 @@ public class ObligationExtractor extends Extractor<ObligationExpressionsType> {
 
     @Override
     protected ObligationExpressionsType extractOneElement(final int index) {
-        final List<Context> allContexts = ContextHandler.getContexts(getRelatedCharacteristics(), index);
+        final List<Context> allContexts = getCharacteristicsList().get(index).getContext();
         // getting all obligations contained in the context information
         final List<ObligationExpressionType> obligationsList = ObligationRegistry.getInstance().getAll(allContexts)
                 .stream().map(Obligation::getObligations).flatMap(List::stream).collect(Collectors.toList());

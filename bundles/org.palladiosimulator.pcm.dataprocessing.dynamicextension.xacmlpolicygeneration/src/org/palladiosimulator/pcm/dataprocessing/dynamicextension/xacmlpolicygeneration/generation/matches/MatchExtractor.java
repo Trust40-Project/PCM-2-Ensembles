@@ -54,7 +54,7 @@ public class MatchExtractor extends Extractor<List<MatchType>> {
 
         // contexts
         final Stream<Match> matches = MatchRegistry.getInstance()
-                .getAll(ContextHandler.getContexts(getRelatedCharacteristics(), index)).stream();
+                .getAll(getCharacteristicsList().get(index).getContext()).stream();
         // adding all matches representing the different contexts to the match list
         list.addAll(matches.map(Match::getMatches).flatMap(List::stream).collect(Collectors.toList()));
 

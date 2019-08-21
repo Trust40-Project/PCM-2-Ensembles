@@ -65,21 +65,6 @@ public class ContextHandler {
     }
 
     /**
-     * Gets the contexts of the characteristic with the given index in the characteristic list of
-     * the given related characteristic.
-     * 
-     * @param relatedCharacteristic
-     *            - the related characteristic
-     * @param index
-     *            - the list index of the characteristic list
-     * @return the contexts of the characteristic specified by the related characteristic and the
-     *         index
-     */
-    public static List<Context> getContexts(final RelatedCharacteristics relatedCharacteristic, final int index) {
-        return getCharacteristicsList(relatedCharacteristic).get(index).getContext();
-    }
-
-    /**
      * Gets the characteristic list of the given related characteristic.
      * 
      * @param relatedCharacteristics
