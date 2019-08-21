@@ -1,5 +1,6 @@
-# Compiled class file
-*.class
+# Compiled class file (bin folders are excluded)
+# class files of third party software need to be included in order to build
+#*.class
 
 # Log file
 *.log
