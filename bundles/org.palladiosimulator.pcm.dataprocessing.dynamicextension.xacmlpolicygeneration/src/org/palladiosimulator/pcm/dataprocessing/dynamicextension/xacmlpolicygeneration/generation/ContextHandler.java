@@ -35,6 +35,16 @@ public class ContextHandler {
         var modelloader = new ModelLoader(pathData);
         this.dataContainer = modelloader.loadDataSpecification();
     }
+    
+    /**
+     * Creates a new ContextHandler with the given data container.
+     * This constructor is only for the scalability evaluation scenario.
+     * 
+     * @param dataContainer - the given data container
+     */
+    public ContextHandler(final DataSpecification dataContainer) {
+        this.dataContainer = dataContainer;
+    }
 
     /**
      * Generates the policy set for the whole model instance.

@@ -40,7 +40,7 @@ public class TextObligationTest {
 		final TextObligation obligation = new TextObligation(this.extension);
 		final ObligationExpressionType obligationType = obligation.getObligation();
 		final Object textValue = ((AttributeValueType) obligationType.getAttributeAssignmentExpression().get(0).getExpression().getValue()).getContent().get(0);
-		Assert.assertEquals("// Placeholder-Code", textValue);
+		Assert.assertEquals("testExtensionMethod", textValue);
 	}
 	
 	/**

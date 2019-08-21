@@ -3,6 +3,9 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 import java.io.File;
 import java.util.Arrays;
 
+import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
+
 import com.att.research.xacml.api.Decision;
 
 /**
@@ -46,6 +49,10 @@ public class TestScenario {
 
 	public String getDataPath() {
 		return this.modelPath + ".dataprocessing";
+	}
+	
+	public DataSpecification load() {
+	    return new ModelLoader(getDataPath()).loadDataSpecification();
 	}
 	
 	public String getTestRequestPath() {
