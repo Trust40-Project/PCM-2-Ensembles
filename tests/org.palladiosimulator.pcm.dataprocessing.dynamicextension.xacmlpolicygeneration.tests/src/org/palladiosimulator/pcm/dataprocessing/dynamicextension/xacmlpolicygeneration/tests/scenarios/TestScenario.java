@@ -32,6 +32,8 @@ public class TestScenario {
 		
 	public static final String PATH_OUTPUT_POLICYSET = PATH_PREFIX + FILENAME_OUTPUT_POLICYSET;
 	
+	public static final String PATH_OUT_DIR = PATH_PREFIX + EXPLICIT_OUTPUT_POLICYSET_DIR;
+	
 	private final String scenarioDirectoryName;
 	
 	private final String modelPath;
