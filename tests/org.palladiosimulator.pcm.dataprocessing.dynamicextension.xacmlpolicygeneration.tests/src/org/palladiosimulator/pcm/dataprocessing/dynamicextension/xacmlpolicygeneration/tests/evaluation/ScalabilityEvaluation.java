@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.Characteristic;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ShiftContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextHandler;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests.scenarios.TestScenario;
 
@@ -22,8 +22,7 @@ import com.att.research.xacml.util.XACMLPolicyWriter;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 
 /**
- * Class for evaluating scalability of the PCM-2-XACML trandformation.
- * 
+ * Class for evaluating scalability of the PCM-2-XACML transformation.
  * 
  * @author Jonathan Schenkenberger
  * @version 1.0
@@ -43,7 +42,7 @@ public class ScalabilityEvaluation {
             FIVE_HUNDRED_THOUSAND };
 
     // printing needs at least 5.5GB free disk space
-    private static final boolean IS_PRINTING = false;
+    private static final boolean IS_PRINTING = true;
 
     public static void main(String[] args) {
         System.out.println("OR\n---------------------------------------------------------------\n");
@@ -100,12 +99,12 @@ public class ScalabilityEvaluation {
             model.getRelatedCharacteristics().get(0).getCharacteristics().eSet(listFeature, list);
         } else {
             // AND
-            final OrganisationContext toCopy = (OrganisationContext) ContextHandler
+            final ShiftContext toCopy = (ShiftContext) ContextHandler
                     .getCharacteristicsList(model.getRelatedCharacteristics().get(0)).get(0).getContext().get(0);
             final EList<Context> list = new BasicEList<>();
             for (int i = 0; i < copyNum; i++) {
-                final OrganisationContext copied = (OrganisationContext) new EcoreUtil.Copier().copy(toCopy);
-                copied.setOrganisation(toCopy.getOrganisation()); // organisation is not copied, so
+                final ShiftContext copied = (ShiftContext) new EcoreUtil.Copier().copy(toCopy);
+                copied.setShift(toCopy.getShift()); // shift is not copied, so
                                                                   // it is set here
                 list.add(copied);
             }
