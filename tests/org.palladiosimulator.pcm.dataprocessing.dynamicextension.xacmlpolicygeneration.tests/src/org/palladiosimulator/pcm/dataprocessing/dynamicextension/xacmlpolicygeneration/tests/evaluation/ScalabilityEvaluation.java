@@ -41,8 +41,8 @@ public class ScalabilityEvaluation {
     private static final int[] COPY_NUMS = { ONE, TEN, HUNDRED, THOUSAND, TEN_THOUSAND, HUNDRED_THOUSAND,
             FIVE_HUNDRED_THOUSAND };
 
-    // printing needs at least 5.5GB free disk space
-    private static final boolean IS_PRINTING = true;
+    // printing needs at least 6.7GB free disk space
+    private static final boolean IS_PRINTING = false;
 
     public static void main(String[] args) {
         System.out.println("OR\n---------------------------------------------------------------\n");
