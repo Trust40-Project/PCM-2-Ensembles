@@ -54,6 +54,12 @@ public class Main {
 		scenarios.add(new TestScenario(ucShift, "shiftPermit_1.xml", Decision.PERMIT));
 		scenarios.add(new TestScenario(ucShift, "shiftDeny_1.xml", Decision.DENY));
 		
+		// uc-running test
+		final String ucRunning = "UC-Running/";
+		scenarios.add(new TestScenario(ucRunning, "runningPermit_1.xml", Decision.PERMIT));
+		scenarios.add(new TestScenario(ucRunning, "runningPermit_2.xml", Decision.PERMIT));
+		scenarios.add(new TestScenario(ucRunning, "runningDeny_1.xml", Decision.DENY));
+		
 		// TODO add scenarios here
 		
 		// test with relevant system time
