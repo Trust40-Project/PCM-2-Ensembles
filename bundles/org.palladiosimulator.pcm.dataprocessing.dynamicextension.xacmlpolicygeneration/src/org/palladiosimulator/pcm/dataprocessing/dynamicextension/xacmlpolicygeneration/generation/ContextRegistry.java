@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
@@ -35,7 +36,7 @@ public abstract class ContextRegistry<V> {
      * @return the former mapping
      */
     public Class<? extends V> put(final Class<? extends Context> key, final Class<? extends V> value) {
-        return map.put(key, value);
+        return map.put(Objects.requireNonNull(key), Objects.requireNonNull(value));
     }
 
     /**
@@ -48,6 +49,7 @@ public abstract class ContextRegistry<V> {
      *             - when an illegal mapping is found
      */
     public List<V> getAll(final List<Context> contexts) throws IllegalStateException {
+        Objects.requireNonNull(contexts);
         final List<V> vs = new ArrayList<>();
         for (var context : contexts) {
             final Class<?> contextInterface = getContextInterface(context.getClass());

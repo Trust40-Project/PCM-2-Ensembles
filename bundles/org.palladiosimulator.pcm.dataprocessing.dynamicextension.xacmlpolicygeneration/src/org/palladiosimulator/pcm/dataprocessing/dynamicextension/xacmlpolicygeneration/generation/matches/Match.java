@@ -1,6 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -32,7 +33,7 @@ public abstract class Match {
      *            - the given attribute id
      */
     protected Match(final String attributeId) {
-        this(ID_CATEGORY_SUBJECT, attributeId);
+        this(ID_CATEGORY_SUBJECT, Objects.requireNonNull(attributeId));
     }
 
     /**
@@ -42,8 +43,8 @@ public abstract class Match {
      * @param attributeId - the given attribute id
      */
     protected Match(final String categoryId, final String attributeId) {
-        this.categoryId = categoryId;
-        this.attributeId = attributeId;
+        this.categoryId = Objects.requireNonNull(categoryId);
+        this.attributeId = Objects.requireNonNull(attributeId);
     }
 
     /**

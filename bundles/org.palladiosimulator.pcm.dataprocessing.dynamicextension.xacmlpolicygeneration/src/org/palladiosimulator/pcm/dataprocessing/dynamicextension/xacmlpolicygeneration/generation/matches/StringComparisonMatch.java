@@ -2,6 +2,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
@@ -50,7 +51,9 @@ public class StringComparisonMatch extends Match {
      */
     public StringComparisonMatch(final InternalStateContext context) {
         super(ID_CATEGORY_RESOURCE, CONTEXT_INTERNAL_STATE);
-        this.value = context.getState().getEntityName();
+        Objects.requireNonNull(context);
+        Objects.requireNonNull(context.getState());
+        this.value = Objects.requireNonNull(context.getState().getEntityName());
     }
 
     /**
@@ -61,8 +64,8 @@ public class StringComparisonMatch extends Match {
      * @param value - the string value
      */
     protected StringComparisonMatch(final String categoryId, final String contextId, final String value) {
-        super(categoryId, contextId);
-        this.value = value;
+        super(Objects.requireNonNull(categoryId), Objects.requireNonNull(contextId));
+        this.value = Objects.requireNonNull(value);
     }
 
     /**

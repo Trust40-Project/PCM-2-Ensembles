@@ -2,6 +2,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
@@ -33,8 +34,8 @@ public class ContextHandler {
      *            - the path to the data specification
      */
     public ContextHandler(final String id, final String pathData) {
-        this.id = id;
-        var modelloader = new ModelLoader(pathData);
+        this.id = Objects.requireNonNull(id);
+        var modelloader = new ModelLoader(Objects.requireNonNull(pathData));
         this.dataContainer = modelloader.loadDataSpecification();
     }
     
@@ -46,8 +47,8 @@ public class ContextHandler {
      * @param dataContainer - the given data container
      */
     public ContextHandler(final String id, final DataSpecification dataContainer) {
-        this.id = id;
-        this.dataContainer = dataContainer;
+        this.id = Objects.requireNonNull(id);
+        this.dataContainer = Objects.requireNonNull(dataContainer);
     }
 
     /**

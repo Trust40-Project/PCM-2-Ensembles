@@ -2,6 +2,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -37,9 +38,11 @@ public class ShiftMatch extends Match {
      */
     public ShiftMatch(final ShiftContext context) {
         super(ID_CATEGORY_ENVIRONMENT, XACML3.ID_ENVIRONMENT_CURRENT_TIME.stringValue());
-        this.startTime = context.getShift().getStartTime();
-        this.endTime = context.getShift().getEndTime();
-        this.shiftName = context.getShift().getEntityName();
+        Objects.requireNonNull(context);
+        Objects.requireNonNull(context.getShift());
+        this.startTime = Objects.requireNonNull(context.getShift().getStartTime());
+        this.endTime = Objects.requireNonNull(context.getShift().getEndTime());
+        this.shiftName = Objects.requireNonNull(context.getShift().getEntityName());
     }
 
     @Override

@@ -1,5 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
+import java.util.Objects;
+
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.EnumCharacteristicLiteral;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 
@@ -23,7 +25,8 @@ public class PrivacylevelMatch extends RegexMatchingMatch {
      *            - the privacy level context representing the minimal privacy level
      */
     public PrivacylevelMatch(final PrivacyLevelContext context) {
-        super(ID_CATEGORY_RESOURCE, CONTEXT_PRIVACY_LEVEL, createRegexPrivacyLevel(context.getLevel()));
+        super(ID_CATEGORY_RESOURCE, CONTEXT_PRIVACY_LEVEL, 
+                createRegexPrivacyLevel(Objects.requireNonNull(context).getLevel()));
     }
 
     /**
@@ -36,6 +39,7 @@ public class PrivacylevelMatch extends RegexMatchingMatch {
      * @return a regex for the given privacylevel
      */
     private static String createRegexPrivacyLevel(final EnumCharacteristicLiteral level) {
+        Objects.requireNonNull(level);
         final String onlyThisLevel = "(" + level.getEntityName() + ")";
         switch (level.getEntityName()) {
         case "PUBLIC":

@@ -1,6 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers;
 
 import java.nio.file.Path;
+import java.util.Objects;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -41,6 +42,7 @@ public class MainHandler extends AbstractHandler {
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
+        Objects.requireNonNull(event);
         LOGGER.info(IS_ECLIPSE_LOGGING ? "Using the eclipse logger" : "Using an eclipse logger mock-up");
         final ContextHandler ch = new ContextHandler(ModelLoader.getIdOfModel(DATA_PATH), DATA_PATH);
         Path okPath = null;

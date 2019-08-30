@@ -2,6 +2,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ContextCharacteristic;
@@ -26,7 +27,7 @@ public abstract class Extractor<T> {
      *            - the information base for this extractor
      */
     public Extractor(final RelatedCharacteristics relatedCharacteristics) {
-        this.relatedCharacteristics = relatedCharacteristics;
+        this.relatedCharacteristics = Objects.requireNonNull(relatedCharacteristics);
         this.characteristicsList = ContextHandler.getCharacteristicsList(this.relatedCharacteristics);
     }
 

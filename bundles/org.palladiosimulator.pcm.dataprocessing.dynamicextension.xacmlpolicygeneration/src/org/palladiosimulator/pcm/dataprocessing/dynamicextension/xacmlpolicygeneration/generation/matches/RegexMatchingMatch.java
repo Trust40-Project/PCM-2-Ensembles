@@ -1,6 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import com.att.research.xacml.api.XACML3;
@@ -22,7 +23,7 @@ public abstract class RegexMatchingMatch extends StringComparisonMatch {
      * @param regex - the regular expression
      */
     protected RegexMatchingMatch(final String categoryId, final String contextId, final String regex) {
-        super(categoryId, contextId, regex);
+        super(Objects.requireNonNull(categoryId), Objects.requireNonNull(contextId), Objects.requireNonNull(regex));
     }
 
     /**
@@ -33,7 +34,7 @@ public abstract class RegexMatchingMatch extends StringComparisonMatch {
      * @return a regex quote of the literal
      */
     protected static String toRegex(final String literal) {
-        return Pattern.quote(literal);
+        return Pattern.quote(Objects.requireNonNull(literal));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
@@ -25,7 +26,7 @@ public class ObligationExtractor extends Extractor<ObligationExpressionsType> {
      *            - the characteristics
      */
     public ObligationExtractor(final RelatedCharacteristics relatedCharacteristics) {
-        super(relatedCharacteristics);
+        super(Objects.requireNonNull(relatedCharacteristics));
     }
 
     @Override

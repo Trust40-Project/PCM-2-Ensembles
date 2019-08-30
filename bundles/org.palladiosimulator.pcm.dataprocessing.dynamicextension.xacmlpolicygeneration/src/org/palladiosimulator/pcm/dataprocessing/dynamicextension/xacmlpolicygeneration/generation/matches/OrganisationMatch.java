@@ -1,5 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
+import java.util.Objects;
+
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.subject.Organisation;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.subject.Subject;
@@ -24,7 +26,8 @@ public class OrganisationMatch extends RegexMatchingMatch {
      *            - an organisation context
      */
     public OrganisationMatch(final OrganisationContext context) {
-        super(ID_CATEGORY_SUBJECT, CONTEXT_ORGANISATION, createRegexOrganisation(context.getOrganisation()).toString());
+        super(ID_CATEGORY_SUBJECT, CONTEXT_ORGANISATION, 
+                createRegexOrganisation(Objects.requireNonNull(context).getOrganisation()).toString());
     }
 
     /**
@@ -36,6 +39,7 @@ public class OrganisationMatch extends RegexMatchingMatch {
      * @return a regex for the given organisation
      */
     private static StringBuilder createRegexOrganisation(final Organisation organisation) {
+        Objects.requireNonNull(organisation);
         final StringBuilder regex = new StringBuilder("(");
         regex.append(toRegex(organisation.getEntityName())).append(")");
 

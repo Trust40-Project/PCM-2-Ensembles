@@ -1,5 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
+import java.util.Objects;
+
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Location;
 
@@ -23,7 +25,8 @@ public class LocationMatch extends RegexMatchingMatch {
      *            - a location context
      */
     public LocationMatch(final LocationContext context) {
-        super(ID_CATEGORY_SUBJECT, CONTEXT_LOCATION, createRegexLocation(context.getCurrentLocation()).toString());
+        super(ID_CATEGORY_SUBJECT, CONTEXT_LOCATION, 
+                createRegexLocation(Objects.requireNonNull(context).getCurrentLocation()).toString());
     }
 
     /**
@@ -34,6 +37,7 @@ public class LocationMatch extends RegexMatchingMatch {
      * @return a regex for the given location
      */
     private static StringBuilder createRegexLocation(final Location location) {
+        Objects.requireNonNull(location);
         final StringBuilder regex = new StringBuilder("(");
         regex.append(toRegex(location.getEntityName())).append(")");
 

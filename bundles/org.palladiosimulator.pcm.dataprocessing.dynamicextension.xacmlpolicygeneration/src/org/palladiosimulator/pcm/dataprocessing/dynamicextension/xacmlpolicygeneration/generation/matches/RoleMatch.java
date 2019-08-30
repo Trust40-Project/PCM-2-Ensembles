@@ -1,5 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
+import java.util.Objects;
+
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.util.helperattributes.Role;
 
@@ -23,7 +25,7 @@ public class RoleMatch extends RegexMatchingMatch {
      *            - a role context
      */
     public RoleMatch(final RoleContext context) {
-        super(ID_CATEGORY_SUBJECT, CONTEXT_ROLE, createRegexRole(context.getRole()).toString());
+        super(ID_CATEGORY_SUBJECT, CONTEXT_ROLE, createRegexRole(Objects.requireNonNull(context).getRole()).toString());
     }
 
     /**
@@ -34,6 +36,7 @@ public class RoleMatch extends RegexMatchingMatch {
      * @return a regex for the given role
      */
     private static StringBuilder createRegexRole(final Role role) {
+        Objects.requireNonNull(role);
         final StringBuilder regex = new StringBuilder("(");
         regex.append(toRegex(role.getEntityName())).append(")");
 

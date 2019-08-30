@@ -1,6 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
@@ -34,8 +35,8 @@ public class PolicySet {
      *            - the given list of XACML policy elements
      */
     public PolicySet(final String id, final List<PolicyType> policies) {
-        this.id = id;
-        this.policyList = policies;
+        this.id = Objects.requireNonNull(id);
+        this.policyList = Objects.requireNonNull(policies);
     }
 
     /**

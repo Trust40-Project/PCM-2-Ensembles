@@ -1,5 +1,7 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations;
 
+import java.util.Objects;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
@@ -46,7 +48,8 @@ public class TextObligation implements Obligation {
      *            - an extension context
      */
     public TextObligation(final ExtensionContext context) {
-        this.text = context.getCustomAccessPolicy();
+        Objects.requireNonNull(context);
+        this.text = Objects.requireNonNull(context.getCustomAccessPolicy());
         this.isAtEnd = context.isAddAtEnd();
         this.obligationId = EXTENSION_OBLIGATION_ID;
         this.attributeId = EXTENSION_ATTRIBUTE_ID + ":" + context.getEntityName();
@@ -60,10 +63,13 @@ public class TextObligation implements Obligation {
      *            - a prerequisite context
      */
     public TextObligation(final PrerequisiteContext context) {
-        this.text = context.getPrerequisite().getPrerequisite().getEntityName();
+        Objects.requireNonNull(context);
+        Objects.requireNonNull(context.getPrerequisite());
+        Objects.requireNonNull(context.getPrerequisite().getPrerequisite());
+        this.text = Objects.requireNonNull(context.getPrerequisite().getPrerequisite().getEntityName());
         this.isAtEnd = null;
         this.obligationId = PREREQUISITE_OBLIGATION_ID;
-        this.attributeId = PREREQUISITE_ATTRIBUTE_ID + ":" + context.getEntityName();
+        this.attributeId = PREREQUISITE_ATTRIBUTE_ID + ":" + Objects.requireNonNull(context.getEntityName());
     }
 
     @Override

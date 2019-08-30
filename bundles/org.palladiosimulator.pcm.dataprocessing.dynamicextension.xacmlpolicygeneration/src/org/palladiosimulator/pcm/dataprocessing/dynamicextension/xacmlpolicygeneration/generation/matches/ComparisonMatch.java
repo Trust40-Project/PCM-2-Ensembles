@@ -2,6 +2,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Comparison;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.FloatingComparisonContext;
@@ -39,7 +40,8 @@ public class ComparisonMatch extends Match {
      */
     public ComparisonMatch(final IntegralComparisonContext context) {
         super(ID_CATEGORY_RESOURCE, CONTEXT_INT_COMPARISON);
-        this.comparison = context.getComparison();
+        Objects.requireNonNull(context);
+        this.comparison = Objects.requireNonNull(context.getComparison());
         this.intValue = context.getThreshold();
         this.doubleValue = 0;
         this.isFloating = false;
@@ -53,7 +55,8 @@ public class ComparisonMatch extends Match {
      */
     public ComparisonMatch(final FloatingComparisonContext context) {
         super(ID_CATEGORY_RESOURCE, CONTEXT_DOUBLE_COMPARISON);
-        this.comparison = context.getComparison();
+        Objects.requireNonNull(context);
+        this.comparison = Objects.requireNonNull(context.getComparison());
         this.intValue = 0;
         this.doubleValue = context.getThreshold();
         this.isFloating = true;

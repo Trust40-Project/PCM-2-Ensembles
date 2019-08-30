@@ -2,6 +2,7 @@ package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygen
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -25,7 +26,7 @@ public class MatchExtractor extends Extractor<List<MatchType>> {
      *            - the characteristics
      */
     public MatchExtractor(final RelatedCharacteristics relatedCharacteristics) {
-        super(relatedCharacteristics);
+        super(Objects.requireNonNull(relatedCharacteristics));
     }
     
     @Override
