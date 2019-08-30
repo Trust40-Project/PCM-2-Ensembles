@@ -1,8 +1,13 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations;
 
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ExtensionContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrerequisiteContext;
+import java.io.IOException;
+
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.Activator;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextRegistry;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.MatchRegistry;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
+
+import com.google.common.reflect.ClassPath;
 
 /**
  * The obligation registry is used to make easy adding of mappings from contexts to obligations
@@ -12,6 +17,20 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygene
  * @version 1.0
  */
 public final class ObligationRegistry extends ContextRegistry<Obligation> {
+    static {
+        try {
+            ClassPath cp = ClassPath.from(MatchRegistry.class.getClassLoader());
+            final var classes = 
+                    cp.getTopLevelClasses(Activator.PLUGIN_ID + ".generation.obligations");
+            for (final var classInfo : classes) {
+                Class.forName(classInfo.getName());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            MainHandler.LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     private static ObligationRegistry instance;
 
     /**
@@ -19,9 +38,6 @@ public final class ObligationRegistry extends ContextRegistry<Obligation> {
      */
     private ObligationRegistry() {
         super();
-        put(ExtensionContext.class, TextObligation.class);
-        put(PrerequisiteContext.class, TextObligation.class);
-        // TODO insert new context to obligation mappings here
     }
 
     /**

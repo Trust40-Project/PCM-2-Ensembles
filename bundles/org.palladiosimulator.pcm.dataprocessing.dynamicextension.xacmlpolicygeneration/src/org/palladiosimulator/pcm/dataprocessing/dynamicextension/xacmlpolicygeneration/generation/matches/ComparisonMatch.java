@@ -18,6 +18,11 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
  * @version 1.0
  */
 public class ComparisonMatch extends Match {
+    static {
+        MatchRegistry.getInstance().put(IntegralComparisonContext.class, ComparisonMatch.class);
+        MatchRegistry.getInstance().put(FloatingComparisonContext.class, ComparisonMatch.class);
+    }
+    
     private static final String CONTEXT_INT_COMPARISON = "context:comparison:int";
     private static final String CONTEXT_DOUBLE_COMPARISON = "context:comparison:double";
 

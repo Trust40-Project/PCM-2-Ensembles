@@ -5,7 +5,7 @@ import java.util.List;
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -20,16 +20,22 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
  * @version 1.0
  */
 public class PolicySet {
-    private final List<PolicyType> policies;
+    private static final String VERSION = "1.0";
+    
+    private final String id;
+    private final List<PolicyType> policyList;
 
     /**
-     * Creates a new policy set with the given policies.
+     * Creates a new policy set with the given id and the given policies.
      * 
+     * @param id
+     *            - the given id for this policy set
      * @param policies
-     *            - the given policies
+     *            - the given list of XACML policy elements
      */
-    public PolicySet(final List<PolicyType> policies) {
-        this.policies = policies;
+    public PolicySet(final String id, final List<PolicyType> policies) {
+        this.id = id;
+        this.policyList = policies;
     }
 
     /**
@@ -39,18 +45,18 @@ public class PolicySet {
      */
     public PolicySetType getPolicySetType() {
         final PolicySetType policySet = new PolicySetType();
-        policySet.setDescription("all policies combined"); // TODO
-        policySet.setPolicySetId("completePolicySet"); // TODO
+        policySet.setDescription("all policies combined for policy set with id " + this.id);
+        policySet.setPolicySetId(this.id);
         policySet.setTarget(new TargetType());
-        for (final PolicyType policy : this.policies) {
+        for (final PolicyType policy : this.policyList) {
             final QName qname = new QName(XACML3.XMLNS, XACML3.ELEMENT_POLICY);
             policySet.getPolicySetOrPolicyOrPolicySetIdReference()
                     .add(new JAXBElement<PolicyType>(qname, PolicyType.class, policy));
         }
-        if (this.policies.isEmpty()) {
-            SampleHandler.LOGGER.warn("model error: model defines no actions!");
+        if (this.policyList.isEmpty()) {
+            MainHandler.LOGGER.warn("model error: model defines no actions!");
         }
-        policySet.setVersion("1.0");
+        policySet.setVersion(VERSION);
         policySet.setPolicyCombiningAlgId(XACML3.ID_POLICY_PERMIT_OVERRIDES.stringValue());
         return policySet;
     }

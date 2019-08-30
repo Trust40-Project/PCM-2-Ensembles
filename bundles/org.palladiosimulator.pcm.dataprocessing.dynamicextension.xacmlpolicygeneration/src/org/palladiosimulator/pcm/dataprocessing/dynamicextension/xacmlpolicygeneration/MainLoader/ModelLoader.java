@@ -1,5 +1,6 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader;
 
+import java.io.File;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
@@ -51,6 +52,35 @@ public class ModelLoader {
     public DataSpecification loadDataSpecification() {
         var resourceData = loadResource(this.resourceSet, this.pathDataprocessing);
         return (DataSpecification) resourceData.getContents().get(0);
+    }
+    
+    /**
+     * Gets the id of the model from the given path, i.e. the name of the folder in which the model is saved.
+     * 
+     * @param pathDataprocessing - the given path
+     * @return the id of the model from the given path, i.e. the name of the folder in which the model is saved
+     */
+    public static String getIdOfModel(final String pathDataprocessing) {
+        final StringBuilder id = new StringBuilder();
+        
+        final char dirDelim = File.separatorChar;
+        boolean add = false;
+        boolean done = false;
+        for (int i = pathDataprocessing.length() - 1; i >= 0; i--) {
+            final char now = pathDataprocessing.charAt(i);
+            if (!done && !add && now == dirDelim) {
+                add = true;
+            } else if (add && now == dirDelim) {
+                add = false;
+                done = true;
+            }
+            
+            if (add) {
+                id.append(now);
+            }
+        }
+        
+        return id.reverse().substring(0, id.length() - 1);
     }
 
     /**

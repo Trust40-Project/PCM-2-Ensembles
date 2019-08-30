@@ -21,6 +21,11 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.ObligationExpressionType;
  * @version 1.0
  */
 public class TextObligation implements Obligation {
+    static {
+        ObligationRegistry.getInstance().put(ExtensionContext.class, TextObligation.class);
+        ObligationRegistry.getInstance().put(PrerequisiteContext.class, TextObligation.class);
+    }
+    
     private static final String EXTENSION_OBLIGATION_ID = "obligation:extension";
     private static final String EXTENSION_ATTRIBUTE_ID = "context:extension";
     private static final String EXTENSION_END_ATTRIBUTE_ID = "context:extension:isend";

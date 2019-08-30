@@ -19,6 +19,10 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
  * @version 1.0
  */
 public class ShiftMatch extends Match {
+    static {
+        MatchRegistry.getInstance().put(ShiftContext.class, ShiftMatch.class);
+    }
+    
     private static final String CONTEXT_SHIFT = "context:shift:name";
 
     private final XMLGregorianCalendar startTime;

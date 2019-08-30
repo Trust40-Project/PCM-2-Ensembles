@@ -9,7 +9,11 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Organis
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.LocationMatch;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.OrganisationMatch;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.PrivacylevelMatch;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.RegexMatchingMatch;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.RoleMatch;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -46,7 +50,7 @@ public class RegexMatchingMatchTest {
 	 */
 	@Test
 	public void locationTest() {
-		final RegexMatchingMatch match = new RegexMatchingMatch(this.location);
+		final RegexMatchingMatch match = new LocationMatch(this.location);
 		Assert.assertEquals(1, match.getMatches().size());
 		final MatchType matchType = match.getMatches().get(0);
 		final String locationRegex = matchType.getAttributeValue().getContent().get(0).toString();
@@ -59,7 +63,7 @@ public class RegexMatchingMatchTest {
 	 */
 	@Test
 	public void roleTest() {
-		final RegexMatchingMatch match = new RegexMatchingMatch(this.role);
+		final RegexMatchingMatch match = new RoleMatch(this.role);
 		Assert.assertEquals(1, match.getMatches().size());
 		final MatchType matchType = match.getMatches().get(0);
 		final String roleRegex = matchType.getAttributeValue().getContent().get(0).toString();
@@ -72,7 +76,7 @@ public class RegexMatchingMatchTest {
 	 */
 	@Test
 	public void organisationTest() {
-		final RegexMatchingMatch match = new RegexMatchingMatch(this.organisation);
+		final RegexMatchingMatch match = new OrganisationMatch(this.organisation);
 		Assert.assertEquals(1, match.getMatches().size());
 		final MatchType matchType = match.getMatches().get(0);
 		final String organisationRegex = matchType.getAttributeValue().getContent().get(0).toString();
@@ -85,7 +89,7 @@ public class RegexMatchingMatchTest {
 	 */
 	@Test
 	public void privacyTest() {
-		final RegexMatchingMatch match = new RegexMatchingMatch(this.privacy);
+		final RegexMatchingMatch match = new PrivacylevelMatch(this.privacy);
 		Assert.assertEquals(1, match.getMatches().size());
 		final MatchType matchType = match.getMatches().get(0);
 		Assert.assertEquals("(PUBLIC)|(RESTRICTED)|(SECRET)|(UNDEFINED)", matchType.getAttributeValue().getContent().get(0));

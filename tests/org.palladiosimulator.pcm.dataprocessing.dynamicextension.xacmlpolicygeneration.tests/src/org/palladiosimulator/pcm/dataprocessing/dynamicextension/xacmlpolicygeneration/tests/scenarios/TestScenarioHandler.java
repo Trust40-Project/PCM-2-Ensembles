@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
 
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextHandler;
 
 import com.att.research.xacml.api.Request;
@@ -37,7 +38,8 @@ public class TestScenarioHandler {
 	}
 	
 	private void testScenario(final TestScenario scenario) {
-		ContextHandler ch = new ContextHandler(scenario.getDataPath());
+		ContextHandler ch = new ContextHandler(ModelLoader.getIdOfModel(scenario.getDataPath())
+		                                        , scenario.getDataPath());
 		var policySet = ch.createPolicySet();
 		// write policySet
 		final Path filenamePolicySet = Path.of(TestScenario.PATH_OUTPUT_POLICYSET);

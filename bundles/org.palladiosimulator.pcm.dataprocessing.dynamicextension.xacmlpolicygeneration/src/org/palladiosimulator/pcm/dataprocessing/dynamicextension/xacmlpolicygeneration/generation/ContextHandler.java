@@ -10,27 +10,30 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.MainLoader.ModelLoader;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches.MatchExtractor;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.obligations.ObligationExtractor;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicyType;
 
 /**
- * The ContextHandler handles the model instance and can be used .
+ * The ContextHandler handles the model instance and can be used to create a respective XACML policy set.
  * 
  * @author Jonathan Schenkenberger
  * @version 1.0
  */
 public class ContextHandler {
-    private DataSpecification dataContainer;
+    private final String id;
+    private final DataSpecification dataContainer;
 
     /**
      * Creates a new ContextHandler with the model instance at the given path.
      * 
+     * @param id - the id, i.e. the name of the model
      * @param pathData
      *            - the path to the data specification
      */
-    public ContextHandler(final String pathData) {
+    public ContextHandler(final String id, final String pathData) {
+        this.id = id;
         var modelloader = new ModelLoader(pathData);
         this.dataContainer = modelloader.loadDataSpecification();
     }
@@ -39,9 +42,11 @@ public class ContextHandler {
      * Creates a new ContextHandler with the given data container.
      * This constructor is only for the scalability evaluation scenario.
      * 
+     * @param id - the id, i.e. the name of the model
      * @param dataContainer - the given data container
      */
-    public ContextHandler(final DataSpecification dataContainer) {
+    public ContextHandler(final String id, final DataSpecification dataContainer) {
+        this.id = id;
         this.dataContainer = dataContainer;
     }
 
@@ -60,7 +65,7 @@ public class ContextHandler {
             final Policy policy = new Policy(matchExtractor.extract(), obligationExtractor.extract());
             policies.add(policy.getPolicyType());
         });
-        return new PolicySet(policies).getPolicySetType();
+        return new PolicySet(this.id, policies).getPolicySetType();
     }
 
     /**
@@ -77,7 +82,7 @@ public class ContextHandler {
                     .filter(ContextCharacteristic.class::isInstance).map(ContextCharacteristic.class::cast)
                     .collect(Collectors.toList());
         } else {
-            SampleHandler.LOGGER.warn("an element concerning a related characteristics of one action is null!"
+            MainHandler.LOGGER.warn("an element concerning a related characteristics of one action is null!"
                     + " assuming empty list");
             return new ArrayList<>();
         }

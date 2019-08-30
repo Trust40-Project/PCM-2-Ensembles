@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
 
 /**
  * Represents an abstract context to V registry, which registers mappings from contexts to V.
@@ -29,13 +29,12 @@ public abstract class ContextRegistry<V> {
 
     /**
      * Puts a new mapping from a context class key to a value of type V.
-     * This method should only be used by subclasses.
      * 
      * @param key - the context class
      * @param value - the V class
      * @return the former mapping
      */
-    protected Class<? extends V> put(final Class<? extends Context> key, final Class<? extends V> value) {
+    public Class<? extends V> put(final Class<? extends Context> key, final Class<? extends V> value) {
         return map.put(key, value);
     }
 
@@ -54,7 +53,7 @@ public abstract class ContextRegistry<V> {
             final Class<?> contextInterface = getContextInterface(context.getClass());
             if (contextInterface == null) {
                 final String error = "no context interface found";
-                SampleHandler.LOGGER.error(error);
+                MainHandler.LOGGER.error(error);
                 throw new IllegalArgumentException(error);
             }
             final Class<? extends V> matchClass = this.map.get(contextInterface);
@@ -66,7 +65,7 @@ public abstract class ContextRegistry<V> {
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                     final String error = "illegal mapping. Constructor in " + matchClass + " for " + contextInterface
                             + " not found.";
-                    SampleHandler.LOGGER.error(error);
+                    MainHandler.LOGGER.error(error);
                     throw new IllegalStateException(error);
                 }
             }
@@ -78,7 +77,7 @@ public abstract class ContextRegistry<V> {
      * Gets the context interface defined in the model.
      * 
      * @param contextClass - the context class
-     * @return the context interface defined in the model
+     * @return the context interface defined in the model, the first found context interface is returned
      */
     private Class<?> getContextInterface(final Class<? extends Context> contextClass) {
         final Class<?>[] interfaces = contextClass.getInterfaces();

@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.SampleHandler;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -18,6 +18,10 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
  * @version 1.0
  */
 public class StringComparisonMatch extends Match {
+    static {
+        MatchRegistry.getInstance().put(InternalStateContext.class, StringComparisonMatch.class);
+    }
+    
     private static final String NAME_ENTITY = "entity:name";
     private static final String CONTEXT_INTERNAL_STATE = "context:internalstate";
 
@@ -34,7 +38,7 @@ public class StringComparisonMatch extends Match {
         final boolean entityNameExists = entity != null && entity.getEntityName() != null;
         this.value = entityNameExists ? entity.getEntityName() : "NO_ENTITY";
         if (!entityNameExists) {
-            SampleHandler.LOGGER.warn("model error: entity without name!");
+            MainHandler.LOGGER.warn("model error: entity without name!");
         }
     }
 

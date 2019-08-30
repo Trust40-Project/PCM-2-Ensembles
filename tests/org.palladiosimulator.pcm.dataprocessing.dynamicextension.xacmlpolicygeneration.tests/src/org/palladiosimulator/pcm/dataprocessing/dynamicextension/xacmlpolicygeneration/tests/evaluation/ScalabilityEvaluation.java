@@ -64,7 +64,8 @@ public class ScalabilityEvaluation {
                                 .getContext().size();
                 System.out.println("context " + (isOr ? "||" : "&&") + " num. = " + num);
                 final long before = System.currentTimeMillis();
-                final var policySet = new ContextHandler(model).createPolicySet();
+                final var policySet = new ContextHandler("scalability:eval:" + uc.substring(0, uc.length() - 1) + num + isOr
+                                            , model).createPolicySet();
                 final long after = System.currentTimeMillis();
                 System.out.println("time consumed = " + (after - before) + "ms\n");
                 print(uc.substring(0, uc.length() - 1), policySet, isOr, copyNum);

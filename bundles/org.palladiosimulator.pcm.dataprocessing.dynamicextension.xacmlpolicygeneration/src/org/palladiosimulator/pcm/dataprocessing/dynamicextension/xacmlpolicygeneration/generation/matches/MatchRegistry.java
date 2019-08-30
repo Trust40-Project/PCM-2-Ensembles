@@ -1,14 +1,12 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.matches;
 
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.FloatingComparisonContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.IntegralComparisonContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.InternalStateContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.LocationContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.OrganisationContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrivacyLevelContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.RoleContext;
-import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ShiftContext;
+import java.io.IOException;
+
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.Activator;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.generation.ContextRegistry;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
+
+import com.google.common.reflect.ClassPath;
 
 /**
  * The match registry is used to make easy adding of mappings from contexts to matches possible.
@@ -17,6 +15,20 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygene
  * @version 1.0
  */
 public final class MatchRegistry extends ContextRegistry<Match> {
+    static {
+        try {
+            ClassPath cp = ClassPath.from(MatchRegistry.class.getClassLoader());
+            final var classes = 
+                    cp.getTopLevelClasses(Activator.PLUGIN_ID + ".generation.matches");
+            for (final var classInfo : classes) {
+                Class.forName(classInfo.getName());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            MainHandler.LOGGER.error(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     private static MatchRegistry instance;
 
     /**
@@ -24,15 +36,6 @@ public final class MatchRegistry extends ContextRegistry<Match> {
      */
     private MatchRegistry() {
         super();
-        put(InternalStateContext.class, StringComparisonMatch.class);
-        put(PrivacyLevelContext.class, RegexMatchingMatch.class);
-        put(RoleContext.class, RegexMatchingMatch.class);
-        put(LocationContext.class, RegexMatchingMatch.class);
-        put(OrganisationContext.class, RegexMatchingMatch.class);
-        put(IntegralComparisonContext.class, ComparisonMatch.class);
-        put(FloatingComparisonContext.class, ComparisonMatch.class);
-        put(ShiftContext.class, ShiftMatch.class);
-        // TODO insert new context to match mappings here
     }
 
     /**
