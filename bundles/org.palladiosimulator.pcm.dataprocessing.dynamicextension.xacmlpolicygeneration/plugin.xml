@@ -35,12 +35,12 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
-               id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.menus.sampleMenu"
-               label="Sample Menu"
+               id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.menus.transformMenu"
+               label="Transform PCM-2-XACML Menu"
                mnemonic="M">
             <command
-                  commandId="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.commands.sampleCommand"
-                  id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.menus.sampleCommand"
+                  commandId="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.commands.transformCommand"
+                  id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.menus.transformCommand"
                   mnemonic="S">
             </command>
          </menu>
@@ -48,7 +48,7 @@
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
-               id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.toolbars.sampleToolbar">
+               id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.toolbars.transformToolbar">
             <command
                   id="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.toolbars.transformCommand"
                   commandId="org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.commands.transformCommand"
