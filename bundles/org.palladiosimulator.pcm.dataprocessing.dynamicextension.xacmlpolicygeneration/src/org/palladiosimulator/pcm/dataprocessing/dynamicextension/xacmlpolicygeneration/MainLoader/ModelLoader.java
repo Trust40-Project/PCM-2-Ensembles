@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataSpecification;
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.DataprocessingPackage;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.DynamicextensionPackage;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
 
 /**
  * Loads the data processing part of the model.
@@ -21,7 +22,6 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.Dynamicextensio
  * @version 1.01
  */
 public class ModelLoader {
-    //private String pathDynamic;
     private String pathDataprocessing;
     private ResourceSet resourceSet;
     private Registry resourceRegistry;
@@ -35,13 +35,15 @@ public class ModelLoader {
         this.pathDataprocessing = pathDataprocessing;
         // here start loading
         // Datap
-        DataprocessingPackage.eINSTANCE.eClass();
-        DynamicextensionPackage.eINSTANCE.eClass();
         this.resourceSet = new ResourceSetImpl();
-        this.resourceRegistry = Resource.Factory.Registry.INSTANCE;
-        final Map<String, Object> map = this.resourceRegistry.getExtensionToFactoryMap();
-        map.put("*", new XMIResourceFactoryImpl());
-        this.resourceSet.setResourceFactoryRegistry(this.resourceRegistry);
+        if (!MainHandler.IS_ECLIPSE_RUNNING) {
+            DataprocessingPackage.eINSTANCE.eClass();
+            DynamicextensionPackage.eINSTANCE.eClass();
+            this.resourceRegistry = Resource.Factory.Registry.INSTANCE;
+            final Map<String, Object> map = this.resourceRegistry.getExtensionToFactoryMap();
+            map.put("*", new XMIResourceFactoryImpl());
+            this.resourceSet.setResourceFactoryRegistry(this.resourceRegistry);
+        }
     }
 
     /**
