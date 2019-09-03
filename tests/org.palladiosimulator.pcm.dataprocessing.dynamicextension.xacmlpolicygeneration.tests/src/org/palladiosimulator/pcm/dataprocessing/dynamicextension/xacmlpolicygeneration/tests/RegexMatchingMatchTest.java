@@ -32,7 +32,7 @@ public class RegexMatchingMatchTest {
 	
 	@Before
 	public void setUp() {
-		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DATA);
+		ModelLoader loader = new ModelLoader(TestUnitHandler.DATA_PATH);
 		this.data = loader.loadDataSpecification();
 		this.location = getContexts(data.getRelatedCharacteristics().get(0)).filter(LocationContext.class::isInstance)
 				.map(LocationContext.class::cast).collect(Collectors.toList()).get(0);

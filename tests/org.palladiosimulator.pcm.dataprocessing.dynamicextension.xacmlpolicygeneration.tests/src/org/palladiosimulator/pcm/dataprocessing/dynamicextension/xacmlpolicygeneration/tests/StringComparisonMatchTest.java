@@ -26,7 +26,7 @@ public class StringComparisonMatchTest {
 	
 	@Before
 	public void setUp() {
-		ModelLoader loader = new ModelLoader(TestUnitHandler.PATH_DATA);
+		ModelLoader loader = new ModelLoader(TestUnitHandler.DATA_PATH);
 		this.data = loader.loadDataSpecification();
 		this.action = data.getRelatedCharacteristics().get(0);
 		this.state = getContexts(this.action).filter(InternalStateContext.class::isInstance)

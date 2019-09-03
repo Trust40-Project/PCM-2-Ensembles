@@ -1,5 +1,6 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests;
 
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import org.palladiosimulator.pcm.dataprocessing.dataprocessing.characteristics.RelatedCharacteristics;
@@ -13,11 +14,12 @@ import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.Context
  * @version 1.0
  */
 public final class TestUnitHandler {
-	private static final String PATH_PREFIX = "/home/jojo/Schreibtisch/KIT/Bachelorarbeit/";
-	private static final String PATH_INPUT_MODELS = "models/UseCasesTechnicalReport/";
+    // base path is the org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests folder inside the tests folder in the PCM-2-XACML git
+	private static final String RELATIVE_PATH_PREFIX = Paths.get("../../../").toAbsolutePath().toString();
+	private static final String PATH_INPUT_MODELS = "/UseCasesTechnicalReport/";
 	private static final String PATH_USECASE = "UC-Test/uc-test";
 
-	public static final String PATH_DATA = PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dataprocessing";
+	public static final String DATA_PATH = RELATIVE_PATH_PREFIX + PATH_INPUT_MODELS + PATH_USECASE + ".dataprocessing";
 	
 	private TestUnitHandler() {
 		assert false;
