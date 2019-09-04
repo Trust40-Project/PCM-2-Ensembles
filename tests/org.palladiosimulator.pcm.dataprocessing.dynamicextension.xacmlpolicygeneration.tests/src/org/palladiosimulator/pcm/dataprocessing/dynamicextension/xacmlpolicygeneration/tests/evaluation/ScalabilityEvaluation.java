@@ -1,6 +1,10 @@
 package org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests.evaluation;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.util.BasicEList;
@@ -40,18 +44,51 @@ public class ScalabilityEvaluation {
 
     private static final int[] COPY_NUMS = { ONE, TEN, HUNDRED, THOUSAND, TEN_THOUSAND, HUNDRED_THOUSAND,
             FIVE_HUNDRED_THOUSAND };
+    
+    private static final Map<Pair<String, Integer>, List<Long>> RESULTS_OR = new HashMap<>();
+    private static final Map<Pair<String, Integer>, List<Long>> RESULTS_AND = new HashMap<>();
+    private static final int NUM_WARM_UP = 1;
+    private static final int NUM_REPETITIONS = 10;
+    
+    static {
+        for (final String uc : BASE_MODELS) {
+            for (final int copyNum : COPY_NUMS) {
+                final var pair = new Pair<>(uc, copyNum);
+                RESULTS_OR.put(pair, new ArrayList<>());
+                if (!uc.equals("UC-Test/")) {
+                    RESULTS_AND.put(pair, new ArrayList<>());
+                }
+            }
+        }
+    }
 
     // printing needs at least 6.7GB free disk space
     private static final boolean IS_PRINTING = false;
 
     public static void main(String[] args) {
-        System.out.println("OR\n---------------------------------------------------------------\n");
-        test(true);
-        System.out.println("AND\n---------------------------------------------------------------\n");
-        test(false);
+        for (int i = 0; i < NUM_WARM_UP + NUM_REPETITIONS; i++) {
+            final int index = i - NUM_WARM_UP;
+            final boolean isWarmUp = index < 0;
+            System.out.println("index= " + index + "\nOR\n---------------------------------------------------------------\n");
+            test(true, isWarmUp);
+            System.out.println("AND\n---------------------------------------------------------------\n");
+            test(false, isWarmUp);
+        }
+        System.out.println("\n\n");
+        for (final String uc : BASE_MODELS) {
+            for (final int copyNum : COPY_NUMS) {
+                final var pair = new Pair<>(uc, copyNum);
+                final var orList = RESULTS_OR.get(pair);
+                System.out.println(pair + " OR: average= " + orList.stream().mapToLong(x -> x).average() + " | " + orList);
+                if (!uc.equals("UC-Test/")) {
+                    final var andList = RESULTS_AND.get(pair);
+                    System.out.println(pair + " AND: average= " + andList.stream().mapToLong(x -> x).average() + " | " + andList);
+                }
+            }
+        }
     }
 
-    private static final void test(boolean isOr) {
+    private static final void test(final boolean isOr, final boolean isWarmUp) {
         for (final String uc : BASE_MODELS) {
             System.out.println(uc + "\n");
             for (final int copyNum : COPY_NUMS) {
@@ -67,8 +104,16 @@ public class ScalabilityEvaluation {
                 final var policySet = new ContextHandler("scalability:eval:" + uc.substring(0, uc.length() - 1) + num + isOr
                                             , model).createPolicySet();
                 final long after = System.currentTimeMillis();
-                System.out.println("time consumed = " + (after - before) + "ms\n");
+                final long time = after - before;
+                System.out.println("time consumed = " + time + "ms\n");
                 print(uc.substring(0, uc.length() - 1), policySet, isOr, copyNum);
+                if (!isWarmUp) {
+                    if (isOr) {
+                        RESULTS_OR.get(new Pair<>(uc, copyNum)).add(time);
+                    } else {
+                        RESULTS_AND.get(new Pair<>(uc, copyNum)).add(time);
+                    }
+                }
             }
             System.out.println("---------------------------------------------------------------\n");
             if (!isOr) {
@@ -106,7 +151,7 @@ public class ScalabilityEvaluation {
             for (int i = 0; i < copyNum; i++) {
                 final ShiftContext copied = (ShiftContext) new EcoreUtil.Copier().copy(toCopy);
                 copied.setShift(toCopy.getShift()); // shift is not copied, so
-                                                                  // it is set here
+                                                    // it is set here
                 list.add(copied);
             }
             final var listFeature = getFeature(model.getRelatedCharacteristics().get(0).getCharacteristics()
