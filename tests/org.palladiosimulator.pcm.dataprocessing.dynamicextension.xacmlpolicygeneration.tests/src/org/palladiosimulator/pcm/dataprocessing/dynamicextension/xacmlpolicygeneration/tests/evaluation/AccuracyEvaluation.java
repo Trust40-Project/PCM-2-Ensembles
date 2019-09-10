@@ -39,7 +39,12 @@ public class AccuracyEvaluation {
         {
             // UC2
             final String uc2 = "UC2/";
-            //TODO
+            scenarios.add(new TestScenario(uc2, "evalUC2PermitInformForeman.xml", Decision.PERMIT));
+            scenarios.add(new TestScenario(uc2, "evalUC2PermitInformSupplier.xml", Decision.PERMIT));
+            scenarios.add(new TestScenario(uc2, "evalUC2DenyInformForemanRole.xml", Decision.DENY));
+            scenarios.add(new TestScenario(uc2, "evalUC2DenyInformForemanLocation.xml", Decision.DENY));
+            scenarios.add(new TestScenario(uc2, "evalUC2DenyInformSupplierRole.xml", Decision.DENY));
+            scenarios.add(new TestScenario(uc2, "evalUC2DenyInformSupplierLocation.xml", Decision.DENY));
         }
         
         final List<DynamicTest> tests = new ArrayList<DynamicTest>(scenarios.size());
