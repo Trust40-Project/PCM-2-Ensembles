@@ -32,7 +32,7 @@ ReturnPolicyIdList="false" CombinedDecision="false">
 		<Attributes
 		Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
 			<Attribute IncludeInResult="false" AttributeId="entity:name">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">aName</AttributeValue>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">yieldAnalyst</AttributeValue>
 			</Attribute>
 		</Attributes>
 </Request>

@@ -47,6 +47,16 @@ public class AccuracyEvaluation {
             scenarios.add(new TestScenario(uc2, "evalUC2DenyInformSupplierLocation.xml", Decision.DENY));
         }
         
+        {
+            // UC3
+            final String uc3 = "UC3/";
+            scenarios.add(new TestScenario(uc3, "evalUC3PermitSend.xml", Decision.PERMIT));
+            scenarios.add(new TestScenario(uc3, "evalUC3PermitReceiveA.xml", Decision.PERMIT));
+            scenarios.add(new TestScenario(uc3, "evalUC3PermitReceiveB.xml", Decision.PERMIT));
+            scenarios.add(new TestScenario(uc3, "evalUC3DenySend.xml", Decision.DENY));
+            scenarios.add(new TestScenario(uc3, "evalUC3DenyReceive.xml", Decision.DENY));
+        }
+        
         final List<DynamicTest> tests = new ArrayList<DynamicTest>(scenarios.size());
         for (final TestScenario scenario : scenarios) {
             tests.add(DynamicTest.dynamicTest(scenario.getTestName(), scenario));
