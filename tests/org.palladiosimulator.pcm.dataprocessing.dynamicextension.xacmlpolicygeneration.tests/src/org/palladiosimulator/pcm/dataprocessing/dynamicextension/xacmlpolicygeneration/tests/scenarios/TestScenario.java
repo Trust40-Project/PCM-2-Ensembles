@@ -15,10 +15,7 @@ import com.att.research.xacml.api.Decision;
 import com.att.research.xacml.api.Request;
 import com.att.research.xacml.api.pep.PEPEngine;
 import com.att.research.xacml.api.pep.PEPEngineFactory;
-import com.att.research.xacml.api.pep.PEPException;
 import com.att.research.xacml.std.dom.DOMRequest;
-import com.att.research.xacml.std.dom.DOMStructureException;
-import com.att.research.xacml.util.FactoryException;
 import com.att.research.xacml.util.XACMLPolicyWriter;
 
 /**
@@ -117,19 +114,11 @@ public class TestScenario implements Executable {
         XACMLPolicyWriter.writePolicyFile(filenamePolicySetExplicit, policySet);
 
         // Request-Test
-        try {
-            Request request = DOMRequest.load(new File(this.getTestRequestPath()));
+        Request request = DOMRequest.load(new File(this.getTestRequestPath()));
 
-            PEPEngine pep = PEPEngineFactory.newInstance().newEngine();
-            final var result = pep.decide(request);
-            System.out.println(result + "\n");
-            Assert.assertEquals(this.getExpected(), result.getResults().iterator().next().getDecision());
-        } catch (DOMStructureException e) {
-            e.printStackTrace();
-        } catch (FactoryException e) {
-            e.printStackTrace();
-        } catch (PEPException e) {
-            e.printStackTrace();
-        }
+        PEPEngine pep = PEPEngineFactory.newInstance().newEngine();
+        final var result = pep.decide(request);
+        System.out.println(result + "\n");
+        Assert.assertEquals(this.getExpected(), result.getResults().iterator().next().getDecision());
     }
 }
