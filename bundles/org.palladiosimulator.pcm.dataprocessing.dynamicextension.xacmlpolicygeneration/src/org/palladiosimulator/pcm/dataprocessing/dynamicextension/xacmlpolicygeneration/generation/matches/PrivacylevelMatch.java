@@ -42,10 +42,10 @@ public class PrivacylevelMatch extends RegexMatchingMatch {
         Objects.requireNonNull(level);
         final String onlyThisLevel = "(" + level.getEntityName() + ")";
         switch (level.getEntityName()) {
-        case "PUBLIC":
-            return onlyThisLevel + "|(" + "RESTRICTED" + ")|(" + "SECRET" + ")|(" + "UNDEFINED" + ")";
+        case "SECRET":
+            return onlyThisLevel + "|(" + "RESTRICTED" + ")|(" + "PUBLIC" + ")|(" + "UNDEFINED" + ")";
         case "RESTRICTED":
-            return onlyThisLevel + "|(" + "SECRET" + ")";
+            return onlyThisLevel + "|(" + "PUBLIC" + ")";
         default:
             return onlyThisLevel;
         }

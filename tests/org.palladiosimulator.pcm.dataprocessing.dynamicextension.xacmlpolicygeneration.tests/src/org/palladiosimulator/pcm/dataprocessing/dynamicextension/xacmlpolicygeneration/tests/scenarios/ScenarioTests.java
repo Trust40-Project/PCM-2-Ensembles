@@ -27,13 +27,13 @@ public class ScenarioTests {
         // main functionality test
         final String ucTest = "UC-Test/";
         scenarios.add(new TestScenario(ucTest, "testTime.xml", Decision.PERMIT));
-        scenarios.add(new TestScenario(ucTest, "testPermit_1.xml", Decision.PERMIT));
         scenarios.add(new TestScenario(ucTest, "testPermit_2.xml", Decision.PERMIT));
         scenarios.add(new TestScenario(ucTest, "testPermit_3.xml", Decision.PERMIT));
         scenarios.add(new TestScenario(ucTest, "testDeny_1.xml", Decision.DENY));
         scenarios.add(new TestScenario(ucTest, "testDeny_2.xml", Decision.DENY));
         scenarios.add(new TestScenario(ucTest, "testDeny_3.xml", Decision.DENY));
         scenarios.add(new TestScenario(ucTest, "testDeny_4.xml", Decision.DENY));
+        scenarios.add(new TestScenario(ucTest, "testDeny_5.xml", Decision.DENY));
 
         // 2nd rule test
         scenarios.add(new TestScenario(ucTest, "testPermit2.xml", Decision.PERMIT));

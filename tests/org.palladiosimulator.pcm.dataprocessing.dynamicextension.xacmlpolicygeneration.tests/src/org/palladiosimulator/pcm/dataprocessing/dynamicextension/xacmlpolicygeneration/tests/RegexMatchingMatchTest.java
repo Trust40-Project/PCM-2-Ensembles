@@ -92,7 +92,7 @@ public class RegexMatchingMatchTest {
 		final RegexMatchingMatch match = new PrivacylevelMatch(this.privacy);
 		Assert.assertEquals(1, match.getMatches().size());
 		final MatchType matchType = match.getMatches().get(0);
-		Assert.assertEquals("(PUBLIC)|(RESTRICTED)|(SECRET)|(UNDEFINED)", matchType.getAttributeValue().getContent().get(0));
+		Assert.assertEquals("(PUBLIC)", matchType.getAttributeValue().getContent().get(0));
 		Assert.assertEquals(XACML3.ID_FUNCTION_STRING_REGEXP_MATCH.toString(), matchType.getMatchId());
 	}
 }
