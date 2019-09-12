@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.ExtensionContext;
 import org.palladiosimulator.pcm.dataprocessing.dynamicextension.context.PrerequisiteContext;
+import org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.handlers.MainHandler;
 
 import com.att.research.xacml.api.XACML3;
 
@@ -52,7 +53,37 @@ public class TextObligation implements Obligation {
         this.text = Objects.requireNonNull(context.getCustomAccessPolicy());
         this.isAtEnd = context.isAddAtEnd();
         this.obligationId = EXTENSION_OBLIGATION_ID;
-        this.attributeId = EXTENSION_ATTRIBUTE_ID + ":" + context.getEntityName();
+        Objects.requireNonNull(context.getEntityName());
+        this.attributeId = createValidIdentifier(EXTENSION_ATTRIBUTE_ID + ":" + context.getEntityName());
+    }
+
+    /**
+     * Creates a valid XML identifier
+     * 
+     * @param idString - the id string
+     * @return a valid XML identifier similar to idString
+     */
+    private String createValidIdentifier(final String idString) {
+        final String correctRegex = "[A-Za-z][A-Za-z0-9\\-_:\\.]+";
+        if (!idString.matches(correctRegex)) {
+            final String searchRegex = "[^A-Za-z0-9\\\\-_:\\\\.]";
+            final char replacement = ':';
+            MainHandler.LOGGER.warn("invalid xml identifier \"" 
+                    + idString + "\", replacing invalid characters with " + replacement);
+            final String replaced = idString.replaceAll(searchRegex, "" + replacement);
+            int until = -1;
+            for (int i = 0; i < replaced.length() && replaced.charAt(i) == replacement; i++) {
+                until = i;
+            }
+            final String ret = until == -1 ? replaced : replaced.substring(until + 1);
+            if (ret.equals("")) {
+                final String error = "a model entity is empty or has only invalid characters! idString= \"" + idString + "\"";
+                MainHandler.LOGGER.error(error);
+                throw new IllegalArgumentException(error);
+            }
+            return ret;
+        }
+        return idString;
     }
 
     /**
