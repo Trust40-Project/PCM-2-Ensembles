@@ -75,8 +75,9 @@ public class AccuracyEvaluation {
         {
             // UC6
             final String uc6 = "UC-Combined/";
-            //TODO wahrscheinlich Privacy Level checks fuer permit und deny und fuer verschiedene incident sends
-            scenarios.add(new TestScenario(uc6, getXml("UC6/", true, ""), Decision.PERMIT));
+            scenarios.add(new TestScenario(uc6, getXml("UC6/", true, "SendIncidentToBPublic"), Decision.PERMIT));
+            scenarios.add(new TestScenario(uc6, getXml("UC6/", true, "SendIncidentToBRestricted"), Decision.PERMIT));
+            scenarios.add(new TestScenario(uc6, getXml("UC6/", false, "SendIncidentToBSecret"), Decision.DENY));
         }
         
         final List<DynamicTest> tests = new ArrayList<DynamicTest>(scenarios.size());
