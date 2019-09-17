@@ -7,7 +7,7 @@ ReturnPolicyIdList="false" CombinedDecision="false">
 		<Attributes
 		Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
 			<Attribute IncludeInResult="false" AttributeId="entity:name">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">accessProductionHall</AttributeValue>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">accessFactory</AttributeValue>
 			</Attribute>
 		</Attributes>
 		<Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
@@ -15,7 +15,7 @@ ReturnPolicyIdList="false" CombinedDecision="false">
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Worker</AttributeValue>
 			</Attribute>
 			<Attribute IncludeInResult="false" AttributeId="context:location">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Production_Hall</AttributeValue>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Factory</AttributeValue>
 			</Attribute>
 			<Attribute IncludeInResult="false" AttributeId="context:shift:name">
 				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Early-Production</AttributeValue>

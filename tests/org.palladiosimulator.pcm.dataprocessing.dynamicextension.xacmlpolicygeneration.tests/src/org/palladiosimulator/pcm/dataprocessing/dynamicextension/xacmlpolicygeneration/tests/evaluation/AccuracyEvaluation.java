@@ -43,6 +43,7 @@ public class AccuracyEvaluation {
             scenarios.add(new TestScenario(uc2, getXml(uc2, true, "InformSupplier"), Decision.PERMIT));
             scenarios.add(new TestScenario(uc2, getXml(uc2, false, "InformForemanRole"), Decision.DENY));
             scenarios.add(new TestScenario(uc2, getXml(uc2, false, "InformForemanLocation"), Decision.DENY));
+            scenarios.add(new TestScenario(uc2, getXml(uc2, false, "InformForemanState"), Decision.DENY));
             scenarios.add(new TestScenario(uc2, getXml(uc2, false,"InformSupplierRole"), Decision.DENY));
             scenarios.add(new TestScenario(uc2, getXml(uc2, false, "InformSupplierLocation"), Decision.DENY));
         }

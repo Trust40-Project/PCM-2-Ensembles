@@ -17,7 +17,7 @@ ReturnPolicyIdList="false" CombinedDecision="false">
 		</Attributes>
 		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
 			<Attribute IncludeInResult="false" AttributeId="context:internalstate">
-				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">FAULTY</AttributeValue>
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">OK</AttributeValue>
 			</Attribute>
 		</Attributes>
 		<Attributes
