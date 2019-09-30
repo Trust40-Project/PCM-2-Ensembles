@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+ReturnPolicyIdList="false" CombinedDecision="false">
+		<Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+			<Attribute IncludeInResult="false" AttributeId="context:role">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Worker</AttributeValue>
+			</Attribute>
+			<Attribute IncludeInResult="false" AttributeId="context:location">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Production_Hall</AttributeValue>
+			</Attribute>
+			<Attribute IncludeInResult="false" AttributeId="context:organisation">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">A</AttributeValue>
+			</Attribute>
+			<Attribute IncludeInResult="false" AttributeId="context:shift:name">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Shift 1</AttributeValue>
+			</Attribute>
+		</Attributes>
+		<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+			<Attribute IncludeInResult="false" AttributeId="context:internalstate">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">INCIDENT_HAPPENED</AttributeValue>
+			</Attribute>
+			<Attribute IncludeInResult="false" AttributeId="context:privacylevel">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">PUBLIC</AttributeValue>
+			</Attribute>
+			<Attribute IncludeInResult="false" AttributeId="context:comparison:int">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">4</AttributeValue>
+			</Attribute>
+		</Attributes>
+		<Attributes
+		Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+			<Attribute IncludeInResult="false" AttributeId="entity:name">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">testAction</AttributeValue>
+			</Attribute>
+		</Attributes>
+		<Attributes
+		Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment">
+			<Attribute IncludeInResult="false" AttributeId="urn:oasis:names:tc:xacml:1.0:environment:current-time">
+				<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#time">13:59:00Z</AttributeValue>
+			</Attribute>
+		</Attributes>
+</Request>
