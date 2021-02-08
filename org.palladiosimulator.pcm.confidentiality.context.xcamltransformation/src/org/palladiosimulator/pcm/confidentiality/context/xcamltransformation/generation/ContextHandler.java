@@ -1,5 +1,6 @@
 package org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.generation;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public class ContextHandler {
      * Initialises the ContextHandler. The model folder is used as id of the created policy.
      * @param modelPath is a location of the context model for which XACML transformation has to be created
      */
-    public ContextHandler(String modelPath) {
+    public ContextHandler(Path modelPath) {
         ModelLoader modelloader = new ModelLoader(modelPath);
         this.id = modelloader.getModelFolder();
         this.confidentialAccessSpecification = modelloader.loadConfidentialAccessSpecification();

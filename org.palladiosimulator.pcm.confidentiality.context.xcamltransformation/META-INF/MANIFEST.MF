@@ -15,5 +15,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.generation,
+ org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.handlers,
  org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.modelloader
-Import-Package: org.eclipse.core.resources
+Import-Package: org.eclipse.core.resources,
+ org.eclipse.debug.core,
+ org.eclipse.debug.core.model

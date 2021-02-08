@@ -20,14 +20,14 @@ import org.palladiosimulator.pcm.confidentiality.context.ContextPackage;
  */
 public class ModelLoader {
 
-    private String modelPath;
+    private Path modelPath;
     private ResourceSet resourceSet;
 
     /**
      * Creates a new model loader.
      * @param modelPath - a path of the model
      */
-    public ModelLoader(String modelPath) {
+    public ModelLoader(Path modelPath) {
         this.modelPath = modelPath;
         this.resourceSet = new ResourceSetImpl();
         if (!Platform.isRunning()) {
@@ -44,7 +44,7 @@ public class ModelLoader {
      * @return the confidential access specification
      */
     public ConfidentialAccessSpecification loadConfidentialAccessSpecification() {
-        Resource resourceData = resourceSet.getResource(URI.createFileURI(modelPath), true);
+        Resource resourceData = resourceSet.getResource(URI.createFileURI(modelPath.toAbsolutePath().toString()), true);
         return (ConfidentialAccessSpecification) resourceData.getContents().get(0);
     }
 
@@ -54,7 +54,7 @@ public class ModelLoader {
      * @return the name of the folder in which the model is saved
      */
     public String getModelFolder() {
-        Path folderPath = Path.of(modelPath).getParent();
+        Path folderPath = modelPath.getParent();
         return folderPath.getFileName().toString();
     }
 }

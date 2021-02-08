@@ -1,0 +1,25 @@
+<plugin>
+    <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+        <launchConfigurationType
+            name="XACML Transformation"
+            delegate="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.launcher.TransformationLaunchConfiguration"
+            modes="run, debug"
+            id="transformationLauncher">
+        </launchConfigurationType>
+    </extension>
+    <extension
+        point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+        <launchConfigurationTabGroup
+            class="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.launcher.TransformationTabGroup"
+            id="transformationLauncher.launchConfigurationTabGroup"
+            type="transformationLauncher">
+        </launchConfigurationTabGroup>
+    </extension>
+    <extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+        <launchConfigurationTypeImage
+                id="transformationLauncher.launchconfigurationtypeimage"
+                configTypeID="transformationLauncher"
+                icon="files/transformation.png">
+        </launchConfigurationTypeImage>
+    </extension>
+</plugin>
