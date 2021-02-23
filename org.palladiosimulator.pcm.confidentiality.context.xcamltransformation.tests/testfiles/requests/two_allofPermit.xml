@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+ReturnPolicyIdList="false" CombinedDecision="false">
+	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+		<Attribute AttributeId="methodSpecification:signature" IncludeInResult="false">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">bookSelected</AttributeValue>
+		</Attribute>
+		<Attribute AttributeId="methodSpecification:assemblyContext" IncludeInResult="false">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">TravelPlanner &lt;TravelPlanner&gt;</AttributeValue>
+		</Attribute>
+	</Attributes>
+	<Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+		<Attribute AttributeId="context:AttributeContext:ContextType:EntityName:Location" IncludeInResult="false">
+			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">Home2</AttributeValue>
+		</Attribute>
+	</Attributes>
+</Request>

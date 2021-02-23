@@ -3,6 +3,7 @@ package org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.te
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -28,7 +29,8 @@ public class TransformationTest {
 
     private Path outPath;
     private final static Path TEST_FILES_FOLDER = Path.of("testfiles");
-    private final static Path MODEL_PATH = TEST_FILES_FOLDER.resolve("models").resolve("scenarios").resolve("test_model.context");
+    private final static Path MODEL_PATH = TEST_FILES_FOLDER.resolve("models").resolve("Scenarios");
+    private final static Path REQUESTS = TEST_FILES_FOLDER.resolve("requests");
 
     @BeforeAll
     private void beforeAll() {
@@ -45,26 +47,51 @@ public class TransformationTest {
         Files.deleteIfExists(outPath);
     }
 
-    private static Stream<Arguments> requestFiles() {
+    private static Stream<Arguments> fileNames() {
         return Stream.of(
-          Arguments.of("evalUC0Permit.xml", Decision.PERMIT),
-          Arguments.of("evalUC0Deny.xml", Decision.DENY)
+          Arguments.of("single_attribute"),
+          Arguments.of("hierarchical_bottom_up"),
+          Arguments.of("hierarchical_top_down"),
+          Arguments.of("relatedContextSet"),
+          Arguments.of("two_allof"),
+          Arguments.of("two_policies"),
+          Arguments.of("recursiveIncluding")
         );
     }
 
     @ParameterizedTest
-    @MethodSource("requestFiles")
-    public void testTransformation(String requestFileName, Decision expectedDecision) throws Exception {
+    @MethodSource("fileNames")
+    public void testTransformation(String fileName) throws Exception {
+        String inputFile = String.format("%s.context", fileName);
         MainHandler handler = new MainHandler();
-        handler.performTransformation(MODEL_PATH, outPath);
+        handler.performTransformation(MODEL_PATH.resolve(inputFile), outPath);
+        checkContent(String.format("%s.xml", fileName));
+        testRequests(fileName);
+    }
 
+    private void checkContent(String expectedFile) throws IOException {
+        List<String> expectedLines = Files.readAllLines(MODEL_PATH.resolve(expectedFile));
+        List<String> actualLines = Files.readAllLines(outPath);
+        Assert.assertEquals(expectedLines.size(), actualLines.size());
+        Assert.assertTrue(expectedLines.containsAll(actualLines));
+    }
+
+
+    private void testRequests(String fileName) throws Exception {
         XACMLProperties.setProperty("properties.file", outPath.toAbsolutePath().toString());
+        String permitFileName = String.format("%sPermit.xml", fileName);
+        String denyFileName = String.format("%sDeny.xml", fileName);
+        String notApplicable = String.format("%sNotApplicable.xml", fileName);
+        executeRequest(REQUESTS.resolve(permitFileName), Decision.PERMIT);
+        executeRequest(REQUESTS.resolve(denyFileName), Decision.DENY);
+        executeRequest(REQUESTS.resolve(notApplicable), Decision.NOTAPPLICABLE);
+    }
 
-        Path requestFile = Path.of("testfiles", requestFileName);
+    private void executeRequest(Path requestFile, Decision expectedDecision) throws Exception {
         Request request = DOMRequest.load(requestFile.toFile());
         PEPEngine pep = PEPEngineFactory.newInstance().newEngine();
         final var result = pep.decide(request);
-        System.out.println(result + System.lineSeparator());
+        System.out.println(result);
         Assert.assertEquals(expectedDecision, result.getResults().iterator().next().getDecision());
     }
 }

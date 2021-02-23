@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -111,9 +112,9 @@ public class PolicyCreator {
         RuleType rule = new RuleType();
         TargetType target = new TargetType();
         target.getAnyOf().add(anyOfType);
-        rule.setDescription("Context check rule for entity " + methodSpecification);
+        rule.setDescription(String.format("Context check rule for entity %s", methodSpecification));
         rule.setTarget(target);
-        rule.setRuleId("Permit:" + methodSpecification);
+        rule.setRuleId(String.format("Permit:%s", methodSpecification));
         rule.setEffect(EffectType.PERMIT);
         return rule;
     }
@@ -297,7 +298,7 @@ public class PolicyCreator {
      * @return all possible including contexts
      */
     private Set<ContextAttribute> getAllowedContexts(ContextAttribute context) {
-        Set<ContextAttribute> allowedContexts = new HashSet<>();
+        Set<ContextAttribute> allowedContexts = new LinkedHashSet<>();
         if (context instanceof HierarchicalContext) {
             HierarchicalContext hierarchicalContext = (HierarchicalContext) context;
             List<ContextAttribute> includingContexts = hierarchicalContext.getIncluding();
