@@ -56,7 +56,7 @@ public class TransformationTest {
     @MethodSource("requestFiles")
     public void testTransformation(String requestFileName, Decision expectedDecision) throws Exception {
         MainHandler handler = new MainHandler();
-        handler.createXACML(MODEL_PATH, outPath);
+        handler.performTransformation(MODEL_PATH, outPath);
 
         XACMLProperties.setProperty("properties.file", outPath.toAbsolutePath().toString());
 

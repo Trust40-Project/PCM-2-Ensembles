@@ -5,11 +5,6 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.generation.ContextHandler;
 
 import com.att.research.xacml.util.XACMLPolicyWriter;
@@ -24,22 +19,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 public class MainHandler {
 
     private static final Logger LOGGER = Logger.getLogger(MainHandler.class.getName());
-
-    /**
-     * starts transformation of the context model to XACML output file
-     * @param modelPath an input file of the model
-     * @param outputFile an output XACML file
-     */
-    public void createXACML(Path modelPath, Path outputFile) {
-        String result = performTransformation(modelPath, outputFile);
-        if (Platform.isRunning()) {
-            Display.getDefault().asyncExec(() ->
-            {
-                IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-                MessageDialog.openInformation(window.getShell(), "XACML - Policy generation result", result);
-            });
-        }
-    }
+    public static final String MODEL_SUFFIX = ".context";
 
     /**
      * performs transformation of the context model to an XACML policy
@@ -47,12 +27,12 @@ public class MainHandler {
      * @param outputFile an output XACML file
      * @return a string which contains information if the model could be transformed successfully
      */
-    private String performTransformation(Path modelPath, Path outputFile) {
+    public String performTransformation(Path modelPath, Path outputFile) {
         String result = null;
-        if (Files.exists(modelPath)) {
+        if (Files.exists(modelPath) && modelPath.toString().endsWith(MODEL_SUFFIX)) {
             LOGGER.info(String.format("Model %s will be transformed", modelPath.toAbsolutePath().toString()));
-            ContextHandler ch = new ContextHandler(modelPath);
             try {
+                ContextHandler ch = new ContextHandler(modelPath);
                 PolicySetType policySet = ch.createPolicySet();
                 LOGGER.info(String.format("Transformation output will be written to %s", outputFile.toAbsolutePath().toString()));
                 Path transformationOutputFile = XACMLPolicyWriter.writePolicyFile(outputFile, policySet);
@@ -68,7 +48,7 @@ public class MainHandler {
                 LOGGER.severe(result);
             }
         } else {
-            result = String.format("Model %s does not exist", modelPath.toAbsolutePath().toString());
+            result = String.format("Model %s does not exist or is not a valid context model", modelPath.toAbsolutePath().toString());
             LOGGER.severe(result);
         }
         return result;
