@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.feature">
+      <category name="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.category"/>
+   </feature>
+   <feature id="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.feature.source">
+      <category name="org.palladiosimulator.pcm.confidentiality.context.source.category"/>
+   </feature>
+   <category-def name="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.category" label="Confidentiality Context XACML Transformation">
+   </category-def>
+   <category-def name="org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.category" label="Confidentiality Context XACML Transformation Developer Resources">
+   </category-def>
+</site>
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.palladiosimulator</groupId>
+        <artifactId>eclipse-parent-updatesite</artifactId>
+        <version>0.7.3</version>
+    </parent>
+    <groupId>org.palladiosimulator.pcm.confidentiality.context.xcamltransformation</groupId>
+    <artifactId>transformation</artifactId>    
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <org.palladiosimulator.maven.tychotprefresh.tplocation.2>${project.basedir}/releng/org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.targetplatform/org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.targetplatform.target</org.palladiosimulator.maven.tychotprefresh.tplocation.2>
+    </properties>
+
+    <modules>
+        <module>releng</module>
+        <module>bundles</module>
+        <module>features</module>
+        <module>tests</module>
+    </modules>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.att.research.xacml</groupId>
+            <artifactId>xacml</artifactId>
+            <version>3.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.att.research.xacml</groupId>
+            <artifactId>xacml-pdp</artifactId>
+            <version>3.0</version>
+        </dependency>   
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <configuration>
+                    <pomDependencies>wrapAsBundle</pomDependencies>
+                    <target>
+                        <artifact>
+                            <groupId>${org.palladiosimulator.maven.tychotprefresh.tpproject.groupId}</groupId>
+                            <artifactId>${org.palladiosimulator.maven.tychotprefresh.tpproject.artifactId}</artifactId>
+                            <version>${org.palladiosimulator.maven.tychotprefresh.tpproject.version}</version>
+                            <classifier>${org.palladiosimulator.maven.tychotprefresh.tpproject.classifier}</classifier> 
+                        </artifact>
+                    </target>
+                    <environments>
+                        <environment>
+                            <os>linux</os>
+                            <ws>gtk</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>win32</os>
+                            <ws>win32</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                    </environments>
+                    <!-- https://bugs.eclipse.org/bugs/show_bug.cgi?id=541403 -->
+                    <dependency-resolution>
+                        <extraRequirements>
+                            <requirement>
+                                <type>eclipse-plugin</type>
+                                <id>javax.annotation</id>
+                                <versionRange>0.0.0</versionRange>
+                            </requirement>
+                        </extraRequirements>
+                    </dependency-resolution>
+                    <executionEnvironment>JavaSE-11</executionEnvironment> 
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
