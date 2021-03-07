@@ -10,7 +10,8 @@ import org.osgi.framework.BundleContext;
  */
 public class Activator extends AbstractUIPlugin {
 
-	public static final String PLUGIN_ID = "org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.launcher"; //$NON-NLS-1$
+	public static final String PLUGIN_ID =
+	        "org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.launcher"; //$NON-NLS-1$
 	private static Activator plugin;
 
 	/**
