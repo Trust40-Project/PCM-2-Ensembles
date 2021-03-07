@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ThirdParty
+Bundle-SymbolicName: XACML_Lib
+Bundle-Version: 1.0.0
+Bundle-ClassPath: .
+Export-Package: com.att.research.xacml.api,
+ com.att.research.xacml.api.pdp,
+ com.att.research.xacml.std.dom,
+ com.att.research.xacml.util,
+ com.att.research.xacmlatt.pdp,
+ oasis.names.tc.xacml._3_0.core.schema.wd_17
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: ThirdParty
+Import-Package: javax.xml.bind;version="2.2.0",
+ javax.activation,
+ com.sun.xml.bind.v2
