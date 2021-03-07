@@ -6,13 +6,11 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class Activator extends AbstractUIPlugin {
 
-	// The plug-in ID
 	public static final String PLUGIN_ID = "org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.launcher"; //$NON-NLS-1$
-
-	// The shared instance
 	private static Activator plugin;
 
 	/**
@@ -21,18 +19,12 @@ public class Activator extends AbstractUIPlugin {
 	public Activator() {
 	}
 
-	/**
-	 * starts a plugin
-	 */
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 	}
 
-	/**
-	 * stops a plugin
-	 */
 	@Override
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;

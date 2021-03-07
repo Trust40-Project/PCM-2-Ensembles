@@ -5,7 +5,7 @@ import com.att.research.xacml.api.XACML3;
 /**
  * Represents a signature match.
  * @author vladsolovyev
- * @version 1.0
+ * @version 1.0.0
  */
 public class SignatureMatch extends Match {
 

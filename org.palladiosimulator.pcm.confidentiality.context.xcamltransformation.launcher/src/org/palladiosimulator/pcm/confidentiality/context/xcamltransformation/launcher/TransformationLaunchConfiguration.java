@@ -26,16 +26,14 @@ import org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.han
 /**
  * the class is responsible for a launch of the transformation configuration
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class TransformationLaunchConfiguration extends LaunchConfigurationDelegate {
-    protected final static String OUTPUT_DIR = "Output_Directory";
-    protected final static String OUTPUT_FILE = "Output_File";
-    protected final static String INPUT_FILE = "Input_File";
+    protected static final String OUTPUT_DIR = "Output_Directory";
+    protected static final String OUTPUT_FILE = "Output_File";
+    protected static final String INPUT_FILE = "Input_File";
     private static final Logger LOGGER = Logger.getLogger(TransformationLaunchConfiguration.class.getName());
 
-    /**
-     * the method launches a transformation
-     */
     @Override
     public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
             throws CoreException {
@@ -48,8 +46,8 @@ public class TransformationLaunchConfiguration extends LaunchConfigurationDelega
                 MainHandler handler = new MainHandler();
                 String result = handler.performTransformation(input, output);
                 showMessageDialog(result);
-            }, () -> {showMessageDialog("Could not determine a path of the output file. The model will not be transformed");});
-        }, () -> {showMessageDialog("Could not determine a path of the input file. The model will not be transformed");});
+            }, showErrorMessageDialog("Could not determine a path of the output file. The model will not be transformed"));
+        }, showErrorMessageDialog("Could not determine a path of the input file. The model will not be transformed"));
     }
 
     /**
@@ -57,11 +55,21 @@ public class TransformationLaunchConfiguration extends LaunchConfigurationDelega
      * @param message - a message to be shown
      */
     private void showMessageDialog(String message) {
-        Display.getDefault().asyncExec(() ->
-        {
+        Display.getDefault().asyncExec(() -> {
             IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
             MessageDialog.openInformation(window.getShell(), "XACML - Policy generation result", message);
         });
+    }
+
+    /**
+     * shows an error message dialog on the GUI. It has to return runnable as it used by optional
+     * @param errorMsg - an error message to be shown
+     * @return a runnable of the showMessageDialog
+     */
+    private Runnable showErrorMessageDialog(String errorMsg) {
+        return () -> {
+            showMessageDialog(errorMsg);
+        };
     }
 
     /**

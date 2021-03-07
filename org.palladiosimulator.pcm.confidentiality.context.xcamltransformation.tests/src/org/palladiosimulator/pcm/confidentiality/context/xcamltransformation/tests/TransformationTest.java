@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -19,27 +20,30 @@ import org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.han
 
 import com.att.research.xacml.api.Decision;
 import com.att.research.xacml.api.Request;
-import com.att.research.xacml.api.pep.PEPEngine;
-import com.att.research.xacml.api.pep.PEPEngineFactory;
+import com.att.research.xacml.api.pdp.PDPEngine;
 import com.att.research.xacml.std.dom.DOMRequest;
 import com.att.research.xacml.util.XACMLProperties;
+import com.att.research.xacmlatt.pdp.ATTPDPEngineFactory;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class TransformationTest {
 
+    private static final Logger LOGGER = Logger.getLogger(TransformationTest.class.getName());
+
     private Path outPath;
-    private final static Path TEST_FILES_FOLDER = Path.of("testfiles");
-    private final static Path MODEL_PATH = TEST_FILES_FOLDER.resolve("models").resolve("Scenarios");
-    private final static Path REQUESTS = TEST_FILES_FOLDER.resolve("requests");
+    private static final Path TEST_FILES_FOLDER = Path.of("testfiles");
+    private static final Path MODEL_PATH = TEST_FILES_FOLDER.resolve("models").resolve("Scenarios");
+    private static final Path REQUESTS = TEST_FILES_FOLDER.resolve("requests");
 
     @BeforeAll
     private void beforeAll() {
-        System.setProperty(XACMLProperties.XACML_PROPERTIES_NAME, TEST_FILES_FOLDER.resolve("xacml.properties").toAbsolutePath().toString());
+        System.setProperty(XACMLProperties.XACML_PROPERTIES_NAME,
+                TEST_FILES_FOLDER.resolve("xacml.properties").toAbsolutePath().toString());
     }
 
     @BeforeEach
     private void beforeEach() throws IOException {
-        outPath = Files.createTempFile(Path.of("testfiles"), "output", ".xml");
+        outPath = Files.createTempFile(TEST_FILES_FOLDER, "output", ".xml");
     }
 
     @AfterEach
@@ -89,9 +93,9 @@ public class TransformationTest {
 
     private void executeRequest(Path requestFile, Decision expectedDecision) throws Exception {
         Request request = DOMRequest.load(requestFile.toFile());
-        PEPEngine pep = PEPEngineFactory.newInstance().newEngine();
-        final var result = pep.decide(request);
-        System.out.println(result);
+        PDPEngine pdpEngine = ATTPDPEngineFactory.newInstance().newEngine();
+        final var result = pdpEngine.decide(request);
+        LOGGER.info(result.toString());
         Assert.assertEquals(expectedDecision, result.getResults().iterator().next().getDecision());
     }
 }

@@ -41,7 +41,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.TargetType;
 /**
  * The PolicyCreator is responsible for creating of policy types for a specified policy.
  * @author vladsolovyev
- * @version 1.0
+ * @version 1.0.0
  */
 public class PolicyCreator {
 
@@ -53,13 +53,14 @@ public class PolicyCreator {
     private Map<ContextAttribute, String> contextsToMatchRegex;
 
     /**
-     * Creates new policy creator. Initialises its variables and determine top down hierarchical contexts
+     * Creates a new policy creator. Initialises its variables and determine top down hierarchical contexts
      * @param methodSpecification - description of the method of the policy
      * @param contextSets - all context sets of the policy
      * @param policyEntityName - the name of the policy
      * @param contextContainers - all available contexts of the model
      */
-    public PolicyCreator(MethodSpecification methodSpecification, List<ContextSet> contextSets, String policyEntityName, List<ContextContainer> contextContainers) {
+    public PolicyCreator(MethodSpecification methodSpecification, List<ContextSet> contextSets, String policyEntityName,
+            List<ContextContainer> contextContainers) {
         this.methodSpecification = methodSpecification;
         this.contextSets = contextSets;
         this.policyEntityName = policyEntityName;
@@ -75,10 +76,12 @@ public class PolicyCreator {
     public PolicyType createPolicyType() {
         String methodName = methodSpecification.getSignature().getEntityName();
         PolicyType policy = new PolicyType();
-        policy.setDescription("Policy for " + methodName);
-        TargetType targetType = createPolicyTargetType(methodName, getAssemblyContextEntityName(methodSpecification.getConnector()));
+        policy.setDescription(String.format("Policy for %s", methodName));
+        String assemblyContextEntityName = getAssemblyContextEntityName(methodSpecification.getConnector());
+        TargetType targetType = createPolicyTargetType(methodName, assemblyContextEntityName);
         policy.setTarget(targetType);
-        List<RuleType> ruleTypesToAdd = Arrays.asList(createPermitAccessRule(createRuleAnyOfType(), methodName), createDenyAccessRule());
+        RuleType permitAccessRule = createPermitAccessRule(createRuleAnyOfType(), methodName);
+        List<RuleType> ruleTypesToAdd = Arrays.asList(permitAccessRule, createDenyAccessRule());
         policy.getCombinerParametersOrRuleCombinerParametersOrVariableDefinition().addAll(ruleTypesToAdd);
         policy.setPolicyId(policyEntityName);
         policy.setVersion(VERSION);
@@ -93,11 +96,12 @@ public class PolicyCreator {
     private String getAssemblyContextEntityName(Connector connector) {
         String assemblyContextEntityName = "";
         if (connector instanceof AssemblyConnector) {
-            AssemblyContext assemblyContext = ((AssemblyConnector)connector).getProvidingAssemblyContext_AssemblyConnector();
+            AssemblyContext assemblyContext = ((AssemblyConnector) connector).getProvidingAssemblyContext_AssemblyConnector();
             assemblyContextEntityName = assemblyContext.getEntityName();
         } else if (connector instanceof ProvidedDelegationConnector) {
-            AssemblyContext assemblyContext = ((ProvidedDelegationConnector)connector).getAssemblyContext_ProvidedDelegationConnector();
-            assemblyContextEntityName=  assemblyContext.getEntityName();
+            AssemblyContext assemblyContext =
+                    ((ProvidedDelegationConnector) connector).getAssemblyContext_ProvidedDelegationConnector();
+            assemblyContextEntityName = assemblyContext.getEntityName();
         }
         return assemblyContextEntityName;
     }
@@ -204,8 +208,10 @@ public class PolicyCreator {
      * @param prefixRelatedContextEntityName - prefix for an entity name
      * @return list of created match types. It is a list because RelatedContextSet may contains multiple context attributes
      */
-    private List<MatchType> createMatchTypesForRelatedContext(RelatedContextSet relatedContextSet, String prefixRelatedContextEntityName) {
-        String newPrefixRelatedContextEntityName = String.format("%s%s:", prefixRelatedContextEntityName, relatedContextSet.getEntityName());
+    private List<MatchType> createMatchTypesForRelatedContext(RelatedContextSet relatedContextSet,
+            String prefixRelatedContextEntityName) {
+        String newPrefixRelatedContextEntityName = String.format("%s%s:", prefixRelatedContextEntityName,
+                relatedContextSet.getEntityName());
         ContextSet contextSet = relatedContextSet.getContextset();
         List<MatchType> matchTypes = new ArrayList<>();
         if (Objects.nonNull(contextSet)) {
@@ -224,12 +230,14 @@ public class PolicyCreator {
      * @param prefixRelatedContextEntityName - prefix for an entity name
      * @return a match type of a rule part
      */
-    private MatchType createRuleMatchType(ContextAttribute contextAttribute, String regex, String prefixRelatedContextEntityName) {
+    private MatchType createRuleMatchType(ContextAttribute contextAttribute, String regex,
+            String prefixRelatedContextEntityName) {
         String dataType = "";
         if (Objects.nonNull(contextAttribute.getContexttype())) {
             dataType = contextAttribute.getContexttype().getEntityName();
         }
-        AttributeContextMatch attributeContextMatch = new AttributeContextMatch(regex, prefixRelatedContextEntityName.concat(dataType));
+        AttributeContextMatch attributeContextMatch = new AttributeContextMatch(regex,
+                prefixRelatedContextEntityName.concat(dataType));
         return attributeContextMatch.createMatchType();
     }
 
@@ -239,9 +247,10 @@ public class PolicyCreator {
      * @return set of root top down hierarchical contexts
      */
     private Set<HierarchicalContext> fetchRootTopDownHierarchicalContexts(List<ContextContainer> contextContainers) {
-        Set<HierarchicalContext> topDownHierarchicalContexts = contextContainers.stream().flatMap(contextContainer -> contextContainer.getContext().stream())
+        Set<HierarchicalContext> topDownHierarchicalContexts = contextContainers.stream()
+            .flatMap(contextContainer -> contextContainer.getContext().stream())
             .filter(context -> context instanceof HierarchicalContext)
-            .map(context -> (HierarchicalContext)context)
+            .map(context -> (HierarchicalContext) context)
             .filter(context -> IncludeDirection.TOP_DOWN.equals(context.getDirection()))
             .collect(Collectors.toSet());
         Set<ContextAttribute> includingContexts = new HashSet<>();

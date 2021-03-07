@@ -10,7 +10,7 @@ import oasis.names.tc.xacml._3_0.core.schema.wd_17.MatchType;
 /**
  * Abstract Match class which is responsible for creating of match types
  * @author vladsolovyev
- * @version 1.0
+ * @version 1.0.0
  */
 public abstract class Match {
 

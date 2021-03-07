@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * this class is responsible for selection of files in the local file system
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class LocalFileSystemButtonSelectionAdapter extends FileSelectionAdapter {
 

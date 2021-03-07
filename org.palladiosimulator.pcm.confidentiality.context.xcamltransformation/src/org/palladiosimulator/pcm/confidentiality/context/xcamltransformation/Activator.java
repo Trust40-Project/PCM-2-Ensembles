@@ -6,28 +6,30 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the plug-in life cycle
  * @author vladsolovyev
- * @version 1.0
+ * @version 1.0.0
  */
 public class Activator extends AbstractUIPlugin {
 
-	private static Activator plugin;
+    private static Activator plugin;
 
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		plugin = this;
-	}
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
+        plugin = this;
+    }
 
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		plugin = null;
-		super.stop(context);
-	}
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        plugin = null;
+        super.stop(context);
+    }
 
-	/**
-	 * @return the shared instance of the plugin
-	 */
-	public static Activator getDefault() {
-		return plugin;
-	}
+    /**
+     * Returns the shared instance.
+     *
+     * @return the shared instance of the plugin
+     */
+    public static Activator getDefault() {
+        return plugin;
+    }
 }

@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * this class is responsible for a file selection
  * @author vladsolovyev
+ * @version 1.0.0
  */
 abstract class FileSelectionAdapter extends SelectionAdapter {
     private Text field;

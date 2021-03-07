@@ -2,19 +2,16 @@ package org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.ha
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.logging.Logger;
 
-import org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.generation.ContextHandler;
-
-import com.att.research.xacml.util.XACMLPolicyWriter;
+import org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.policywriter.XACMLPolicyWriter;
 
 import oasis.names.tc.xacml._3_0.core.schema.wd_17.PolicySetType;
 
 /**
  * The MainHandler is the main class for the plugin from which the generation is started.
  * @author vladsolovyev
- * @version 1.0
+ * @version 1.0.0
  */
 public class MainHandler {
 
@@ -34,21 +31,14 @@ public class MainHandler {
             try {
                 ContextHandler ch = new ContextHandler(modelPath);
                 PolicySetType policySet = ch.createPolicySet();
-                LOGGER.info(String.format("Transformation output will be written to %s", outputFile.toAbsolutePath().toString()));
-                Path transformationOutputFile = XACMLPolicyWriter.writePolicyFile(outputFile, policySet);
-                if (Objects.isNull(transformationOutputFile)) {
-                    result = "Policy set could not be written to the output file";
-                    LOGGER.severe(result);
-                } else {
-                    result = String.format("Policy set sucessfully written to %s", transformationOutputFile.toAbsolutePath().toString());
-                    LOGGER.info(result);
-                }
+                result = XACMLPolicyWriter.writePolicyFile(outputFile, policySet);
             } catch (Exception ex) {
                 result = String.format("Transformation could not be completed: %s", ex.getMessage());
                 LOGGER.severe(result);
             }
         } else {
-            result = String.format("Model %s does not exist or is not a valid context model", modelPath.toAbsolutePath().toString());
+            result = String.format("Model %s does not exist or is not a valid context model",
+                    modelPath.toAbsolutePath().toString());
             LOGGER.severe(result);
         }
         return result;

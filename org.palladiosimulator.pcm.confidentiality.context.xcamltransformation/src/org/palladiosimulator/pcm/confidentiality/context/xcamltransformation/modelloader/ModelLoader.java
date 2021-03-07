@@ -16,7 +16,7 @@ import org.palladiosimulator.pcm.confidentiality.context.ContextPackage;
 /**
  * ModelLoader is responsible for loading of confidential access specification
  * @author vladsolovyev
- * @version 1.0
+ * @version 1.0.0
  */
 public class ModelLoader {
 
@@ -50,7 +50,6 @@ public class ModelLoader {
 
     /**
      * Gets the name of the folder in which the model is saved
-     * @param modelPath - the given path of the model
      * @return the name of the folder in which the model is saved
      */
     public String getModelFolder() {

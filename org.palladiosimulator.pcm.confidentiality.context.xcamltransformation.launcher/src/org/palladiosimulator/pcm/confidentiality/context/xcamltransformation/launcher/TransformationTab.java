@@ -18,6 +18,7 @@ import org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.lau
 /**
  * setting tab which allows to set attributes for a model transformation
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class TransformationTab extends AbstractLaunchConfigurationTab {
 
@@ -49,13 +50,15 @@ public class TransformationTab extends AbstractLaunchConfigurationTab {
         outputDirectoryPath = new Text(comp, SWT.BORDER);
         outputDirectoryPath.setMessage("please enter an output directory");
         outputDirectoryPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        TabHelper.createFolderInputSection(comp, modifyListener, "Output directory", outputDirectoryPath, Display.getCurrent().getActiveShell());
+        TabHelper.createFolderInputSection(comp, modifyListener, "Output directory",
+                outputDirectoryPath, Display.getCurrent().getActiveShell());
 
 
         outputFile = new Text(comp, SWT.BORDER);
         outputFile.setMessage("please enter an output file name");
         outputFile.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        TabHelper.createTextInputSection(comp, modifyListener, "Output file name", outputFile, Display.getCurrent().getActiveShell());
+        TabHelper.createTextInputSection(comp, modifyListener, "Output file name",
+                outputFile, Display.getCurrent().getActiveShell());
 
         updateLaunchConfigurationDialog();
     }

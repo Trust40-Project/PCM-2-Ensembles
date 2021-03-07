@@ -2,21 +2,22 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Xcamltransformation
 Bundle-SymbolicName: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-Activator: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.palladiosimulator.pcm.confidentiality.context;bundle-version="0.1.0",
  org.eclipse.emf.codegen;bundle-version="2.14.0",
  org.eclipse.e4.core.services;bundle-version="2.1.400",
  org.eclipse.emf.ecore.change.edit;bundle-version="2.8.0",
- ThirdParty;bundle-version="1.0.0"
+ org.palladiosimulator.pcm.confidentiality.context
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.generation,
  org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.handlers,
  org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.modelloader
-Import-Package: org.eclipse.core.resources,
- org.eclipse.debug.core,
- org.eclipse.debug.core.model
+Import-Package: com.att.research.xacml.api,
+ com.att.research.xacml.util,
+ javax.xml.bind;version="2.2.0",
+ com.sun.xml.bind.v2,
+ oasis.names.tc.xacml._3_0.core.schema.wd_17

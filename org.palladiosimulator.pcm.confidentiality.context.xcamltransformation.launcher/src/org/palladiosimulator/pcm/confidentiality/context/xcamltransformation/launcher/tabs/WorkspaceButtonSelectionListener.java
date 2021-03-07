@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * this class is responsible for selection of files in the workspace
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class WorkspaceButtonSelectionListener extends FileSelectionAdapter {
 

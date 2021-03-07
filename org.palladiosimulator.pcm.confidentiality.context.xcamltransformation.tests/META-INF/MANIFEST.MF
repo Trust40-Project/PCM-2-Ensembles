@@ -1,13 +1,20 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
-Bundle-SymbolicName: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests
-Bundle-Version: 1.0.0.qualifier
-Automatic-Module-Name: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration.tests
+Bundle-SymbolicName: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.tests
+Bundle-Version: 1.0.0
+Automatic-Module-Name: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.palladiosimulator.pcm.dataprocessing.dynamicextension.xacmlpolicygeneration;bundle-version="0.0.0",
- org.palladiosimulator.pcm.dataprocessing.dynamicextension,
- org.eclipse.emf.ecore,
+Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.emf.common,
  org.palladiosimulator.pcm.confidentiality.context.xcamltransformation
-Export-Package: org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.tests
+Import-Package:  com.att.research.xacml.api,
+ com.att.research.xacml.api.pdp,
+ com.att.research.xacml.std.dom,
+ com.att.research.xacml.util,
+ com.att.research.xacmlatt.pdp,
+ org.junit,
+ org.junit.jupiter.api,
+ org.junit.jupiter.params,
+ org.junit.jupiter.params.provider,
+ ch.qos.logback.classic

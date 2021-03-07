@@ -7,6 +7,7 @@ import org.eclipse.ui.views.navigator.ResourcePatternFilter;
 /**
  * file filter for specified extensions
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class FilePatternFilter extends ResourcePatternFilter {
 

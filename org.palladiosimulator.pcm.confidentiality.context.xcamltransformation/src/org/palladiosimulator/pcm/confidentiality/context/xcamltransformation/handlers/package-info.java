@@ -1,8 +1,7 @@
 /**
- * Package for the handlers of the plugin.
- * As of version 1.0, only the SampleHandler for the plugin execution is contained in this package.
+ * Package for the main handler.
  *
- * @author
- * @version
+ * @author vladsolovyev
+ * @version 1.0.0
  */
 package org.palladiosimulator.pcm.confidentiality.context.xcamltransformation.handlers;

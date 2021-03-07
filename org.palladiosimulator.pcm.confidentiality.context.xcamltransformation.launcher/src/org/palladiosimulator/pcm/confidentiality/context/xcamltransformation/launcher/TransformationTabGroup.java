@@ -8,6 +8,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 /**
  * this class creates a group of tabs.
  * @author vladsolovyev
+ * @version 1.0.0
  */
 public class TransformationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
@@ -16,7 +17,7 @@ public class TransformationTabGroup extends AbstractLaunchConfigurationTabGroup 
      */
     @Override
     public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-        setTabs(new ILaunchConfigurationTab[] { new TransformationTab() ,new CommonTab()});
+        setTabs(new ILaunchConfigurationTab[] {new TransformationTab(), new CommonTab()});
     }
 
 }
