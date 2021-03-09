@@ -190,7 +190,7 @@ Click *Apply - Run/Debug*. If the transformation finishes successfully, you will
 * Model Loader loads a valid *Confidential Access Specification Model*
 <img title="ModelLoader" src="Screenshots/ModelLoader.png" width="500" />
 
-* XACMLPOlicyWriter was taken from the com.att.research.xacml and adopted to the plugin. There are some changes because of the problem with the javax.xml.bind package, which does not exist in the Java11 and has to be imported. (See [JAXB on Java 9, 10, 11 and beyond](https://www.jesperdj.com/2018/09/30/jaxb-on-java-9-10-11-and-beyond/)). Also because of this problem two packages ( javax.xml.bind and com.sun.xml.bind.v2) have to be imported in the Manifest files of the plugin. 
+* XACMLPolicyWriter was taken from the com.att.research.xacml and adopted to the plugin. There are some changes because of the problem with the javax.xml.bind package, which does not exist in the Java11 and has to be imported. (See [JAXB on Java 9, 10, 11 and beyond](https://www.jesperdj.com/2018/09/30/jaxb-on-java-9-10-11-and-beyond/)). Also because of this problem two packages ( javax.xml.bind and com.sun.xml.bind.v2) have to be imported in the Manifest files of the plugin. 
 </p><img title="Writer" src="Screenshots/XACMLWriter.png" width="500" />
 
 * XACML_Lib contains a new version (3.0) of the com.att.research.xacml and com.att.research.xacml-pdp libraries. And comparing to earlier ThirdParty project it contains all dependencies just as jar files, there is no need to decompile them all.
