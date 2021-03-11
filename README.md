@@ -50,6 +50,8 @@ For launching plugins from Eclipse:
 
 Now it should be possible to launch plugins.
 
+\* The step number 4 has to be done in order to be able to run plugins from the eclipse only. When the maven project is run(e.g. mvn verify) there is no need to add the dependency explicitly as a separate bundle. Expected dependencies are referred in dependencies in the pom.xml file and the use of the property *<pomDependencies>wrapAsBundle</pomDependencies>* in the *target-platform-configuration* plugin wraps expected dependencies as bundles and allows to use the functionality of the xacml libraries. But when the project is started from Eclipse as a plugin, dependencies which are expected in the list of *Import-Package* in *MANIFEST.MF* files of plugins (e.g. see maven_projekt/bundles/org.palladiosimulator.pcm.confidentiality.context.xcamltransformation/META-INF/MANIFEST.MF) and are not provided by the target platform, have to be exported by other plugins. Please see XACML_Lib/META-INF/MANIFEST.MF file which contains the Export-Package block with all required xacml packages. That is why it is important to import the XACML_Lib project too.
+
 ## Functionalities
 Functionality of the plugin allows to create a valid XACML policy ([wikipedia](https://en.wikipedia.org/wiki/XACML)). The plugin uses a library com.att.research.xacml for creating of XACML elements.
 An example of the output policy:
@@ -203,6 +205,7 @@ Thanks to generic implementation of tests and many different test files a high t
 
 ## Further development
 
+1. It should be validated if created policies can be used in the real world.
 1. It should be checked if it is possible to reimplement functionalities of the com.att.research.xacml and com.att.research.xacml-pdp libraries in order to be able to avoid extra dependencies.
 1. As the project de.uka.ipd.sdq.workflow.launchconfig has some problems with tabs, I implemented some functionality of the project inside of the launch project. It would be better to fix the problems in the de.uka.ipd.sdq.workflow.launchconfig/ project and use it from the launch project. There are some small bugs and deprecated classes/methods.
 
